@@ -1,0 +1,76 @@
+1/ posts.service.ts:
+
+import { Injectable } from '@angular/core';
+import {HttpClient, HttpHeaders } from '@angular/common/http'
+import { Observable } from 'rxjs';
+@Injectable({
+  providedIn: 'root'
+})
+export class PostsService {
+
+  httpHeaders = new HttpHeaders({'Content-Type': 'application/json'})
+  constructor(private http: HttpClient) { }
+  getPosts(): Observable<any>{
+    return this.http.get('http://127.0.0.1:8081/api/gateaux/',
+    {headers: this.httpHeaders})
+  }
+}
+
+
+2/ videos-list.components.ts:
+
+import { Component } from '@angular/core';
+import {PostsService } from 'src/app/services/posts.service';
+
+
+@Component({
+  selector: 'app-videos-list',
+  templateUrl: './videos-list.component.html',
+  styleUrls: ['./videos-list.component.scss'],
+  providers: [PostsService],
+})
+export class VideosListComponent  {
+title = 'this is a title';
+students: any[];
+posts: any[];
+  constructor(private postsService: PostsService) {
+    postsService.getPosts().subscribe(res => {
+      console.log(res)  
+      this.posts = res;
+    }, err => {
+      console.log(err)
+    }) 
+  }
+  
+
+}
+
+
+3/app.module.ts:
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import {HttpClientModule} from '@angular/common/http'
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { VideosListComponent } from './component/videos-list/videos-list.component';
+import {PostsService} from './services/posts.service'
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    VideosListComponent,
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    AppRoutingModule
+  ],
+  providers: [PostsService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+4/

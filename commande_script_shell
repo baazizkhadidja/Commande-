@@ -1,0 +1,529 @@
+Le 02/01/2020
+ 
+One : VIM l editeur de texte programmeur
+1/installer: sudo apt-get install vim
+2/ vimtutor: tutoriel 
+3/ Les modes d'édition de Vim:
+
+- vim: ouvrir un éditeur en mode intéractif(on ne peut pas écrire) pour passer au mode insertion(coppier, coller)= tapper sur i , pour sortir: tapper sur escharp, pour passer au mode conmmande(enregistrer, option): tappe :(les 2 points)+enter
+
+- créer un fichier: vim nom_fichier
+- deplacement : h(gauche) j(bas) k(haut) l(droite)
+- esharp puis 0 : deplace debut de la ligne 
+-esharp puis  $: deplacer fin de la ligne
+- esc puis w: dep au debut du mot suivant
+- enregistrer les modification : esc(mod intr)/:w le non du fichier
+- // + sortir: :wq fichier_name
+4/ Opérations standard (copier, coller, annuler…):
+- efacer des lettre: esc/x --> la lettre effacé
+- dd  supprimer une ligne
+- dw  supprimer un mot (il faut mettre le curs au debut du mot)
+PS: 3dw pour supprimer les 3 mots suivants, 3dd supprimer 3 lignes
+PS2: dd couper aussi
+- d0  supprimer depuis le curseur jusk le debut de la ligne
+- d$  //                                 la fin   //     
+- yy  copier une ligne en mémoire
+- yw  pour copier un mot
+- y$ pour copier du curseur jusqu'à la fin de la ligne
+- p  coller
+ps: 8p  
+- Collage dans Vim
+- r  le mode de remplacement de n importe quelle lettre serait actif
+- u  annuler les modifications
+- G : sauter à la ligne n° X : 7 puis chift+g
+
+
+5/ Opérations avancées (split, fusion, recherche…):
+
+- re chercher un mot: tapper /  puis ecrire le mot à rechercher, n pour passer au mot suivant, chift n passer mot précédant
+
+- rechercher un mot1 + le remplacer par mot2: :s/mot1/mot2 
+
+-    :s/ancien/nouveau : remplace la première occurrence de la ligne où se trouve le curseur ;
+
+-    :s/ancien/nouveau/g : remplace toutes les occurrences de la ligne où se trouve le curseur ;
+
+-   :#,#s/ancien/nouveau/g : remplace toutes les occurrences dans les lignes n° # à # du fichier ;
+
+-    :%s/ancien/nouveau/g : remplace toutes les occurrences dans tout le fichier. C'est peut-être ce que vous utiliserez le plus fréquemment.
+
+-:r  fusion de fichiers  :r fichier2
+
+- Le découpage d'écran (split) 
+:sp  découper l'écran horizontalement
+:vsp : découper l'écran verticalement
+
+- Les principaux raccourcis en écran splitté(viewport):
+
+cntrl +w+w = changer le viwport
+cntrl +w+j/h/k/l = changer le viwport selon la direction 
+Ctrl + wpuis+ : agrandit le viewport actuel.
+Ctrl + wpuis- : réduit le viewport actuel.
+Ctrl + wpuis= : égalise à nouveau la taille des viewports.
+Ctrl + wpuisr : échange la position des viewports. Fonctionne aussi avec « R » majuscule pour échanger en sens inverse.
+Ctrl + wpuisq : ferme le viewport actuel.
+
+- :! : lancer une commande externe: on sort du fichier vim, enter: en rentre
+
+
+6/ Les options de Vim: 
+- personnalisé vim par activer /desactiver les options en mode commande :set option
+PS: certaine option doit etre préciser par certaine valeure  :set option=valeur
+- desactiver   :set nooption
+- Activer des options dans un fichier de configuration: décommenter les ligne en question: 
+cp /etc/vim/vimrc  ~/.vimrc
+vim .vimrc   --> le fichier de configuration apparait
+- syntax : activer la coloration syntaxique 
+- background : coloration sur un fond sombre  set background=dark 
+- number : afficher les numéros de ligne  
+
+
+
+TWO: Introduction aux scripts shell
+
+1/ Qu'est-ce qu'un shell ?
+
+- sous un système d exploitation on a 2 environnement
+* E graphique = Unity, KDE, XFCE ..
+* Environnemnt console(les shells): sh, bash, ksh, csh, tcsh, zsh
+
+PS1:  la différence entre ces versions du langage shell est les fonctions améliorées
+
+PS2: le langage shell ressemble au langage C
+PS3: Le shell est installé par defaut sur LINUX et MAC OS
+
+2/ l'objectif d utiliser le shell:
+
+- rechercher une commande appliqué déjà : cntrl + R
+- autocompléter une commande : tab
+
+3/ Installer un nouveau shell:
+
+ apt-get install ksh
+
+Ps: pour lancer un autre shell on tappe juste son nom: sh, chsh, ...
+
+4/ Notre premier script: avec le bash
+
+
+- création d un fichier d 'essaie:
+
+vim essaie.sh
+
+- on écrit dans le fichier:
+#!/bin/bash       (indiqué le langage utilisé dans ce fichier: bash )
+
+Ps: si on ecrit pas cette ligne: par defaut serait le shell, donc on ne peut pas écrit en ksh
+
+
+- Exécuter de commande: on écrit toujours une commande dans le fichier:
+
+ls : pour lister les fichiers du répertoire.
+
+cd : pour changer de répertoire.
+
+mkdir : pour créer un répertoire.
+
+grep : pour rechercher un mot.
+
+sort : pour trier des mots.
+
+Ps: on commente une ligne on la précède par #
+
+5/ Exécuter le script bash:
+
+- enregistrer + fermer le fichier: :wq  ou :x 
+- fermer sans enregistrer: :q
+- voir + donner les droit de l utilisateur sur ce script: ls -l
+- résultat:
+total 4
+-rw-r--r-- 1 zake zake 48 janv.  5 17:50 essaie.sh
+
+- analyse: notre script est lisible par tout le monde + on ne peut que l ecrit mais pas de x execution
+
+- modifier le droit de l execution: chmod +x essaie.sh
+- vérification: ls -l:
+- résultat:
+total 4
+-rwxr-xr-x 1 zake zake 48 janv.  5 17:50 essaie.sh
+ 
+- exécution du script: 
+./essaie.sh
+
+- résultat: les dossiers/ fichiers qui se trouvent dans le repertoire actuel s'afficheront
+
+6/ Exécution de débogage: bash -x essai.sh
+
+
+- resultat:
+
++ pwd
+/home/zake/Bureau/tes_shell
++ ls
+essaie.sh
+
+
+Ps: l'affichage de chaque commande suivie de son résultat
+
+7/ Ajouter notre fichier dans la PATH:
+pour éviter la difficulter de se placer à l interieur du répertoire afin d 'exécuter le script , on le met sur le PATH:
+
+
+- ouvrir le PATH: nano $PATH
+
+- ajouter notre repertoire:
+
+
+----------------------------------------------------------------------------------------------------------------------
+Le 06/12/2021
+
+THREE: Afficher et manipuler des variables:
+
+1/ Déclarer une variable
+
+- créer un nouveau script : vim variables.sh
+- écrit:
+
+#!/bin/bash
+message = 'Bonjour tout le monde'
+
+- donner le droit de l execution : chmod +x variables.sh
+- exécuter le script: ./variables.sh
+- résultat: ne se passe rien (mais la variable + sa valeur s'enregistre dans la mémoire)
+
+
+2/ Afficher une variable: echo:
+
+PS: echo = print en python, elle sert à afficher ctt
+
+- afficher une valeur d'une variable suite à l execution du script:
+il faut ecrire dans le script: echo $message
+Ps: si on veut mettre notre une valeur dans une chaine de caractère: on utilise les "":
+echo "Le message est : $message"
+- resultat: 
+Le message est : Bonjour tout le monde
+
+
+
+3/ les quotes: "": pour str, ``  : 2 fois altgr + 7 : lorseque la valeur= commande (expl pwd)
+
+4/ read : demander une saisie: read nomvariable
+ read = input en python , cin en c++
+
+si on écrit  read name dans le script , une fois on exécute le script il va nous donner la main pour entrer la valeur pour la variable name
+
+5/ -p : afficher un message de prompt: précéder le texte à rentrer par un petit text: 
+
+* -n : limiter le nombre de caractères:
+
+
+read -p 'Entrez votre login (5 caractères max) : ' -n 5 nom
+echo "Bonjour $nom !"
+
+* sauter la ligne:
+
+echo -e "\nBonjour $nom !"
+
+* -t : limiter le temps autorisé pour saisir un message:
+read -p 'Entrez le code de désamorçage de la bombe (vous avez 5 secondes) : '  -t 5 code
+echo -e "\nBoum !"
+
+* -s : ne pas afficher le texte saisi:
+
+read -p 'Entrez votre mot de passe : ' -s pass
+
+6/ Effectuer des opérations mathématiques:
+
+let "a = 5"
+let "b = 2"
+let "c = a + b"
+echo $c
+
+7/ Les variables d'environnement:
+
+- PS: Les variables précédantes son locales, par contre la variale d'environnement c est une variable globale: on pourrait l accéder partout  
+
+- Afficher les variables de l'environnement : env
+- exemple des variables de l environnement: PATH, SHELL, HOME, OLDPWD, PWD
+
+- afficher la valeur d une variable d environnement :
+echo $PATH
+
+8/ Les variables des paramètres: ajouter des paramètres à l exécution du script: ./variables param1 param2 
+
+- pour attribuer des paramètres à un script on écrit: 
+./variables.sh par1 par2 par3
+
+- pour connaitre le nombre de paramètres de notre script: on écrit dans le script: echo  $#
+
+- pour connaitre le script à lequel on ajoute des paramètre on écrit: 
+echo $0
+
+- pour connaitre c est quoi le premier paramètre: echo $1
+- //                     //: $2
+- ... jusq à 9 eme paramètre : $9
+
+9/ executer le script + paramètre: ./variables param1
+
+Ps: si on veut décaler les paramètres on utilise shift
+
+10/ Les tableaux:
+*déclarer un tableau:
+
+tableau=('valeur0' 'valeur1' 'valeur2')
+
+* accéder à une case du tableau:
+echo ${tableau[2]}
+
+* définir manuellement une valeur d un tableau:
+tableau[3]='doody'
+
+* afficher tous les éléments d un tableau:
+echo ${tableau[*]}
+
+--------------------------------------------------------------------------------------------------------------------------------
+Four: 
+
+Les conditions:
+
+
+1/ condition des variables:
+
+- script: 
+
+#!/bin/bash
+
+nom="Bruno"
+
+if [ $nom = "Bruno" ]
+then
+        echo "Salut Bruno !"
+else
+        echo "J'te connais pas, ouste !"
+fi
+
+- execution:
+./fichier.sh
+
+2/ condition d un paramètre:
+
+- script:
+
+#!/bin/bash
+
+if [ $1 = "doody" ]
+then
+        echo "first param !"
+else
+        echo "other param !"
+fi
+
+- execution1:
+./fichier.sh doody
+
+- resultat:  first param
+
+- execution2:
+./fichier.sh dooja
+
+- resultat: 
+other param
+
+3/ si non:
+
+if [ test ]
+then
+        echo "Le premier test a été vérifié"
+elif [ autre_test ]
+then
+        echo "Le second test a été vérifié"
+elif [ encore_autre_test ]
+then
+        echo "Le troisième test a été vérifié"
+else
+        echo "Aucun des tests précédents n'a été vérifié"
+fi
+
+
+4/ Tests sur des chaînes de caractères:
+
+if [$1 ==$2] // si les 2 paramètres sont égaux
+if [$1 !=$2]   // si les deux paramètres sont différents
+if [ -z $1 ]   // si la chaine est vide
+if [ -n $1 ]   // si la chaine n est pas vide
+
+
+5/ tests sur les nombres:
+
+if [ $a -eq $b ]  // si a et b sont égaux
+if [ $a -ne $b ]   // si a et b non égaux
+if [ $a -lt $b ]    // si a < b
+if [ $a -le $b ]    // si a =< b
+if [ $a -gt $b ]    // si a > b
+if [ $a -ge $b ]    // si a => b
+
+6/ tests sur des fichiers:
+
+- script:
+
+#!/bin/bash
+
+read -p "entrez le nom du fichier: " repertoire
+if [-e $repertoire]; then
+	echo "ce fichier existe"
+else
+	echo "ce repertoire n existe pas"
+fi 
+
+PS: autre commande pour tester les fichiers:
+
+-e $nomfichier:  si le fichier existe.
+
+-d $nomfichier:  si le fichier est un répertoire. N'oubliez pas que sous Linux, tout est considéré comme un fichier, même un répertoire !
+
+-f $nomfichier:  si le fichier est un… fichier. Un vrai fichier cette fois, pas un dossier.
+
+-L $nomfichier:  si le fichier est un lien symbolique (raccourci).
+
+-r $nomfichier:  si le fichier est lisible (r).
+
+-w $nomfichier:  si le fichier est modifiable (w).
+
+-x $nomfichier:  si le fichier est exécutable (x).
+
+$fichier1 -nt $fichier2:  sifichier1est plus récent quefichier2(newerthan).
+
+$fichier1 -ot $fichier2:  sifichier1est plus vieux quefichier2(olderthan).
+
+
+
+7/ Effectuer plusieurs tests à la fois:
+
+    && : signifie « et » 
+
+    || : signifie « ou »
+
+
+
+- cas1:
+
+#!/bin/bash
+
+if [$1 == "doody" ] && [$2 == "jojo"]; then
+	echo "Bravo les params sont juste"
+else
+	echo "l un des deux parametre est incorrecte"
+
+
+- Cas2:
+
+if [$1 == "doody" ] || [$2 == "jojo"]; then
+	echo "Bravo les params sont juste"
+else
+	echo "l un des deux parametre est incorrecte"
+
+
+
+- cas3:
+
+if [ $# -ge 1 ] && [ $1 = 'koala' ]   // t qu'il y a au moins un paramètre et le premier paramètre est bien koala
+
+
+8/ Inverser un test: avec !
+
+if [ ! -e fichier ]
+then
+        echo "Le fichier n'existe pas"
+fi
+
+9/ case: tester plusieurs conditions à la fois:
+si on veut tester une seule variables plusieurs fois: on utilise le case:
+
+Donc au lieu d ecrire: 
+
+if [ $1 == 'doody' ]; then
+	echo "doody"
+
+if [ $1 == 'jojo' ]; then
+	echo "jojo"
+if [ $1 == 'jiji' ]; then
+	echo "jiji"
+
+
+on écrit:
+
+case $1 in
+"doody")
+	echo "doody";;
+"jojo")
+	echo "jojo";;
+"jiji"
+	echo "jiji";;
+*)                          // ça veut dire else
+	echo "others";;
+esac
+
+--------------------------------------------------------------
+Five: les boucles:
+
+1/ while: boucler "tant que"
+
+- exemple: une boucle qui affiche: dite oui , tant que la reponse n est pas oui elle reaffiche: la phrase dote oui, jusqu on fait entrer oui:
+
+#!/bin/bash
+
+while [ $reponse != 'oui'  ] || [ -z $reponse ]
+do
+	read - p "dite oui pliiiiz"
+done
+
+2/ la boucle for: pour l itération des éléments d une liste:
+
+#!/bin/bash
+
+for elt in 'el1' 'el2' 'el3'
+do 
+	echo "l element en cours est $elt"
+done
+
+- exemple2: itérer les fichiers dans le repertoire actuel:
+
+#!/bin/bash
+
+liste=`ls`
+for l in $liste
+do
+echo "le fichier est: $l"
+done
+ 
+
+- exemple3: pour renomer des fichiers:
+
+
+for fichier in `ls`
+do
+        mv $fichier $fichier-old
+done
+
+3/ le mot clé seq: il génère tous les nombres allant du premier paramètre au dernier paramètre: `seq 1 10`
+
+
+----------------------------------------------------------
+six: les fonctions:
+
+# déclaration méthode 2
+
+function maFonction
+
+{
+bloc d’instructions 
+}
+
+#appel de la fonction
+
+maFonction
+
+
+
+
+

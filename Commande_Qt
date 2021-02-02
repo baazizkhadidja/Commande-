@@ -1,0 +1,133 @@
+Le 21/10/2020
+
+I/ généralité Qt:
+
+1/Il existe deux types de programmes : 
+*les programmes console (ceux que nous avons créés jusqu'ici)
+*les programmes GUI (Graphical User Interface), qui correspondent aux fenêtres que vous connaissez.
+
+Ps: Créer des programmes GUI est plus complexe que de créer des programmes console.  
+
+GUI (prononcez « Goui »):
+C'est l'abréviation de Graphical User Interface, soit « Interface utilisateur graphique: Un programme avec des fenêtres .
+
+2/ Les différents moyens de créer des GUI:
+
+* soit on écrit son application spécialement pour l'OS qu'on veut, mais le programme ne sera pas portable(on ne peux pas utiliser dans un autre système d'exploitation) ;
+
+soit on utilise une bibliothèque qui s'adapte à tous les OS, c'est-à-dire une bibliothèque multiplateforme
+
+3/ Présentation de Qt
+
+Vous l'avez compris, Qt est une bibliothèque/Framework multiplateforme pour créer des GUI (programme utilisant des fenêtres).
+Qt est écrite en C++ et elle est, à la base, conçue pour être utilisée en C++. Toutefois, il est aujourd'hui possible de l'utiliser avec d'autres langages comme Java, Python, etc.
+
+4/ Les modules de Qt:
+
+    * Module GUI : c'est toute la partie création de fenêtres. Nous nous concentrerons surtout, dans ce cours, sur le module GUI.
+
+    * Module OpenGL : Qt peut ouvrir une fenêtre contenant de la 3D gérée par OpenGL.
+
+    * Module de dessin : pour tous ceux qui voudraient dessiner dans leur fenêtre (en 2D), le module de dessin est très complet !
+
+    * Module réseau : Qt fournit une batterie d'outils pour accéder au réseau, que ce soit pour créer un logiciel de Chat, un client FTP, un client Bittorent, un lecteur de flux RSS…
+
+    * Module SVG : Qt permet de créer des images et animations vectorielles, à la manière de Flash.
+
+    * Module de script : Qt prend en charge le Javascript (ou ECMAScript), que vous pouvez réutiliser dans vos applications pour ajouter des fonctionnalités, par exemple sous forme de plugins.
+
+    * Module XML : pour ceux qui connaissent le XML, c'est un moyen très pratique d'échanger des données à partir de fichiers structurés à l'aide de balises, comme le XHTML.
+
+    * Module SQL : permet d'accéder aux bases de données (MySQL, Oracle, PostgreSQL…).
+
+
+5/ installation de Qt sur Linux:
+
+- sudo apt-get install qtcreator
+- sudo apt-get install qt5-default
+
+
+II/ Qt Creator: IDE pour Qt
+
+1/ Configuration des Kit: Outils>options>Kits>Desktop(par défaut) cliquer>Version Qt = manage =Qt5 + Compilateur Clang(c et c++)> appliquer> Ok 
+
+
+
+
+2/ création de projet vide:
+
+
+ Fichier > Nouveau fichier ou projet > Application>Qt Console Application> choisir le nom + le chemin> QMarke > Qt 5.9> Qt kit> options > desktop by default + (Qt version = 5.Qt) + appliquer> 
+- resultat: création d un fichier pro + un fichier main.cpp
+création d un fichier: test.pro
+
+3/ Configurer le fichier test.pro:
+
+A/
+SOURCES += \
+    main.cpp
+    QT += widgets
+
+
+OOOOOOOOOOOOORRRRRRRRRRRRRR
+
+QT       += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+
+OOOOOOOOOOOOOOORRRRRRRRRRRRRRR
+
+sudo apt-get install libqt4-dev
+
+
+B/  menu « Compiler » ➝ « Exécuter qmake
+ou bien:
+- menu contexuel sur le dossier dans lequel se trouve le min> executer le Qmamake
+
+
+4/compiler un fichier: control + R
+
+
+Ps: Pour l erreur : '<QApplication>' file not known
+
+
+6/ Fichiers executable et dll resultants d un script:
+- l executable est généré dans le meme repertoire du projet: en windows .exe, en linux couleur violet
+- le dll: généré dans C:\Qt\5.1.0\mingw48_32\bin (si non on doit le chercher)
+
+- Ps: Pour que notre programme serait deplacer sur une autre machine, on doit mettre l executable et le dll dans le meme repertoire.
+
+
+----------------------------------------------
+Le 11/01/2021
+
+II/ Pratique
+
+1/ executer un petit programme: un boutton:
+
+- dans le fichier main on écrit:
+
+
+#include <QApplication>
+#include <QPushButton>
+
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+
+    QPushButton bouton("hello");
+    bouton.show();
+    return a.exec();
+}
+
+
+- executer le script: clique sur le triangle vertà gauche 
+- resultat: apparaition d un boutton sur lequel s est écrit: hello
+
+2/ diffuser un programme:
+
+
+
+
+

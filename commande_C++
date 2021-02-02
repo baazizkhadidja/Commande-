@@ -1,0 +1,1435 @@
+Le 29_07-2020
+
+I/Connaitre les bases du langage C++:
+1/ Comprendre C++:
+- Langage découvert aux années 80, de assez haut niveau
+- Utilise le paradigme de la programmation orientée objet
+- sa dernière version : 11 
+2/ Réaliser son premier programme:
+Pour ouvrir un fichier:
+- L'outil utilisé s'appelle: code::blocks
+- pour ouvrir un projet: File --> new --> Project --> empty fil--> choisir le nom + le chemin --> choisir le compilateur (GNU GCC Compiler) --> finish
+- pour ajouter un fichier à notre projet: 
+* cliquer sur l'icone du projet
+* cliquer sur l'icone dans la barre d'outil(feuille+)
+* enregister le fichier sur le bon chemin , avec une extension .cpp
+* Donc: une fois on clique sur le nom de projet on trouve un sous dossier 'sources', dans lequel se trouve notre fichier 'main.cpp'
+* Pour configurer l'outil pour qu'il utilise la version c++11:
+clic droit sur le nom du projet --> build options --> cocher l'option 'language standard [-std=c++11]'
+Pour créer un code:
+1- Ecrir:
+
+#include <iostream>
+int main(){
+std::cout <<"hello world";
+}
+
+2- Compiler le code: Cliquer sur la roue jaune
+
+3- On aura ce resultat:
+-------------- Build: Debug in mespremierpas (compiler: GNU GCC Compiler)---------------
+
+g++ -Wall -g  -c /home/zake/Bureau/Projects_C++/mespremierpas/main.cpp -o obj/Debug/main.o
+g++  -o bin/Debug/mespremierpas obj/Debug/main.o   
+Output file is bin/Debug/mespremierpas with size 28.13 KB
+Process terminated with status 0 (0 minute(s), 2 second(s))
+0 error(s), 0 warning(s) (0 minute(s), 2 second(s))
+ 
+4- Cliquer sur la flèche verte: excecuter
+5- On aura une console qui affiche: hello world
+
+
+
+3/Déclarer les variables: typées et à l'intérieur d'une fonction main
+- La syntaxe de ce langage ressemble à celui du JvaScript:
+- La fonction main se déclare comme suit:
+int main(){
+
+}  
+-la syntaxe de la variable qu'on déclare à l'intérieur de la fonction:
+const int a = 0;
+
+- donc : pour déclarer une variable on écrit:
+
+int main(){
+const int a = 0;
+} 
+
+Ps: 
+- le mot clé 'const' voulais dire que cette variable est fixe et on ne pourra plus la modifier plus tard
+
+- Le mot clé auto: remplace n'importe quel type(c'est à le systeme de trouver il s'agit de quel quel type cette variable)
+- on peut déclarer le type d'une variable en basant sur le type d'une autre variable avec le mot clé decltype exp:
+decltype(a) b = 2    (le type de b est dejà connu)
+
+4/ Découvrir les types fondamentaux:
+1- char c = 'a';
+2- wchar_t wc = 'c';
+3- short s = 4;
+4- int n = 8;
+5- long m = 12;
+6- long long mm = 7;
+7- float f = 6.7;
+8- double d = 6.55;
+9- long double ld = 7.214;
+10- bool b = true;
+Ps:
+* true = 1 et false = 0
+* C'est quoi la chose garantie par le c++ ?
+--> le c++ garantie la chose suivante: 
+
+* Unsigned N = un type nom signé ??????????????????????????
+* Pour mettre en commentaire des ligne: entre /* */  expl:
+/* 
+
+
+int main() {
+const int a = 0;
+auto b = 2;
+decltype(b) c = 3;
+}
+
+*/
+
+- Définissez les variables pour utiliser la mémoire:
+
+il y a deux méthodes pour déclarer une variables:
+
+1- type nom (valeur)
+2- type nom = valeur
+
+Ps: si on veut déclarer une variable de type string, il faut importer la librairie string: 
+
+#include <string>
+int main(){
+string name('doody');
+}
+
+5/ Comprendre la portée des variables : c'est l'accècébilité aux variable, elle est délimité selon la position de la variable parapore aux bloc (accolodes):
+- si la variable est déclarée à l'extérieur du bloc de la fonction: c'est une variable globale:
+int b = 5;
+int main(){
+};
+
+- // à l'intérieur: variable locale:
+int main(){
+auto coucou = 'doody';
+};
+- elle pourrait etre déclarée aussi à l'intérieur d'autre accolade à l'interieur de la fonction main expl:
+int main(){
+	{int a = 1;}
+};
+
+Ps: dans le but de sécurité : on évite les variables globales(n'importe qui pourra les modifier)
+
+--------------------------------------------------------
+Le 30-07-2020
+6/ Découvrir les pointeurs C++ et les références:
+
+A/ La référence: c'est un deuxième nom pour une valeur dont sa variable est déjà déclarée
+(deux étiquettes collées sur un seule tiroire)
+
+- dans les autres langages on appelle une référence: un alias
+- on a besoin du symbole & pour ça
+- exemple:
+int ageUtilisateur(16);  
+
+int& maVariable(ageUtilisateur); 
+
+on a alors 2 variables pour une seule valeur:
+On dit alors: maVariable fait référence à ageUtilisateur
+- Ps: la référence doit avoir le meme type qu'une variable
+- L'objectif de l'utilisation des références: 
+
+Si la meme valeur serait utilisée dans deux programmes différents: on est besoin d'utiliset une deuxième nommination plus significative vis à vis le deuxième programme 
+
+
+B/ Le pointeur: un pointeur c'est une variable dont la valeur est l'adresse d'une autre variable, N'importe quelle variable possède 3 choses: une valeur, un nom(l'étiquette), et une adresse(une séquence des lettres et des nombres et c'est le système qui la définie), 
+
+pour déclarer et initialiser un pointeur: on met le type de la variable suivie d'une étoile()
+
+-Déclaration:
+int* p1(0), p2(0), p3(0); OOOORRR int *p1(0);
+double* pA(0);
+vector<int> *pD(0);
+
+-Initialisation:
+p1 = &a;
+
+ou bien la declaration et l initialisation au meme temps: 
+
+
+int* p1 = &a;
+
+- Affichage: cout << p1 <<endl;
+
+Récapitulatif des références, adresse, pointeur:
+
+#include<iostream>;
+using namespace std;
+
+int main()
+    {
+    int a = 15;//la déclaration + l'initiation de la variable  a
+    int& b(a);// création de la référence de la variable a
+    int* p = &a;// création du pointeur de la variable a
+
+    cout << a <<endl;//la variable  a 
+    cout << b <<endl;// la référence de la variable a
+    cout << p <<endl;// le pointeur de la variable a
+    cout << *p <<endl;// la valeur de la variable a pointée
+    }
+
+
+7/ Réaliser des tableaux et array:
+
+
+int main() {
+
+int tab[4];
+
+}
+
+Ps: explication de mon premier code:
+
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    cout << "Hello world!" << endl;
+    return 0;
+}
+
+
+- include: est un mot clé pour importer une librairie
+- <iostream>: la librairie qui affiche le message
+- using spacename std;: choisir le programme de cosole par defaut (il existe le programme interface GUI, et le programme console)
+
+- int main(){};: le corp de la fonction principale
+- cout <<" "<<; : la fonction d'affichage
+- endl: permet le retour en chariot
+- Hello word! : le message à afficher
+- return 0: indique que la fonction fonctionne bien
+
+
+8/ Implémenter les opérations d'une calculatrice:
+
+* Demander des informations à l'utilisateur:
+
+int age(0);
+cin >> age;
+
+lorsequ'on execute cette commende, la console nous affiche un champs à remplir, après avoir le rempli, puis cliquer sur entrer, il y aura une affectation de la variable age avec la valeur que nous avons mise 
+Mais si la valeur est une string composée de deux mots séparés il faut utiliser la fonction getline au lieu de cin:
+getline(cin, name)
+
+
+* Modifier des variables: tout simplement avec une affectation par =
+
+int a(0);
+a = 1;
+
+Ps:
+Pour afficher la valeur de deux variables:
+cout <<a<<","<<b<<endl;
+
+*Les constantes: c'est le contraire d'une variable, on ne peut pas la modifier, on la déclare comme suit:
+
+int const a(4);
+string const("doody");
+
+--------------------------------------------------------------------
+04-08-2020
+
+* Les raccourcis: L'incrémentation et la décrémentation
+- L'incrémentation: c est une sorte de modification :
+c'est l'ajout du 1 à une valeur: a++ (d'ou vient le nom du langage c++)
+
+- la decrémentation: c est une sorte de modification :la soustraction du 1 d'une valeur d'une variable:
+int a(5);
+a--
+Ps: a++   OR    a+=1
+
+* La modification avec d'autre opérateur:
+int a(4);
+a += 3;
+a -= 4;
+a *= 3
+a /= 4
+a //= 8
+
+* La librairie cmath: #include <cmath>
+- la racine carrée: 
+a(16);
+b = sqrt(a);
+expl:
+
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+int main(){
+int a(7);
+double b= sqrt(a);
+cout <<"la racine carrée de "<<a<<" est: "<<b;
+}
+
+
+Ps: il y d'autre fonctions comme: 
+ceil() : arrondi vers le haut
+floor() : arrondi vers le bas
+fabs(): valeur absolue
+exp(): Exponentielle
+tan(), sin(), cos(): sinus, cosinus, tangente
+a = pow(7,2): la puissance a = 49
+
+---------------------------------------------------------------
+* Les structures de controle conditionnées: 
+Ce sont des structures qui permet à un programme de prendre des décisions tout seule en fonction de circonstance, on utiliserons des symboles comme:
+ ==, <, >, <=, >=, !=
+
+- La condition if: si la 1 ere condition est valide il stop meme si la 2 eme condition est valide, c est pour ça on applique switch/cas dans ces cas.
+
+expl1:
+#include <iostream>
+using namespace std;
+
+int main(){
+int a(0);
+cin >> a;
+
+    if (a < 2)
+    {
+    cout <<a<<" est inferieur à deux";
+    }
+
+}
+
+expl2:
+
+#include <iostream>
+using namespace std;
+int main(){
+    int nbEnfants(5);
+
+    if (nbEnfants == 0)
+    {
+        cout<<"Eh bien, vous n avez pas d'enfant?" << endl;
+    }
+
+    else if (nbEnfants == 1)
+    {
+        cout<<"Alors, c est pour quand le deuxième "<<endl;
+    }
+    else if (nbEnfants == 2)
+    {
+        cout << "Quels beaux enfants vous avez la!" <<endl;
+    }
+    else
+    {
+        cout << "Bon, il faut arreter de faire des gosses maintenant ! ";
+    }
+
+
+cout << "Fin du programme "<<endl;
+return 0;
+}
+
+
+*La condition switch: rend le code plus lisible + il passe à toutes les conditions à l instar du if
+
+Au lieu d'ecrire:
+
+if(a = 1)
+{
+cout << " cas1"
+}
+
+if(a = 2);
+{
+cout<<"cas2"
+}
+
+else(a = 3);
+{
+cout<<"cas3"
+}
+
+On écrit: 
+
+switch (a)
+{
+case 1:
+	cout << "cas1";
+	break;
+case 2:
+	cout << "cas2";
+	break;
+default:
+	cout << "case3";
+	break;
+}
+
+
+
+
+
+exemple 2:
+
+#include <iostream>
+using namespace std;
+int main(){
+    int nbEnfants(3);
+    cin >> nbEnfants;
+    switch(nbEnfants)
+    {
+    case 0:
+        cout << "pas d'enfant!";
+        break;
+    case 1:
+        cout << "quand le deuxième";
+        break;
+    case 2:
+        cout << "quels beaux";
+        break;
+    default:
+        cout << "il faut arreter";
+        break;
+    }
+    return 0;
+}
+
+* Combinaison des condition:
+
+&&   et 
+||   ou
+!    non
+
+Ps: la formule suivante n'est pas correcte en c++:
+
+0 <= nbEnfants <= 4
+il faut la remplacer par la formule suivante:
+
+nbEnfants <= 4  && nbEnfants >= 0
+
+* Les boucles:
+
+int tab[5];
+
+la variable tab est un tableau qui se compose par 5 élément dont les indices vont de 0 à 4
+
+- Pour initialiser ces éléments: mettre la variable sans valeur: on fait une boucle:
+ 
+
+
+
+#include <iostream>
+using namespace std;
+int main(){
+
+    int tab[5];
+
+    for(int i =0; i<5; ++i)
+        tab[i] = 0;
+
+    for(int i =0; i<5; ++i)
+        cout << tab[i];
+}  
+
+
+EEEEREEEUR: la boucle n'itère pas 
+
+
+Ps: si on met 
+
+if ....
+if...
+
+la 2 eme if est sous condition de la première if
+
+si on met 
+
+if 
+else if
+
+on sort de la première condition
+----------------------------------------------------------------------------
+01/10/2020
+
+II/ Les fonctions en c++:
+
+1/ Structure
+type name_function(a, b){cout<<"Hello"<<endl;}
+
+- Le type de la fonction: selon la valeur retournée par la fonction: int, string, double
+
+- le nom de la fonction suivi le type
+- () dans lesquelles on trouve les types + les noms des arguments
+
+- {} délimitent le contenu de la fonction
+
+
+exemple:
+
+#include<iostream>;
+
+using namespace std;
+
+int ajoutDeux(int nombreRecu){
+
+int valeur(nombreRecu + 2);
+
+return valeur;
+
+}
+
+
+2/ Appeler une fonction:
+
+int ajoutDeux(int nombreRecu){
+int valeur(nombreRecu + 2);
+return valeur;
+}
+
+int main(){
+int a(2), b(2);
+cout<<"la valeur de a est: "<<a<<endl;
+cout<<"la valeur de b est: "<<b<<endl;
+
+b = ajoutDeux(b);
+cout<<"la valeur de a est: "<<a<<endl;
+cout<<"la valeur de b est: "<<b<<endl;
+return 0;
+}
+
+3/ Plusieurs paramètres: il faut juste les séparer par des virgules:
+
+
+double multiplication(double a, double b, double c)
+{
+    return a*b*c;
+}
+
+4/ Pas d'arguments:
+
+string demandeNom(){
+string name;
+cin >> name;
+return name;
+
+}
+
+5/des fonctions qui ne revoient rien:
+
+le type de ces fonctios est: void, elle n'affiche rien malgré la présence de cout, mais une fois on l'appele dans une fonction elle affiche
+
+void dirBonjour(){cout <<"Bonjour"<<endl;}
+
+- Appele dans une autre fonction:
+
+void dirBonjour(){
+cout <<"Bonjour"<<endl;
+}
+
+int main(){
+dirBonjour();
+return 0;
+}
+
+- Résultat: Bonjour
+
+6/Le passage par valeur: lorseque on remplace l 'argument d une fonction par une variable dans une autre fonction on dit: (passage par valeur): la fonction génère une copie inutile de ce paramètre qui consomme une grande quantité de stockage de notre mémoire (gaspillage) + ça rallenti le preogramme, pour éviter ça on fait le passage par référence
+
+
+7/ Utiliser la référence comme paramètre d'une fonction passage pa référence :
+
+la fonction ne génère pas une copie du paramètre, et le resultat modifie la variable originale
+
+
+pour éviter ça on fait le paramètre constant: pas de copie + pas de modification
+
+8/ Utiliser la référence comme paramètre d'une fonction:  passage par référence constante:
+
+Pour éviter le changement des variables globales et au meme temps on ne génère pas une copie du paramètre:  on ajoute le mot clé const avant le symbole &: function(int const& a){}
+ce qu on appèle: Le passage par référence constante:
+
+
+III/ Intéractions entre les 2 fichiers : source.cpp + head.h
+
+1/ les fichiers necessaires: 
+
+- le fichier source: c/c++ source: File/new/File/c/c++source/Go/renommer math.cpp/choisir le chemin(le meme dossier ou se trouve main.cpp)/save/cocher toutes les options/finish
+
+- le fichier en-tete: c/c++ header: File/new/File/c/c++header/Go/renommer math.h/choisir le chemin(le meme dossier ou se trouve main.cpp)/save/cocher toutes les options/finish
+
+2/ déclarer la fonction dans les fichiers: le compilateur a besoin de savoir que les 2 fichiers .cpp et .h ont une relation c est pour ça il faut importer le .h dans le .cpp (et non plus le .cpp dans le .h):
+
+- fichier source: 
+
+#include<iostream>;
+#include "math.h"  Ps: on utilise "" et pas <>
+#using namespace std
+
+
+int ajouteDeux(int nombreRecu)
+{
+
+int valeur(nombreRecu + 2);
+
+return valeur;
+
+}
+
+- fichier header:
+ 
+
+Ps1 : les lignes dejà existantes sont là pour empêcher le compilateur d'inclure plusieurs fois ce fichier
+
+Ps2: il faut écrir le code(le prototype de la fonction: ce qui est avant les {} de la fonction + ;) avant la commande #endif
+
+
+donc: on aura:
+
+#ifndef MATH_H_INCLUDED
+#define MATH_H_INCLUDED
+
+int ajouteDeux(int nombreRecu);
+
+#endif // MATH_H_INCLUDED
+
+Ps3: si notre fonction prend en paramètre une string on importe le module string:
+
+
+#ifndef MATH_H_INCLUDED
+#define MATH_H_INCLUDED
+
+#include <string>
+
+void afficherMessage(std::string message);
+
+#endif // MATH_H_INCLUDED
+
+Ps4: 
+
+il est déconseillé d importer le using namespace std dans les fichier headers, c est pour ça derrière chaque type de paramètre on met std::
+
+
+IV/ Documenter son code: dans le fichier en-tete avant le prototype, on doit commenter les points suivants:
+
+ce que fait la fonction ;la liste de ses arguments ; la valeur retournée
+
+exemple:
+
+/*
+ * Fonction qui ajoute 2 au nombre reçu en argument
+ * - nombreRecu : Le nombre auquel la fonction ajoute 2
+ * Valeur retournée : nombreRecu + 2
+ */
+int ajouteDeux(int nombreRecu);
+
+Ps: le système doxygen: génère des sites à partir des commentaires
+
+
+
+V/ Si Les paramètres sont des valeurs par defaut:
+
+on cas ou on applique la fonction avec des arguments manquants, le système les remplace avec 0 ou vient par la valeur que nous avons déclaré dans le prototype 
+
+//prototype de la fonction
+int nombreDeSecondes(int heures, int minutes = 0, int secondes= 0);
+
+
+VI/ Les intéractions entre les fichiers en c++:
+
+
+1/ créer un fichier(un flux): 
+
+#include<iostream>;
+#include<fstream>;
+#include<string>;
+
+using namespace std;
+
+int main(){
+
+string const f("/home/zake/Bureau/score.txt");
+ofstream my_f(f.c_str());
+
+}
+
+- Explication de script:
+
+*déclarer la variable f dont le nom est de type string, donc on utilise le type string
+* transformer le fichier f avec c_str() et le stoquer dans une nouvelle variable my_f
+*afficher le contenue du fichier my_f avec le mot clé ofstream au lieu de cout 
+
+
+2/ Eviter l erreur de la non existance du fichier lors de l'essaie de son affichage(problème pendant sa création):
+
+ofstream monFlux("C:/Nanoc/scores.txt");  //On essaye d'ouvrir le fichier
+
+if(monFlux)  //On teste si tout est OK
+{
+    //Tout est OK, on peut utiliser le fichier
+}
+else
+{
+    cout << "ERREUR: Impossible d'ouvrir le fichier." << endl;
+}
+
+3/ Ecrire dans un flux (un fichier):
+
+using namespace std;
+
+int main(){
+
+string const f("/home/zake/Bureau/score.txt");
+ofstream my_f(f.c_str());
+
+if(my_f){
+
+my_f<< "bonjour je suis doody"<<endl;
+my_f<< 1987<<endl;
+}
+
+else{cout<<"Erreur, impossible d ouvrir le fichier"<<endl;
+}
+
+}
+
+- Résultat:sur la console il ne s'affiche rien, par contre si on ouvre notre fichier on trouve qu il y avait des modiffication
+
+
+
+4/ Ajouter des modification à un nouveau dossier déjà existant:
+
+on ajoute un deuxième paramètre ios::app:
+
+string f <<("/home/Bureau/")
+ofstream << my_f(f.c_str(), ios::app)
+
+5/ Afficher le contenue d'un fichier :
+
+- utiliser le mot clé ifstream au lieu de ofstream sans passer par c_str():
+-La structure globale est:
+
+{
+ifstream f("/home/Bureau/f.txt")
+
+if(f){
+
+}
+
+else{cout << "Erreur"} 
+
+- selon le mode de la lecture, on écris entre les accollades:
+
+A/lire ligne la première ligne:
+{
+string ligne;
+getline(f, ligne);
+}
+
+B/lire mot par mot(les mots peuvent etre des nombres ou des chaines):
+{
+double nombre;
+f >> nombre;
+string mot;
+f >> mot;
+}
+C/lire le premier caractère :
+
+{
+char a;
+f.get(a)
+}
+
+D/lire un fichier en entier: avec une boucle while:
+
+{
+while(getline(f, ligne)){ cout <<ligne<<endl;}
+
+}
+
+
+Résumé fichiers:
+
+- pour lire ou écrire dans un fichier, on doit inclure le fichier d'en-tête<fstream>.
+
+- On doit créer un objet de type ofstream pour ouvrir un fichier en écriture et ifstream pour l'ouvrir en lecture.
+
+- L'écriture se fait comme avec cout:monFlux << "Texte";tandis que la lecture se fait comme aveccin:monFlux >> variable;.
+
+- On peut lire un fichier ligne par ligne avec getline().
+
+
+VII/les tableaux:05 types de tableaux
+
+1- tableaux statiques(taille fixe): type nom[taille]
+* declaration + initialisation : int tab[5];
+* affectation des valeur: tab[0] =24; tab[1] = 12 ...
+
+2- les tableaux dynamiques(taille pas fixe):
+* importer le module <vector>: #include<vector>
+* declaration d un tableau vide: vector<char> texte
+* declarationv + initialisation: vector<type> nom(taille);
+vector<int> tab(5);
+3- les tableaux string:
+* on les déclare comme string et on les accède comme des tableaux s/d
+4- les tableaux multi-dimentionnels (2D): (matrice/grille: lignes et colonnes): type tab[tailX][tailY]
+
+5- les tableaux multi-dimentionnels (+2D):(espace plein des vecteurs)
+type tab[tailX][tailY][tailZ][tailW]
+
+VIII/Les fonctions prédéfinis:
+
+1- la fonction rand (aléatoire) pour tirer un nombre au hazard:
+
+- importer 2 modules: #include<ctime>; #include<cstdlib>;
+- dans le main: appeler la fonction srand(time(0)); //généraliser les nombres aléatoires 
+
+- déclarer la variable a dont la valoire est un nombre aléatoire:
+ int a(0)
+- trouver un nombre aléatoire entre 2 nombres(0 et 4): a = rand() % 5; 
+
+DDDDDDDDDDon:
+#include <iostream>
+#include <ctime> // Obligatoire
+#include <cstdlib> // Obligatoire
+
+using namespace std;
+
+int main()
+{
+    int a(0);
+
+    srand(time(0));
+
+    a = rand() % 5;    
+
+    return 0;
+}
+
+ 
+2-la fonction rand (aléatoire) pour tirer une lettre au hazard:
+
+on retire un nombre inférieur de la taille du string, puis accéder au caractère dont ce nombre est son index:
+
+#include<iostream>;
+#include<ctime>;
+#include<cstdlib>;
+using namespace std;
+
+main(){
+string mot = "khadidja";
+int a;
+
+srand(time(0)) ;
+
+a = rand() % mot.size();
+cout<<mot[a]<<endl;
+
+}
+
+
+3- la fonction ecrase pour retier des lettres d une string:
+
+mot.ecrase(5, 1) // retier la lettre dont l index = 5, 1 fois
+
+
+
+IX/La programmation orientée objet en c++:
+
+1/Créer une classe + les attributs:
+
+class Personnage
+{
+    int m_vie;
+    int m_mana;
+    string m_nomArme;
+    int m_degatsArme;
+};
+
+----------------------------------------------------------------------
+Le 08/10/2020
+
+2/ Droits d'accès et encapsulation:
+
+- struct Personne{void meth1(){}; void meth2(){}; int a1; string a2 } --> a1, a1, met1, meth2: Public par defaut car on a défini la classe par le mot clé struct
+
+- class Personne{void meth1(){}; void meth2(){}; int a1; string a2 } --> a1, a1, met1, meth2: private par defaut car on a défini la classe par le mot clé class
+
+- struct Personne{public: void meth1(){}; void meth2(){};private: int a1; string a2 } --> a1, a1: private met1, meth2: Public car on a ajouter les mot clés: private devant les attributs, public devant les méthodes
+
+3/ Sépparer les prototypes des définitions:
+
+- dans le fichier header: on écrit la classe + les prototypes des méthodes+les attributs avec les droit d'accès(avant le #endif)
+- dans le fichier source: on implémente les méthodes
+
+
+4/ les paramètres string dans le header:
+
+on ne peut pas mettre la directive (using namespace std) dans le fichier header, donc au lieu d écrir juste (string a) devant le paramètre: on écrit: (std::string a)
+
+Ps: il faut importer le <string>
+
+5/ Implémentation des méthodes dans le fichier sources:
+
+- importer le header #include "Personnage.h"
+- using namespace std
+- écrir chaque méthode: sans mettre la classe, on écrit la méthode toute seule mais!! il faut la précéder par le nom de sa classe + ::, comme: void Perssonnage::recevoirDegats(int nbDegats){}
+
+3/ initialiser les attributs à l'aide d'un constructeur (sachant qu il y a des valeurs par defaut déjà initialisées dans le header)?
+
+- le constructeur est une méthode comme les autres méthodes de la classe
+- elle a le meme nom que la classe: Personne()
+- On met juste son prototype dans le header (rien ne le précède)
+- on définie le constructeur dans la source précédé par Personnage::
+- en initialisant nos attribut à l interieur du constructeur(ds la source) delon 02 méthodes
+- Pour donner des valeurs aux attributs , il faut les initialiser dans un constructeur, avec des valeurs fixes ou bien avec des valeurs des paramètres: 
+
+I/ initialiser les attributs avec des valeurs fixes:
+
+- header: class Personnage{Personnage();}
+- source: 
+
+Méthode 01:
+----------
+
+Personnage::Personnage()
+{
+m_vie = 100; 
+m_mana = 100; 
+m_nomArme = "Epée rouillée"; 
+m_degatsArme = 10;
+}
+
+
+Méthode 02:
+-----------
+
+Personnage::Personnage(): m_vie(100), m_mana(100), m_nomArme("Epée rouillée"), m_degatsArme(10){}
+
+
+II/ initialiser le constructeur avec une valeur dependante aux paramètres:
+
+
+
+- header: class Personnage{public:  
+Personnage();
+Personnage(int m_vie, int m_mana, std::string nomArme, int degatsArme);}
+
+- source: 
+
+Méthode 01:
+----------
+
+Personnage::Personnage(int vie, int mana, std::string nomArme, int degatsArme)
+{
+m_vie = vie; 
+m_mana = mana; 
+m_nomArme = nomArme; 
+m_degatsArme = degatsArme;
+}
+
+
+Méthode 02:
+-----------
+
+Personnage::Personnage(int vie, int mana, std::string nomArme, int degatsArme): m_vie(vie), m_mana(mana), m_nomArme(nomArme), m_degatsArme(degatsArme){}
+
+
+
+4/ Surcharger le constructeur: lui ajouter des paramètres:
+Au lieu d'initialiser un attribut dans un constructeur d une classe et rend sa valeur fixe dans tous les futurs objets, on pourrait l' initialiser en laissant sa valeur dépendante de la valeur du paramètre qui serait mis comme paramètre:
+
+Personne::Personne(string nomArme, int degatsArme): m_vie(100), m_mana(100), m_nomArme(nomArme), m_degatsArme(degatsArme)
+
+
+
+5/ Instanciation des objets dont le constructeur est surchargé:
+
+Personnage david, goliath("Epée aiguisée", 20);
+
+6/ Le constructeur de copie: Créer un objet copie d un autre objet:
+ 
+- instancier l'objet originaire sur lequel on va faire des copies
+- on fait la copie: on met juste l objet originale entre parenthèse: Personnage david(goliath)
+
+
+7/ Changer le comportement d un constructeur de copie: pour copier un objet en chageant quelques paramètres, il faut faire quelques configuration:
+ 
+- header: de la classe : Personnage(Personnage const& autre);
+- source: Personnage::Personnage(Personnage const& autre):
+m_vie(autre.m_vie),m_mana(autre.m_mana),m_nomArme(autre.m_nomArme),m_degatsArme(autre.m_nomArme){}
+
+8/ Créer un destructeur en cas d'allocation dynamique:
+ le destructeur: précédé par ~, prend le nom de la classe, ne prend pas de paramètres, ne renvoie aucune valeur:
+
+- Header: ds la classe:  ~Personnage()
+- Source: Personnage::~Personnage(){}
+
+
+9/la méthode constantes:
+ce sont des méthodes de lecture seule, elle possède le mot clé const:
+- header: void meth(int a)const;
+- source: void MaClasse::maMethode(int parametre)const{}
+
+exemple: la methode size() qui renvoie juste la taille de la variable de type string sans la changer
+
+10/ Associer les classes entre elles: Pour utiliser un objet d une classe1 comme attribut d'une méthode d'un futur objet d'une classe2
+
+- il faut importer le header1.h de classe1 dans le header2.h de classe2:
+#include"header1.h"
+
+
+11/ Les getteur(les accésseurs):
+dans le cas de l'association de 2 classes: 
+on ne peut pas appeler des attributs d une classe dans les méthode d une autre classe, on ne peut appeler que les méthodes,
+c'est pour ça on crée pour chaque attribut(utilisable ailleurs) une methode(stéréotype ds le h + implémentation dans la source) qui ne fait que retourner l'atribut, puis appeler cette méthode dans une méthode d'une autre classe différente.
+
+
+12/ Surcharger un opérateur pour les objets:
+
+- d'addition:
+
+on ne peut pas additionner 2 objets: abjet1 + objet2
+--> il faut implémenter une méthode spéciale avec le mot clé operator+=() et on mettant entre parenthèse les objets à additionner, et on précède la méthode par class_name & class_name::
+
+????????????????????????,
+à expliquer
+
+
+
+
+13/ le But d'associer les classes avec les pointeurs:
+
+ de cette technique
+Nous avons vu dans les cours précédant que si on intègre la classe voiture dans la classe Baaziz on pourra plus changer les paramètres, par exemple: si on crée un objet khadidja qui a l'attribut voiture dont les attributs suivant: couleur rouge, prix 2000, marque mini cooper. si par exemple l'objet khadidja voulais changer la voiture elle ne pouvait plus.
+Pour trouver une solution: on ne déclare pas l'objet voiture lui meme comme attribut de classe baaziz, mais on déclare un pointeur de l'objet voiture comme attribut dans la classe baaziz. comme ça les objets de la classe baaziz peuvent changer leurs objets de la class voiture et meme il peuvent changer leurs voitures entre eux en plus il peuvent ne pas avoir de voiture en mettant juste le pointeur à zero
+
+Ps: l'inconvenient de cette technique est: les pointeurs prennent beaucop de place de stockage.
+
+
+14/ Associer les classes avec les pointeurs
+
+- Allocation de mémoire pour l'objet (pointeur ):
+le constructeur d une classe dont un attribut pointé vers un autre objet d une autre classe: 
+
+Baaziz::Baaziz(string color, string marque, int price): m_nom('Baaziz'), m_age(1000), m_taille(17)
+{
+m_voiture = new Voiture(color, marque, price); 
+}
+ 
+- Désallocation de mémoire pour l'objet: si l objet de la classe Baaziz est détruit la case de type voiture persiste toujours si on n'ajoute pas un destructeur:
+
+Baaziz::~Baaziz()
+{
+	delete m_voiture;
+}
+
+
+15/ Une méthode d'un objet pointé:
+
+- méthode d'un attribut objet m_voiture: m_voiture.getPrice()
+- méthode d'un attribut pointeur vers un objet m_voiture:
+m_voiture->getPrice() 
+
+
+16/ Le pointeur this:lorsequ on crée une méthode qui retourne le pointeur vers l'objet auquelle elle appartient:  
+Personnage* Personnage::getAdress(){return *this}
+
+17/ EEEEEEERRRRRRRREEEEEUUUUUUR: error : Id returned 1 exit status === Build failed: 1 error ...
+
+
+* Origine de l'erreur: il faut cocher les 2 cases: release, et l autre lors de la création des fichiers head et source
+
+OOOOOOOORRRRRR:
+
+
+18/ EEEEEEERRRRRRRREEEEEUUUUUUR: error : Id returned 1 exit status === Build failed: 1 error ...
+
+
+* Origine de l'erreur: 
+- il faut créer un projet empty project
+- il faut configurer la compilation en c++ 11
+- il faut mettre les trois fichiers (entete, source, main) dans un seule projet
+- il faut bien confirmer que les trois fichiers se trouvent dans un meme projet, si nous manque un : menu contextuel sur le nom du projet > add> choisir le fichier manquant.
+
+
+
+19/ Création d un constructeur de copie dans le cas de la présence d un pointeur:
+
+On définie son prototype dans le header, puis on le définit dans la source:
+
+*head.h:
+
+Personnage();//constructeur par defaut
+Personnage(Personnage const& PersonnageACopier); //constructeur à copie
+Personnage(std::string color_car, int price_car);//constructeur surchargé
+~Personnage();// le destructeur
+
+*source.cpp: on copier les attribut + on declare le pointeur=0, puis on copie l attribut pointeur sépparémment:
+
+
+Personnage::Personnage(Personnage const& personnageACopier) 
+   : m_vie(personnageACopier.m_vie), m_mana(personnageACopier.m_mana), m_arme(0)
+{
+    m_arme = new Arme(*(personnageACopier.m_arme));
+}
+
+
+
+
+
+20/constructeur de copie plus avancé:
+
+Personnage& Personnage::operator=(Personnage const& personnageACopier) 
+{
+    if(this != &personnageACopier)
+    //On vérifie que l'objet n'est pas le même que celui reçu en argument
+    {
+        m_vie = personnageACopier.m_vie; //On copie tous les champs
+        m_mana = personnageACopier.m_mana;
+	delete m_arme;
+        m_arme = new Arme(*(personnageACopier.m_arme));
+    }
+    return *this; //On renvoie l'objet lui-même
+}
+
+
+21/ héritage: la classe mère: personnage, la classe fille: guérrier:
+
+- class Personnage
+{
+public:
+void marcher();
+void parler();
+
+private:
+int m_age
+string m_name;
+}
+
+- class Guerrier: public Personnage
+{
+public:
+void frapper();  // guerrier hérite marcher, a frapper
+
+private:
+int m_mana; // guerrier hérite m_age, m_name, a m_mana
+}
+
+
+22/ résolution dynamique des liens (pour un polymorphysme): méthode virtuelle + référence
+
+* head:
+
+
+class Vehicule
+{
+    public:
+    virtual void affiche() const;   Vehicule
+
+    protected:
+    int m_prix;  //Chaque véhicule a un prix
+};
+
+class Voiture : public Vehicule 
+{
+    public:
+    virtual void affiche() const;
+
+    private:
+    int m_portes;  
+};
+
+class Moto : public Vehicule  
+{
+    public:
+    virtual void affiche() const;
+
+    private:
+    double m_vitesse; 
+};
+
+
+
+* source: pas de modification
+* main:
+
+void presenter(Vehicule const& v)
+{
+v.affiche();
+}
+
+
+int main()
+{
+Vehicule v;
+presenter(v);
+
+Moto m;
+presenter(m);
+
+return 0;
+
+}
+
+* resultat:
+
+ceci est un véhicule
+ceci est un moto
+
+
+23/ résolution dynamique des liens d un destructeur: utilisation des pointeur au lieu de la référence: 
+
+- header: le constructeur normal, le destructeur virtuel:
+Vehicule(int prix);     
+virtual void affiche() const;
+virtual ~Vehicule();          
+
+- source:
+
+Vehicule::Vehicule(int prix)
+    :m_prix(prix)
+{}
+
+void Vehicule::affiche() const
+{
+    cout << "Ceci est un vehicule coutant " << m_prix << " euros." << endl;
+}
+
+Vehicule::~Vehicule() 
+{}
+
+- main:
+
+
+23/  collection hétérogène:
+vector<Vehicule*> ListV;
+
+24/ remplir un pointeur collection hétérogènes avec des pointeurs objets:
+
+int main()
+
+{
+vector<Vehicule*> listVehicule;
+
+listVehicule.push_back(new Voiture(15000, 5));
+
+listVehicule.push_back(new Voiture(1200, 3));
+
+listVehicule.push_back(new Moto(2000, 212.5));
+
+
+ for(int i(0); i<listeVehicules.size(); ++i)
+    {
+        delete listeVehicules[i];  //On libère la i-ème case mémoire allouée
+        listeVehicules[i] = 0;  //On met le pointeur à 0 pour éviter les soucis
+    }
+
+
+return 0;
+}
+
+25/ appliquer une méthode d un pointeur objet qui se trouve dans un tableau:
+
+t[0]->methode();
+
+
+26/ Classes abstraites(qui a au moins une fonctions virtuelles pures):
+On ne peut pas instancier des objets mais on peut créer des pointeurs:
+
+int main()
+{
+    Vehicule* ptr(0);  //Un pointeur sur un véhicule
+    
+    Voiture caisse(20000,5);
+    //On crée une voiture
+    //Ceci est autorisé puisque toutes les fonctions ont un corps
+    
+    ptr = &caisse;  //On fait pointer le pointeur sur la voiture
+
+    cout << ptr->nbrRoues() << endl;
+    //Dans la classe fille, nbrRoues() existe, ceci est donc autorisé
+
+    return 0;
+}
+
+27/les deux types d'itérateurs utilisés pour les conteneurs:
+
+* les bidirectional iterators:
+- nous permet d'avancer et de reculer sur le conteneur
+- on utilise ++ pour avancer, -- pour reculer
+- Expl: pour accéder au sixième élément : partir de begin() puis 5 fois(++)
+
+* les random acces iterators : 
+- accède directement au milieu du conteneur
+- utilisé par queu, vector
+- Expl: vector<int>::iterator it = tab.begin() + 7; //Un itérateur sur le 8ème élément
+
+28/ les foncteurs: un foncteur est une classe possédant si nécessaire des attributs et des méthodes. Mais, en plus de cela, elle doit proposer un opérateur()qui effectue l'opération que l'on souhaite.
+Commençons avec un exemple simple, un foncteur qui additionne deux entiers:
+
+Exemple1: foncteur simple: sans attribut:
+
+class Addition{
+public:
+    
+    int operator()(int a, int b)   //La surcharge de l'opérateur ()
+    {
+        return a+b;
+    }
+};
+
+
+Exemple2: foncteur évolutif:
+
+
+class Remplir{
+public:
+    Remplir(int i)
+        :m_valeur(i)
+    {}
+
+    int operator()()
+    {
+        ++m_valeur;
+        return m_valeur;
+    }
+
+private:
+    int m_valeur;
+};
+
+
+
+29/ Les foncteurs de type prédicats: qui renvoient un booléen:
+
+
+class TestVoyelles
+{
+public:
+    bool operator()(string const& chaine) const
+    {
+        for(int i(0); i<chaine.size(); ++i)
+        {
+            switch (chaine[i])   //On teste les lettres une à une
+            {
+                case 'a':        //Si c'est une voyelle
+                case 'e':
+                case 'i':
+                case 'o':
+                case 'u':
+                case 'y':
+                    return true;  //On renvoie 'true'
+                default:
+                    break;        //Sinon, on continue
+            }
+        }
+        return false;   //Si on arrive là, c'est qu'il n'y avait pas de  voyelle du tout
+    }
+};
+
+
+
+30/ Intégrer un foncteur dans une map:
+
+- un foncteur qui compare la longueur de 2 strings:
+ #include <string>
+using namespace std;
+
+class CompareLongueur
+{
+public:
+    bool operator()(const string& a, const string& b)
+    {
+        return a.length() < b.length();
+    }
+};
+
+
+- Afficher les éléments d un map selon l indication du foncteur:
+
+
+int main()
+{
+  //Une table qui associe le nom d'un animal à son poids
+  map<string, double,CompareLongueur> poids;  //On utilise le foncteur comme critère de comparaison
+        
+
+  //On ajoute les poids de quelques animaux       
+  poids["souris"] = 0.05;
+  poids["tigre"] = 200;
+  poids["chat"] = 3;
+  poids["elephant"] = 10000;
+
+  //Et on parcourt la table en affichant le nom et le poids
+  for(map<string, double>::iterator it=poids.begin(); it!=poids.end(); ++it)
+  {
+      cout << it->first << " pese " << it->second << " kg." << endl;
+  }
+  return 0;
+}
+
+
+- le resultat: affichage des éléments selon la longueur du string de la clé
+
+
+31/ Résumé des 05 conteneurs les plus courants: 
+
+1* vector:
+Exemple :vector<int>
+- éléments stockés côte-à-côte ;
+- optimisé pour l'ajout en fin de tableau ;
+- éléments indexés par des entiers.
+
+2* deque:
+Exemple :deque<int>
+- éléments stockés côte-à-côte ;
+- optimisé pour l'ajout en début et en fin de tableau ;
+- éléments indexés par des entiers
+
+3* list:
+Exemple :list<int>
+- éléments stockés de manière « aléatoire » dans la mémoire ;
+- ne se parcourt qu'avec des itérateurs ;
+- optimisé pour l'insertion et la suppression au milieu.
+
+4* map: 
+Exemple :map<string,int>
+- éléments indexés par ce que l'on veut ;
+- éléments triés selon leurs index ;
+- ne se parcourt qu'avec des itérateurs
+
+5* set:
+Exemple :set<int>
+- éléments triés ;
+- ne se parcourt qu'avec des itérateurs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

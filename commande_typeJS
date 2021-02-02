@@ -1,0 +1,538 @@
+commandes typeScript:
+
+1- Déclarer une variable: 
+let a = 4;
+
+2- modifier une variable: 
+
+let b = 6;
+b = 12;
+
+3- Opérations arithmétiques:
+
+let a = 2;
+let b = 3;
+
+let c = a + b;
+
+4- Incrémenter une valeur:
+
+let a = 8;
+a -= 4;
+
+5 - Incrémenter/ décrémenter le 1:
+
+let m = 11;
+m ++;
+
+resultat donne 14
+
+pour m -- le resultat est 8
+
+6- Les constantes: ce sont des variables qu on ne peut pas les modifier/réafecter plutard:
+
+const n = 4; 
+
+si on l incrémente: n++ ça nous donne: TypeError: invalid assignment to const `n'
+
+
+7- Enregistrer les données avec des types:
+
+* trois types primitifs: number(float, integer), string, booléen(true, false) 
+
+
+
+
+8- Déffinition des objets: sous forme de dictionnaire: {cle1:'valeur1', cle2:'valeur2'}
+
+exemple: 
+
+let myBook = {
+title : 'the story of tau',
+author:'will Alexander',
+numberOfPages:250,
+isAvailable:true
+};
+
+9- Accéder à une clé d'un objet: 
+
+let book.title = mybook.title;
+
+10- Manipuler les classe: lorsequ on est devant une création de plusieurs objets du meme type c est mieux de créer une classe avec un constructeur qui peut les tous clonner:
+
+class Book{} --> ça nous permet de créer des instances sans aucun attribut, on crée des instances comme suit:
+
+let book1 = new Book() 
+pour ajouter un attribut on fait:
+
+book1.title = 'hello' 
+
+si on veut déclarer les attributs au moment de la création de la classe il faut créer la classe avec l'instructeur, et quand meme on pourrait ajouter d'autre attribut plutard:
+
+class Book {
+	constructor(title, author, pages){
+		this.title = title;
+		this.author = author;
+		this.pages = pages;
+}
+
+}
+
+
+let book1 = new Book;
+book1.title = 'Les fleurs du mal'
+console.log(book1.author)
+
+
+
+
+11- Instancier un objet d'une class:
+- Méthode01: instancier un objet vide puis ajouter les valeurs et les attribut:
+
+let book1 = new Book()
+book1.title = 'les fleurs'
+
+- Méthode02: instancier l'objet et ajouter les valeurs au meme temps:
+
+let book1 = new Book('les fleurs', 'Beaudelair', '150');
+
+
+12- Gérer la complexité avec la bonne collection (array, set, map):
+
+* Utiliser un tableau pour enregistrer une liste ordonnée d'éléments:
+
+let tab = ['un', 'deux', 'trois']
+
+- compter le nombre des éléments: tab.length
+- l'ajout des éléments: 
+tab.push('quatre')
+- ajouter un élément au debut:
+tab.unshift('zero')
+
+-  la suppression du dernier élément:
+tab.pop()
+
+exemple:
+
+let tab = ['un', 'deux', 'trois'];
+tab.push('quatre');
+tab.unshift('zero')
+tab.pop()
+console.log(tab.length);
+
+* Découvrir les ensemples(sets) et les cartes(maps):
+- set : liste sans indices, entre parenthèse, pas de doublant, 
+
+- map: un dictionnaire dont la clé pourrait avoir n'importe quel type (à l'instart des dictionnaires, leur clé ne pourrait avoir que le type string)
+
+Ps: on pourrait filtrer ou modifier les couples clé/valeur 
+
+
+13- Les environnement dans lesquels on peut programmer en JavaScript:
+
+JSBin (un outil en ligne), sur le web, sur le serveur(expl Node.js) 
+
+
+14- Les conditions:
+- Les instruction if/else:
+
+let a = 5;
+if(a < 3){
+	console.log(' a est inférieur à trois')
+} 
+else if(a == 3){
+	console.log('a est égale à trois')
+}
+else{
+	console.log('a est supérieur à trois')
+}
+
+
+15- Le scope des variables: la portée des variable soit globale ou locale, si elle se trouve à l'interieur d'un bloc: on dit dit qu elle est locale et on ne peut pas l'utiliser à l 'xterieur du bloc, par contre si elle est globale (déclarée à l'extérieur du bloc) on pourra l'appeler à l'interieur du bloc 
+
+
+15- L'instruction switch/case/break: on ne l'utilise qu'à l'équivalent de:
+
+if (a ==1){console.log('un')}
+else if (a ==2){console.log('deux')}
+else(a == 3){console.log('trois')}
+
+donc on écrit:
+
+switch(a){
+	case 1: 
+		console.log('un')
+		break;
+	case 2:
+		console.log('deux')
+		break;
+	case 3:
+		console.log('trois')
+		break;
+}
+
+16- Les boucles for, while:
+
+- La boucle for:
+const a = 10;
+for(let i = 0; i < a; i = i+1){
+	console.log("hello");
+}
+
+resultat: hello     10
+
+
+
+-Parcourir les tableau avec les boucles: for ...of /for ....in:
+* Cas générale pour afficher les éléments du tableau:
+
+let tab = [1,2,3,4,5,6,7,8,9];
+
+for(let i=0; i < tab.length; i++ ){
+	console.log(tab[i])
+}
+
+
+
+Ps: Pour éviter d'écrir let i=0; i < tab.length; i++, on écrit:
+
+for (let i in table){
+	console.log(i)
+}
+
+----> il va afficher les indice, si on veut afficher les éléments on remplace in par of:
+
+for(let i of table){
+	console.log(i)
+}
+
+
+let tab = ['un','deux','trois','quatre','cinq','six'];
+
+for(let i of tab ){
+	console.log(i)
+}
+
+---> il affiche les éléments
+
+let table = ['un','deux','trois','quatre','cinq','six'];
+
+for(let i in table ){
+	console.log(i)
+}
+
+----> il affiche les indices
+
+
+17- Les types des erreurs:
+En général il y a trois types d'erreurs: 
+
+*Les erreurs de syntaxe: manque de parenthèse, accolade...
+*Les erreurs logiques: désordre dans les bloques au sein d'une boucle, le code marche mais le resultat est faux
+* erreurs d'exécution: lié à la connexion, la machine, la connexion à l'environnement virtuel
+
+18- Gérez des erreurs et des exceptions dans votre programme:
+Avec la boucle try/catch:
+
+try{
+	//code succeptible à l'erreur ici
+} catch (error){
+	// réaction aux erreurs ici
+}
+
+19- déclarer une fonctions:
+
+function division(a,b){
+	return(a/b)
+}
+
+console.log(division(10,2))
+
+
+
+
+20- Ajouter des méthodes à une classe:
+
+A l'intérieur d'une classe, on n'a pas besoin du mot clé function pour déclarer une fonction, il sufit juste d'ecrir son nom suivi de (){}
+Ps: la façon par laquelle nous avons déclaré le constructeur, sans oublier d'ajouter this. avant chaque oaramètre tant qu il est déjà déclaré dans le constructeur:
+
+
+class BankAccount{
+	constructor(owner, balance){
+		this.owner = owner;
+		this.balance = balance;
+
+}
+	showBalance(){
+		console.log('sold'+ this.balance + "euros")
+}
+}
+
+const newAccount = new BankAccount("will Alexander", 500);
+
+exemple2:
+
+class Voiture{
+	constructor(mark, couleur, prix){
+		this.mark = mark;
+		this.couleur = couleur;
+		this.prix = prix;
+}
+	rep(){
+		console.log("Cette voiture est de la marque: "+this.mark+" et d une couleur: "+this.couleur+", et elle coute: "+this.prix)
+}
+}
+
+let v1 = new Voiture("mini cooper", "rouge", "4000 Euros")
+
+console.log(v1.mark)
+
+21- Ajouter des méthode avec d'autres argument dans une classe qui influence sur une autre méthode et l'appeler:
+
+class Voiture{
+	constructor(mark, couleur, prix){
+		this.mark = mark;
+		this.couleur = couleur;
+		this.prix = prix;
+}
+	rep(){
+		console.log("Cette voiture est de la marque: "+this.mark+" et d une couleur: "+this.couleur+", et elle coute: "+this.prix + "euro")
+}
+	depence(somme)
+		{console.log('j ai dépensé : '+somme)
+		this.prix += somme;
+		this.rep();
+		}
+	
+}
+
+let v1 = new Voiture("mini cooper", "rouge", 4000)
+
+console.log(v1.depence(1000))
+
+22- Ajouter une méthode avec une condition dans une classe:
+
+
+class Bank{
+	constructor(user, sold){
+		this.user = user;
+		this.sold = sold;
+		
+}
+	affiche(){
+		console.log('sold: '+ this.sold)
+}
+	deposit(amount){
+		console.log('tu as ajouté: '+amount + "euros")
+		this.sold += amount
+		this.affiche()
+}
+	retrait(amount){
+		if (amount > this.sold){
+			console.log("vous ne puvez pas faire ce retrait")
+			}
+		else{
+			console.log('tu as retiré: '+amount +" euros")
+			this.sold -= amount
+			this.affiche()	
+		}
+		 
+}
+}
+
+let my_count = new Bank('doody', 7000)
+
+my_count.retrait(8000)
+
+Ps: on appelle les méthode précédante: les méthodes d'instance, car on doit instancier tout d abord un objet d une classe pour qu on puisse afficher cette méthode, par contre il y a des méthodes prédéfinie qu on appelle: méthodes statiques
+
+23- Les méthodes statiques: 
+
+C'est la méthode qu on peut l'appeller directement de la classe sans faire instancier un objet, exemple Math.random()
+On peut crée notre propre méthode statique à l'aide du mot clé static:
+
+class voiture{
+	static couleur(){console.log("la couleur est rouge");}
+	static prix(val){console.log("le prix de cette voiture est "+val)}
+}
+
+voiture.prix(4000)
+-----------------------------------------------------------------------
+19/08/2020
+
+24- Ecrire des fonctions propres: 
+*la refactorisation d'un code= sa reduction en utilisant un nouveau syntaxe: const function_name = (param) =>{la condition}
+*Laisser des commentaire: entre /* et */
+* Utiliser les conventions de nommage: Chameau, underscoor, signifiant
+*utiliser les tabulations: dans un bloc de condition, de boucle
+* parallélyser les accollades 
+
+28- Les tests d'une fonction: trois types de tests:
+
+* Les tests unitaires: vérifient une seule unité(fontion/classe), en leur fournissant une entrée et et en s'assurant qu'elles donnent la sortie attendue
+
+* Les tests d'intégration: vérifient un ensemble de (fonctions/classes) pour s'assurer qu'elles travaillent ensemble
+
+* Les testes fonctionnels(E2E): vérifient les ressources externes comme le systeme de payement tiers.
+
+Ps: On peut tester le code et le corriger(déboguer) manuellement, mais il existe des outils qui nous facilitent la tache: le débogage
+
+
+29- Les outils de débogage sur le navigateur: F12, Débogueur
+
+On met des points d'arret(breakpoints) pas-àpas au lieu de commenter le reste du code et laissr que la première ligne
+
+On peut meme mettre une partie de code entre deux points d'arrets pour l'ignorer
+
+30- La récursivité: l'appel de la fonction à l'inérieur d'elle meme:
+??????????????????????????????,
+
+31- Les fonctions fléchées en Javascript ES6(arrow functions):
+
+On connait déjà trois méthodes pour déclarer une fonction:
+
+Méthode01: 
+
+const division = function(a,b){
+	return a/b
+}
+
+Méthode02:
+
+function division(a,b){
+	return a/b
+}
+
+Méthode03: Au sein d'une classe lors de la déclaration d'un constructeur, ou une méthode on supprimme le mot clé function et on ajoute this au paramètres:
+
+class Bank{
+	constructor(sold, name){
+		this.sold = sold;
+		this.name = name;
+}
+	show(amount){
+		this.sold -= amount;
+}
+}
+
+
+
+Maintenant on découvre une quatrième méthode: qui remplace le mot clé fonction par le symbole =>
+
+const division = (a,b) =>{
+	return a/b
+}
+
+Lorseque il y a une seule instruction simple, on peut enlever les accolades et le mot clé return, ainsi pour le cas d'un seul paramètre on peut enlever les parenthèse 
+expl:
+
+const double = a => 2a
+const addition = (a,b) => a+b
+
+Ps: On affiche la fonction quelque soit sa méthode de déclaration par la façon suivante:
+
+console.log(division(10,5))
+
+
+32- Une fonction fléché sans paramètres: il faut quand meme metre des parenthèses vides, expl:
+
+const salut = () => "Hello tout le monde"
+console.log(salut())
+
+33- La fonction filter pour les tableaux:
+
+ ????????????????????????????????????????????????
+
+34- Manipulation des tableaux avec la fonction fléchée:
+
+
+
+35- Intégration d'un paramètre dans une string avec une fonction
+36- Le mot clé this dans une fonction fléchée: 
+
+Seulement au sein d'un objet qu'on utilise la fonction fléchée comme méthode(ce n'est pas utile de l'utiliser pour déclarer un constructeur ou une méthode de classe)
+
+Du coup pour intégrer au sein d'une fonction fléchée d'un objet, un attribut du meme objet, on doit mettre le mot clé this+entre accolades+précédé par un dollard, par contre pour les paramètres de la meme fonction fléchée on a pas besoin d' utiliser le mot clé this, on met juste le nom du paramètre, expl:
+
+const user = {
+  firstName: 'Adama',
+  lastName: 'Niang',
+  old: 25,
+  presentation: function() {
+    return `Hi, I'm ${this.firstName} ${this.lastName} and I'm ${this.old} years old.`
+  }
+}
+console.log(user.presentation())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

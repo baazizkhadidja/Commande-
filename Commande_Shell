@@ -1,0 +1,1024 @@
+* compter le nombre de fichier dont l'extention est png:
+ls -l | grep png | wc -l
+
+* accèder à un fichier par chemin relative : 
+cd ~/dossier_nom/ fichier_nom ??????????????????????????,
+
+* Le super utilisateur = la route = l'administrateur
+
+* Les parametre:
+-l : longue format (détailler)
+
+* pour connaitre les argument d'une commande:
+man commande_name
+
+* savoir le repertoir : pwd
+* manipuler les fichier 
+- copier un fichier  : cp, remove rm, move : mv, make directory: mkdir, links: ln
+
+- copier un dossier: ajouter le -r aux commandes des fichiers
+
+Ps: pour afficher l'action de : copier, déplacer..., on ajoute le paramètre -v pour les fichier et -vr pour les dossier
+
+- pour renomer un fichier on utilise mv en changeant le nom et supprimant l'ancien fichier
+
+* ouvrir des fichier : more, less, cat
+
+* changer les droits d'un fichier: chmod, chown
+
+* pour connaitre les clé usb connecté à l'ordinateur (les périphériques):
+lsusb
+
+* lister un dossier quelconque:
+ls ./dossier_nom/ 
+----------------------------------------------------------
+* Afficher le repertoire actuel:
+
+pwd
+
+* Afficher le contenue (avec tail en oktet):
+
+ls -l
+
+* Afficher le contenue (avec tail en mega oktet):
+
+ls -lh
+
+* Afficher le contenue cache (commence par point):
+
+ls -a
+
+* indiquer le repertoire personel: ~
+
+gedit ~/doody.txt
+
+* indiquer le reertoire précédent: ../
+
+gedit ../doody.txt
+
+* indiquer le repertoire actuel: ./
+
+cp doody.txt ./my_doody_txt
+(copier coller le fichier "doody.txt" dans le meme repertoir actuel en  changeant son nom vers "my_doody.txt"
+
+* créer une cascade de dossier:
+
+mkdir -p dossier1/dossier2/dossier3
+
+* supprimer un dossier vide: rmdir dossier_name
+* supprimer un dossier plein: rm -r dossier_name
+
+* créer un raccourci: ln -s /d1/d2/d3/ raccourci_name
+ (la meme technique pour créer les dossiers et les fichiers)
+ 
+* Concatiner plusieurs fichiers ensemble:
+cat fichier1 fichier 2 > fichier3 
+
+*Pour changer les droit d'un fichier ou un dossier:
+
+chmod (u/g/o),(+/-/=),(r/w/x) fichier_name
+chmod (propri/groupe/autre),(ajouter/enlever/fixer),(read/write/executer) fichier name
+
+Ps: on peut ajouter plusieurs droit à plusieurs catégories:
+
+ugo+rwx  
+
+II/ les utilisateurs et les droits:
+
+1/ executer une commande en root: sudo
+Ps: sudo su: pour faire + eurs commande, si on veut quiter le mode superuser: exit
+
+2/ ajouter un utilisateur:
+
+- se placer à home
+- sudo adduser Doody
+- le système nous demande un mot de passe
+- le système demande d autre informations: télé ...
+
+3/ changer le mot  de passe de l utilisateur:
+- passwd Doody
+
+4/ supprimer l utilisateur: 
+
+deluser Doody
+
+5/ création d un groupe:
+
+Ps: une fois on crée un utilisateur, un groupe du meme nom est créé au meme temps, et il porte le meme nom que l utilisateur, 
+
+- addgroup amis
+
+6/ changer le nom de l utilisateur: 
+
+usermod -l Doody Boody
+
+7/ changer le nom du groupe:
+usermod -g amis famille 
+
+8/ mettre un utilisateur dans un groupe:
+
+usermod -g doody famille
+
+9/ faire un user apartient dans plusieurs groupes:
+
+usermod -G famille,amis,collège doody
+
+10/ supprimer un groupe:
+
+- delgroup amis
+
+11/changer le propriétaire d'un fichier:
+
+- chown patrick rapport.txt 
+
+12/ changer le groupe d un fichier:
+
+- chgrp amis rapport.txt
+
+Ps: si le fichier se trouve dans un sous dossier: -R:
+
+- chown -R mateo21:mateo21 /home/patrick/
+
+13/ changer le droit d utilisateur pour un fichier:
+
+- chmod r/w/x,+/-/=,u/g/o field_name
+
+14/ l'éditeur de texte : nano/vim/Emacs
+
+nano : ouvrir un fichier
+nano -m: autorise l utilisation de la sourie
+nano -i : un retoure à la ligne respecte la tabulation
+nano -A: si on met le curceur dans une ligne il serait placé tout au debut
+nano -miA: fait les 3 à la foit
+Ps: les commande précédées par: ^ veut dire: control
+
+
+15/ fichier de configuration du système nano: .nanorc
+
+- pour ouvrir .nanorc et voir les configuration:
+sudo nano /etc/nanorc
+
+- pour ajouter les colorations intéligente lors de l utilisation des langages: on décommente les lignes suivantes:
+
+## C/C++
+# include "/usr/share/nano/c.nanorc"
+ 
+## HTML
+# include "/usr/share/nano/html.nanorc"
+
+
+16/ Configurer sa console avec .bashrc: c est le fichier de configuration de la console:
+
+- ouvrir le bash:
+nano .bashrch
+- Personnaliser l'invite de commandes:
+
+- modifier la ligne: PS1='${debian_chroot:+($de ...
+
+- Créer des alias: alias nom='commande'
+
+exemple: Celui-ci active la coloration des résultats d'unlsà chaque fois que vous tapez ls
+alias ls='ls --color=auto'
+
+Ps: le fichier .profile est le meme que le bashrc sauf que l ouverture/modification du .profile exige une authentification
+
+18/ c est quoi une repository/depot?
+- en windows les .exe sont les fichiers d instalation par contre à Linus  les .deb /paquet sont regroupés dans un meme serveur/repository (sur internet)
+
+19/ c est quoi les dépendances?
+- ce sont les biblithèques qui s'interviennent à l instalation d un programme à linux
+Ps: En France, par défaut, Ubuntu utilise le dépôtfr.archive.ubuntu.com 
+- la liste des dépôts que vous utilisez est : /etc/apt/sources.list
+(graphiquement : Ubuntu : allez dansSystème→Administration→Sources de logiciels ;)
+20/ Les outils de gestion des paquets:
+
+*paquet : c'est un programme « prêt à l'emploi », l'équivalent des programmes d'installation sous Windows en quelque sorte ;
+
+*dépendance : un paquet peut avoir besoin de plusieurs autres paquets pour fonctionner, on dit qu'il a des dépendances ;
+
+*dépôt : c'est le serveur sur lequel on va télécharger nos paquets.
+
+20/ installer les programme grace à apt-get:
+
+- pour manipuler les paquets on utilise 2 programmes: apt-get et aptitude
+- apt-get update (optionnel) : pour mettre notre cache à jour 
+- apt-cache search monpaquet (optionnel) : pour rechercher le paquet que nous voulons télécharger si nous ne connaissons pas son nom exact
+- apt-get install monpaquet : pour télécharger et installer notre paquet
+
+- apt-get remove paket_name: pour supprimer un paquet
+- apt-get autoremove lbreakout2: supprimer les dépendances
+- apt-get upgrade : mettre à jour tous les paquets
+
+
+III/ Le manuel Linux:
+
+1/- pour afficher la documentation sur une commande on la précède par man/-h/--help:
+
+expl: man mkdir
+
+Ps: cliquer sur q pour quitter
+Ps: pour mettre la langue du manuel en français, on install:
+
+apt-get install manpages-fr
+
+2/Ps: la description des combinaisons des commandes avec le man dite: SYNOPSIS
+
+la syntaxe de cette description est un peu spéciale:
+
+    gras : tapez le mot exactement comme indiqué ;
+
+    souligne : remplacez le mot souligné par la valeur qui convient dans votre cas ;
+
+    [-hvc] : toutes les options -h, -v et -c sont facultatives ;
+
+    a|b : vous pouvez écrire l'option « a » OU « b », mais pas les deux à la fois ;
+
+    option… : les points de suspension indiquent que l'option peut être répétée autant de fois que vous voulez.
+
+
+-3/ apropos : trouver une commande
+exemple: apropos sound
+
+IV/ Rechercher des fichiers sur Linux:
+- sudo updatedb
+- locate notes.txt
+
+- résultat: /home/mateo21/notes.txt
+
+
+OOOOOOOOORRRRRRRRRR
+- find -name "logo.png"
+
+Ps: 
+* find recherche dans tout le disque dur VS locate cherche juste dans la base de données
+* recherche par taille: find  ~ -size +10M
+* recherche en basant sur les derniers jours: find -name "*.odt" -atime 6
+
+* spécifier si on cherche un fichier ou un dossier: d|f
+find /var/log -name "syslog" -type d
+
+* supprimer les résultats trouvés:
+find   -name "*.jpg" -delete
+
+* executer une commande aux fichiers précis:
+exemple: modifier les droit d utilisateur vers 600 à tous les fichiers images
+
+find   -name "*.jpg" -exec chmod 600 {} \;
+
+V/ Extraire, trier et filtrer des données:
+
+1- grep : filtrer des données:
+pour chercher le mot langage dans le fichier rapport, -i sans tenir en compte la casse, -n : numérotation des lignes:
+Ps: -v: on trouve les autres lignes qui ne contiennet pas ce mot
+-r : rechercher dans tous les doussiers/fichiers:
+ grep -r "Site du Zéro" code/
+ grep -i -n langage rapport
+- resultat: affichage des lignes dans lesquelles se trouve le mot à chercher
+
+2- grep + les expressions régulières:
+
+-E: recherche par expression régulière == egrep
+
+.: Caractère quelconque
+^: Début de ligne
+$: Fin de ligne
+[]: Un des caractères entre les crochets
+?: L'élément précédent est optionnel (peut être présent 0 ou 1 fois)
+*: L'élément précédent peut être présent 0, 1 ou plusieurs fois
++: L'élément précédent doit être présent 1 ou plusieurs fois
+|: Ou
+(): Groupement d'expressions
+
+
+EXEMPLES:
+
+grep -E ^Alias .bashrc
+grep -E [Aa]lias .bashrc
+grep -E [0-4] .bashrc
+grep -E [a-zA-Z] .bashrc
+
+3- sort : trier les lignes:
+
+sort noms.tx     : les noms dans ce fichiers seront ordonnés
+sort -o noms_tries.txt noms.txt  : // + save dans un nouveau fichier
+sort -r  noms.txt : trier dans l ordre inverse
+sort -R noms.txt  : trier aléatoirement
+sort -n : trier des nombres
+
+
+4- wc: compter le nombre de lignes, de mots, de octects:
+
+wc noms.txt 
+- resultat:
+8  8 64 noms.txt
+ 
+wc -l noms.txt : nb de lignes
+wc -w noms.txt : nb de mots
+wc -c noms.txt : nb de octect
+wc -m noms.txt : nb de caractères
+
+
+5- Uniq : supprimer les doublons afficher les résultats sans doublon:
+
+uniq doublons.txt
+uniq doublons.txt sans_doublons.txt   : save result in new field
+uniq -c doublons.txt  : afficher le nombre de doublons
+-d : afficher uniquement les lignes présentes en double
+
+6- cut : couper une partie du fichier:
+
+- Couper selon le nombre de caractères:
+cut -c 2-5 noms.txt   : garder que les caractère de chaque ligne dont l indice entre 2 et 5
+- couper selon les délimiteur (séparateurs dans un fichier csv):
+    -d : indique quel est le délimiteur dans le fichier ;
+
+    -f : indique le numéro du ou des champs à couper.
+
+Exemple:
+cut -d , -f 1 notes.csv
+
+Ps: après -d : ,
+après -f : 1
+
+exemple2:
+cut -d , -f 1,3 notes.csv
+
+
+VI/ les flux de redirection:
+
+1/   > et >> : rediriger le résultat dans un fichier:
+
+> : redirige dans un fichier et l'écrase s'il existe déjà ;
+
+>> : redirige à la fin d'un fichier et le crée s'il n'existe pas.
+
+Exemple:
+cut -d , -f 1 notes.csv > eleves.txt 
+cut -d , -f 1 notes.csv >> eleves.txt   : à la fin d un fichier
+
+
+2/ 2>, 2>> et 2>&1 : rediriger les erreurs:
+
+
+    2> : redirige les erreurs dans un fichier (s'il existe déjà, il sera écrasé) ;
+
+    2>> : redirige les erreurs à la fin d'un fichier (s'il n'existe pas, il sera créé) ;
+
+    2>&1 : redirige les erreurs au même endroit et de la même façon que la sortie standard.
+
+EXEMPLES:
+
+cut -d , -f 1 fichier_inexistant.csv > eleves.txt 2> erreurs.log
+
+OOOOR
+
+cut -d , -f 1 fichier_inexistant.csv > eleves.txt 2>> erreurs.log
+
+Ps: si on veut fusionner les 2 résultat: resultat avec l erreur:
+
+cut -d , -f 1 fichier_inexistant.csv > eleves.txt 2>&1
+
+
+3/ < et << : lire depuis un fichier ou le clavier:
+
+    < : envoie le contenu d'un fichier à une commande ;
+
+    << : passe la console en mode saisie au clavier, ligne par ligne. Toutes ces lignes seront envoyées à la commande lorsque le mot-clé de fin aura été écrit.
+
+EXEMPLE:
+cat < notes.csv
+<< : lire depuis le clavier progressivement
+
+4/chaîner les commandes avec le pipe | :
+
+commande1 | commande2
+
+la sortie de la commande1 serait appliqué dans la commande2
+Exemple:
+cut -d , -f 1 notes.csv | sort    : couper les résultat puis l organiser
+cut -d , -f 1 notes.csv | sort > noms_tries.txt
+du | sort -nr | head
+du | sort -nr | less 
+
+PS: Trier les répertoires par taille: du
+less: page par page
+
+VII/ Surveiller l'activité du système:
+
+1/ w : qui fait quoi ?
+
+2/ tload: connaitre la charge des coeurs + un graphe du processeur
+
+3/ ps & top : lister les processus
+- ps : liste statique des processus: lister les taches exécutés sur ma machine:
+
+- resultat: 4 colonnes: Pid de la tache, TTY: la console, TIME: duré, CMD:le programme responsable de la processus
+
+- ps -ef : plus détaillée
+- ps -ejH : affichage en arbre
+- ps -u zake : lister les processus lancés par un utilisateur
+- top : liste dynamique des processus: la liste est interactive et régulièrement mise à jour
+
+
+4/ Ctrl + C & kill : arrêter un processus:
+
+pour arreter un processus il y a 2 méthodes:
+- méthode 1: cntrl + C sur le clavier
+- méthode 2: récupérer le PID(id de la processus) avec le ps|top puis le killer:
+- ps -u zake
+- ps -u zake | grep firefox
+- resultat: 
+3764 tty1     01:07:20 firefox
+- kill -9 3764
+Ps: si nous avons + eurs PID, on peut les tuer au meme temps:
+PS2: -9 veut dire immédiatement
+
+
+kill 3764 14789 25874
+
+Ps: si on veut tuer +eurs processus:
+- ps -u mateo21 | grep find
+
+- killall find
+
+
+5/ halt & reboot : arrêter et redémarrer l'ordinateur:
+
+sudo halt : arrêter l'ordinateur
+sudo reboot : redémarrer l'ordinateur
+
+VIII/ Exécuter des programmes en arrière-plan:
+
+1/ "&" & nohup : lancer un processus en arrière-plan:
+
+en arrière plan: dans une autre console qui n est pas afficher
+Ps: on peut ouvrir une autre console et faire la tache, du coup on met & à la fin de la commande
+
+expl: cp doody1.txt doody2.txt &
+- resultat: le nombre de processus en arriière plan + son idp s afficheront
+
+- nohup : détacher le processus de la console:
+expl: nohup cp video.avi copie_video.avi
+Ps: La sortie de la commande est par défaut redirigée vers un fichiernohup.out
+
+2/ Ctrl + Z, jobs, bg & fg : passer un processus en arrière-plan:
+
+si on a lancé un processus sans le &: on fait cntrl + Z
+- resultat: [1]+  Stopped  top: le num de proc + l état + le nom
+- bg  : si on tape bg le processus serait reprise en arrière plan
+- jobs : connaître les processus qui tournent en arrière-plan
+- fg : reprendre un processus au premier plan (foreground)
+Ps: fg %2   : numéro 2
+
+
+3/ screen : plusieurs consoles en une: on peut ouvrir des nouvels onglets ou fenetres mais séparément, cette méthode nous permet d en faire dans la meme console:
+
+screen est un multiplicateur des terminal, il faut l installer:
+sudo apt-get install screen
+
+- les commande pour manipuler les plusieurs fenetres:
+
+Ctrl + apuisc : créer une nouvelle « fenêtre ».
+
+Ctrl + apuisw : afficher la liste des « fenêtres » actuellement ouvertes. En bas de l'écran vous verrez par exemple apparaître :0-$ bash  1*$ bash. Cela signifie que vous avez deux fenêtres ouvertes, l'une numérotée 0, l'autre 1. Celle sur laquelle vous vous trouvez actuellement contient une étoile*(on se trouve donc ici dans la fenêtre n° 1).
+
+Ctrl + a puis A : renommer la fenêtre actuelle. Ce nom apparaît lorsque vous affichez la liste des fenêtres avecCtrl + a puis w.
+Ctrl + a puis n : passer à la fenêtre suivante (next).
+Ctrl + a puis p : passer à la fenêtre précédente (previous).
+Ctrl + a puis Ctrl + a : revenir à la dernière fenêtre utilisée.
+Ctrl + a puis un chiffre de 0 à 9 : passer à la fenêtre n° X.
+Ctrl + a puis" : choisir la fenêtre dans laquelle on veut aller.
+Ctrl + a puisk : fermer la fenêtre actuelle (kill)
+Ctrl + apuisS : découperscreenen plusieurs parties (split)    
+
+
+4/ Exécuter un programme à une heure différée: paramétrer l heure de l exécution d un processus:
+
+- date : régler l'heure: sudo date 11101250
+- at : exécuter une commande plus tard: 
+- at 14:17
+- resultat: warning: commands will be executed using /bin/sh
+at> 
+
+- on doit écrir la commande à executer après le >
+
+Ps: cntrl + D : pour finir
+ 
+exemple2: at 14:17 11/15/10,   at now +5 minutes
+
+5/ atq et atrm : lister et supprimer les jobs en attente:
+
+- pour lister les processus en attente: atq
+- atm 13 : supprimer le job num 13
+
+6/ sleep : faire une pause entre l execution des taches:
+touch fichier.txt; sleep 10; rm fichier.txt
+
+- resultat:     
+fichier.txtest créé ;
+
+sleepfait une pause de 10 secondes ;
+
+rmsupprime ensuite le fichier.
+
+7/ crontab : exécuter une commande régulièrement:
+
+Contrairement àatqui n'exécutera le programme qu'une seule fois,crontabpermet de faire en sorte que l'exécution soit répétée : toutes les heures, toutes les minutes, tous les jours, tous les trois jours, etc.
+
+- configuration: 
+*rajoutez la ligne suivante à la fin de votre fichier.bashrc:
+export EDITOR=nano
+OOOOORRRRR:
+echo "export EDITOR=nano" >>  ~/.bashrc
+
+PS:
+    -e : modifier la crontab ;
+
+    -l : afficher la crontab actuelle ;
+
+    -r : supprimer votre crontab. Attention, la suppression est immédiate et sans confirmation !
+Exemple:
+
+Imaginons que je veuille exécuter une commande tous les jours à 15 h 47. Je vais écrire ceci:
+47 15 * * * touch /home/mateo21/fichier.txt 
+
+Crontab : Signification
+47 * * * * commande  : Toutes les heures à 47 minutes exactement.> & Donc à 00 h 47, 01 h 47, 02 h 47, etc.
+0 0 * * 1 commande : Tous les lundis à minuit (dans la nuit de dimanche à lundi).
+0 4 1 * * commande : Tous les premiers du mois à 4 h du matin.
+0 4 * 12 * commande  : Tous les jours du mois de décembre à 4 h du matin.
+0 * 4 12 * commande  : Toutes les heures les 4 décembre.
+* * * * * commande  :   Toutes les minutes !
+
+
+IX/ Archiver et compresser: à Linux on a les fichiers .tar.gz et tar.bz2  par contre à Windows on a le .zip et le .rar
+
+1/ assembler des fichiers dans une archive tar avant de les compresser:
+
+- créer un dossier tutoriels: mkdir tutoriels
+- déplacer tous les fichiers ds l extension est .tuto dans le dossier précédant: mv *.tuto tutoriels/
+ 
+- créer un archive tar: -cvf
+tar -cvf nom_archive.tar nom_dossier/
+
+Ps: les 3 paramètres cvf veut dire:
+
+-c : signifie créer une archive tar ;
+
+-v : signifie afficher le détail des opérations ;
+
+-f : signifie assembler l'archive dans un fichier.
+
+expl: 
+
+tar -cvf tutoriels.tar tutoriels/
+
+
+2/ archiver directements des fichiers dans un tar sans les avoir assemblés:
+
+tar -cvf archive.tar fichier1 fichier2 fichier3
+
+3/ -tf : afficher le contenu de l'archive sans l'extraire:
+tar -tf tutoriels.tar
+
+4/ -rvf : ajouter un fichier:
+tar -rvf tutoriels.tar fichier_supplementaire.tuto
+
+5/ -xvf : extraire les fichiers de l'archive:
+
+tar -xvf tutoriels.tar
+
+6/ gzip & bzip2 : compresser une archive:
+
+- gzip : la compression la plus courante:
+gzip tutoriels.tar
+
+- resultat: le fichier compressé dite: tutoriels.tar.gz
+
+7/ Décompresser le gz
+
+gunzip tutoriels.tar.gz
+
+8/ -zcvf : archiver et compresser en gzip:
+
+tar -zcvf tutoriels.tar.gz tutoriels/
+
+Ps: pour décompresser:
+tar -zxvf tutoriels.tar.gz
+
+9/zcat, zmore & zless : afficher directement un fichier compressé:
+
+gzip l-heritage.tuto
+
+
+10/ unzip & unrar : décompresser les .zip et .rar:
+
+- sudo apt-get install unzip
+- unzip archive.zip
+
+11/ compresser avec un zip:
+
+zip -r tutoriels.zip tutoriels/
+
+12/ unrar : décompresser un .rar
+
+- sudo apt-get install unrar
+- unrar e tutoriels.rar
+
+PS:
+
+Pour lister le contenu avant décompression, utilisez l'option l :
+
+- unrar l tutoriels.rar
+
+
+X/ La connexion sécurisée à distance avec SSH:
+
+PS1: Les personnes qui s'emploient à gérer des machines Linux, souvent à distance, sont appelées administrateurs système 
+
+
+PS2: petit PC chez vous n'est pas considéré comme un serveur… mais vous pouvez très facilement le transformer en serveur si vous le désirez, à condition d'installer les bons programmes et de les configurer correctement
+
+1/ Le protocole SSH: un moyen pour que le client et le serveur communiquent de manière sécurisée. Le chiffrement sert précisément à ça : si le pirate récupère le mot de passe chiffré, il ne peut rien en faire
+
+2/ Comment sont chiffrés  et déchiffré les mots de passes entre le client et le serveur pour faire une communication à distance ?
+
+avec les étapes suivantes:
+* le serveur génère 2 clé : public + privé, il envoie que le public au client 
+
+* le client reçoit la clé public, chiffre le mot de passe, envoie un mot de passe chiffré au serveur
+
+* le serveur reçoit un mot de passe chiffré et le déchiffre avec la clé privé ==> et comme ça le client et le serveur tt les 2 ont le mot de passe
+
+PS: si le client envoie le mot de passe au serveur sans l avoir chiffré le pirate pourra l avoir facilement
+
+Ps: plus d explication sur le lien:
+https://openclassrooms.com/fr/courses/43538-reprenez-le-controle-a-laide-de-linux/41773-la-connexion-securisee-a-distance-avec-ssh
+
+3/ Comment peut on avoir un serveur?
+- soit on loue avec l'argent:OVH, Kimsufi et Dedibox
+- soit on transforme notre machine en serveur: si on veut accéder notre ordinateur depuis un autre ordinateur
+
+4/ Transformer sa machine en serveur: juste installer ssh
+
+- installer le paquet openssh-server: 
+
+sudo apt-get install openssh-server
+
+- lancer le ssh: 
+
+sudo /etc/init.d/ssh start
+
+- arreter ssh:
+
+sudo /etc/init.d/ssh stop
+
+- recharger SSH avec la commande:
+sudo /etc/init.d/ssh reload
+pour que les changements soient pris en compte.
+
+5/ comment accéder à votre PC à distance depuis une machine Linux:
+- transformer ma machine au serveur via le téléchargement du paquet ssh
+- aller chez un ami qui a Linux (ou d'utiliser de chez vous un autre PC équipé de Linux).
+- connecter ma machine depuis la machine de mon amie:
+ssh login@ip
+
+Ps1: le login: le nom du user  
+ip: on l aura depuis le site: https://www.whatismyip.com/77.204.147.210/?iref=home
+
+PPPPPSSSS: si on a pas un amis qui a linux, on peut connecter de notre machine on tappant: ssh login@localhost
+
+- il demande un mot de passe, on le fait rentrer
+- on se connect
+
+6/ Se connecter via SSH à partir d'une machine Windows:
+
+
+- télécharger PuTTY depuis son site officiel.
+
+PS: Il est possible de se connecter en SSH via Windows 10 sans l'installation de PuTTY.
+
+ - configurer la fenetre qui s'apparaitera: (voir le lien : https://openclassrooms.com/fr/courses/43538-reprenez-le-controle-a-laide-de-linux/41773-la-connexion-securisee-a-distance-avec-ssh)
+
+
+7/ L'identification automatique par clé:
+
+ 
+Il y a plusieurs façons de s'authentifier sur le serveur, pour qu'il sache que c'est bien vous. Les deux plus utilisées sont :
+
+PS1:
+* l'authentification par mot de passe ;
+* l'authentification par clés publique et privée du client.
+
+PS2: 
+* si le serveur qui génère les clés PC/PV --> le client génère le mot de passe
+
+* si le client qui génère les clé PC/PV --> le serveur génère le mot de passe
+
+
+DDDDDonc : pour générer la paire clé PC/PV par le client:
+- sur la machine client: ssh-keygen -t rsa
+- il nous demande d ecrir un nom du fichier dans lequel on stoque les clés
+- on entre aussi un paraphrase de 5 caractère
+- il affiche un tableau plein des symbols
+- si on ouvre le fichier qu'on a donné le nom et qui se trouve dans le repertoire: /home/zake/.ssh/id_rsa
+
+- envoyer la clé public au serveur: 
+ c'est qu'il n'y a pas de commande pour le faire automatiquement depuis Windows. Il va falloir ajouter la clé à la main dans le fichierauthorized_keys. Heureusement, ce n'est pas très compliqué.
+
+Ouvrez PuTTY et connectez-vous au serveur comme auparavant (en entrant votre mot de passe habituel). Rendez-vous dans~/.ssh :
+
+cd  /.ssh
+Ps: Si le dossier.sshn'existe pas, pas de panique, créez-le : mkdir .ssh
+- Rajoutez votre clé publique à la fin du fichierauthorized_keys(s'il n'existe pas, il sera créé). Vous pouvez utiliser la commande suivante :
+
+echo "votre_cle" >> authorized_keys
+
+- Configurer PuTTY pour qu'il se connecte avec la clé:
+voire le site: https://openclassrooms.com/fr/courses/43538-reprenez-le-controle-a-laide-de-linux/41773-la-connexion-securisee-a-distance-avec-ssh
+
+XI/ Transférer des fichiers:
+
+ 
+1/ wget : téléchargement de fichiers: 
+
+- wget http://cdimage.debian.org/debian-cd/4.0_r5/i386/iso-cd/ debian-40r5-i386-businesscard.iso
+- resultat: Une barre de progression du téléchargement devrait alors s'afficher dans la console :
+
+- Reprendre un téléchargement arrêté: $ wget -c http...
+
+- Lancer un téléchargement en tâche de fond: 
+wget --background -c http ...
+
+2/ scp : copier des fichiers sur le réseau:
+scp fichier_origine copie_destination   
+PS: cp copier normal VS scp: copier sécuriser
+
+3/ Copier un fichier de votre ordinateur vers un autre:
+
+scp image.png mateo21@85.123.10.201:/home/mateo21/images/
+
+Ps: Ici, je demande à copier le fichier image.png qui se trouve sur mon ordinateur vers un autre ordinateur dont l'IP est 85.123.10.201. Sur cet autre ordinateur, le fichier sera placé dans le dossier/home/mateo21/images/.
+
+
+4/ Copier un fichier d'un autre ordinateur vers le vôtre:
+scp mateo21@85.123.10.201:image.png copie_image_sur_mon_pc.png
+
+5/ Le piège du port: 
+Si le serveur SSH auquel vous essayez de vous connecter n'est pas sur le port standard (22), il faudra indiquer le numéro du port avec l'option-P :
+- scp -P 16296 mateo21@85.123.10.201:image.png .
+
+5/ ftp & sftp : transférer des fichiers: 
+Le FTP (File Transfer Protocol) est un protocole permettant d'échanger des fichiers sur le réseau: télécharger + transférer:
+* télécharger: en mode anonyme
+* transférer: en mode authentifier, du coup il nous faut une connexion à un serveur FTP:
+- ftp ftp.debian.org
+- resultat: demande de mot de passe(c ps important) puis :
+ftp>
+
+6/ Se déplacer au sein du serveur FTP:
+
+
+ftp>ls : affiche le contenu du répertoire actuel ;
+
+ftp>pwd : affiche le chemin du répertoire actuel ;
+
+ftp>cd : change de répertoire.
+
+7/ Le transfert de fichiers:
+
+put : envoie un fichier vers le serveur ;
+
+get : télécharge un fichier depuis le serveur.
+
+8/ Les autres commandes
+- sftp : un FTP sécurisé: sftp login@ip
+
+9/ rsync : synchroniser des fichiers pour une sauvegarde:
+
+Il permet d'effectuer une synchronisation entre deux répertoires, que ce soit sur le même PC ou entre deux ordinateurs reliés en réseau.
+
+rsync -arv Images/ backups/
+
+PS: 
+-a : conserve toutes les informations sur les fichiers, comme les droits (chmod), la date de modification, etc. ;
+
+-r : sauvegarde aussi tous les sous-dossiers qui se trouvent dans le dossier à sauvegarder ;
+
+-v : mode verbeux, affiche des informations détaillées sur la copie en cours.
+
+10/ Supprimer les fichiers: rm Images/italie3.jpg
+11/ Sauvegarder les fichiers supprimés: 
+- rsync -arv --delete --backup --backup-dir=/home/mateo21/backups_supprimes Images/ backups/
+
+12/ Sauvegarder sur un autre ordinateur:
+
+- rsync -arv --delete --backup --backup-dir=/home/mateo21/fichiers_supprimes Images/ mateo21@IP_du_serveur:mes_backups/
+
+
+XII/ Analyser le réseau et filtrer le trafic avec un pare-feu:
+ lorsque on connecte à l'internet, il ya des applications qui vont se connecter(via des ports) puis télécharger et envoyer des informations. 
+
+- du coup il faut fermer ces ports via un par-feu(iptables) qu on doit le paramétrer, mais avant il faut analyser le réseau, l ip avec des outils:
+
+1/ host & whois : qui êtes-vous ?
+
+Une adresse IP:
+* chaque ordinateur à une IP via laquelle il serait connecté
+* est une suite de quatre nombres séparés par des points. Par exemple :86.172.120.28, 
+* chaque ordinateur relié à l'internet est identifié par une adresse IP
+un hostname: c est l hebergeur avec lequel l adresse serait connectée(google,apple ... )
+
+2/ Convertir une IP en nom d'hôte et inversement:
+
+host siteduzero.com
+host 92.243.25.239
+
+3/ Gérer les noms d'hôte personnalisés:
+on peut  établir une liste de correspondances personnalisée sur votre ordinateur: Ouvrez pour cela en root le fichier/etc/hosts :
+
+sudo nano /etc/hosts
+
+Dedans, vous devriez avoir des lignes ressemblant à ceci :
+
+127.0.0.1       localhost
+127.0.1.1       mateo21-laptop
+
+4/ whois : tout savoir sur un nom de domaine:
+whois siteduzero.com
+
+5/ ifconfig & netstat : gérer et analyser le trafic réseau(les ports de l entré des cables ou sans fil):
+
+
+* ifconfig : liste des interfaces réseau: 
+ifconfig
+- resultat: 3 interface
+* ifconfig pour le réglage 
+ifconfig interface etat
+ifconfig eth0 down
+ifconfig eth0 up
+6/ netstat -i : statistiques des interfaces réseau
+netstat -i
+- resultat: Table d'interfaces noyau
+
+7/ netstat -uta : lister toutes les connexions ouvertes:
+
+netstat -uta
+Connexions Internet actives (serveurs et établies)
+
+PS: 
+-u : afficher les connexions UDP ;
+-t : afficher les connexions TCP ;
+-a : afficher toutes les connexions quel que soit leur état.
+- resultat: un tableau vous indique qui, depuis l'adresse locale, est connecté à qui (à une adresse distante):
+
+- chaque ligne = une connexion
+- la dernière colonne = l état de la connexion, nous avons plusieurs états:
+
+
+*ESTABLISHED : la connexion a été établie avec l'ordinateur distant ;
+
+*TIME_WAIT : la connexion attend le traitement de tous les paquets encore sur le réseau avant de commencer la fermeture ;
+
+*CLOSE_WAIT : le serveur distant a arrêté la connexion de lui-même (peut-être parce que vous êtes restés inactifs trop longtemps ?) ;
+
+*CLOSED : la connexion n'est pas utilisée ;
+
+*CLOSING : la fermeture de la connexion est entamée mais toutes les données n'ont pas encore été envoyées ;
+
+*LISTEN : à l'écoute des connexions entrantes.
+
+PS: netstat -ta : va nous affiche le numéro de port
+
+8/ netstat -lt : liste des connexions en état d'écoute
+
+9/ netstat -s : statistiques résumées
+
+10/ iptables : le pare-feu de référence:
+
+pour boucher tous les ports et laisser qu un seul:
+- se connecter en root: sudo su
+- iptables -L : afficher les règles:
+On repère trois sections :
+
+- Chain INPUT : correspond aux règles manipulant le trafic entrant ;
+
+- Chain FORWARD : correspond aux règles manipulant la redirection du trafic ;
+
+- Chain OUTPUT : correspond aux règles manipulant le trafic sortant.
+
+PS: (policy ACCEPT)== tout le trafic est accepté
+
+11/ réinitialiser un par-feu:
+iptables -F   <-- Attention ! Réinitialise toutes les règles iptables !
+
+
+11/ Le principe des règles: 
+
+- iptables -L --line-numbers  (pour numeroter les lignes)
+
+12/ Ajouter et supprimer des règles
+
+iptables -A (chain) -p (protocole) --dport (port) -j (décision)
+
+PS: plus de details il faut voir ce lien: https://openclassrooms.com/fr/courses/43538-reprenez-le-controle-a-laide-de-linux/42264-analyser-le-reseau-et-filtrer-le-trafic-avec-un-pare-feu
+
+13/ Autoriser les pings:
+
+iptables -A INPUT -p icmp -j ACCEPT
+
+14/ Autoriser les connexions locales et déjà ouvertes
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+
+15/ Refuser toutes les autres connexions par défaut:
+
+iptables -P INPUT DROP
+
+16/ Appliquer les règles au démarrage:
+https://doc.ubuntu-fr.org/iptables#appliquer_les_regles_au_demarrage
+
+XII/ Compiler un programme depuis les sources:
+Des fois apt-get ne peut pas installer un programme, il faut le faire manuellement(le cas des logiciel récemment développés): 
+on récupère les source du programme, les dézipper, puis les compiler soit meme pour créer un exécutable: 
+
+1/ Essayez d'abord de trouver un paquet .deb:
+(.deb c est le programme d'installation )
+- une fois le dossier compressé serai téléchargé:  double clique sur le .deb --> une fenetre  s afficherait: nous propose l installation d un logiciel
+-  si la fenetre ne s'affiche pas:
+
+*   soit que vous avez téléchargé un.debne correspondant pas à votre machine. Vérifiez que vous n'avez pas pris une version 32 bits au lieu de 64 bits (ou inversement) ;
+
+*   soit qu’il vous manque des dépendances pour pouvoir installer convenablement le programme. Et là, cela peut vite devenir un casse-tête ! Il faut d'abord installer le programme manquant avant d'aller plus loin.
+
+2/ Quand il n'y a pas d'autre solution : la compilation:
+
+Si le programme que vous recherchez n'est pas dans les dépôts (apt-get) et que vous ne parvenez pas non plus à trouver de.debprêt à l'emploi sur le web, vous allez devoir le compiler depuis ses sources:
+
+
+- Qu'est-ce que la compilation ?
+
+La compilation est un procédé qui permet de transformer le code source d'un programme en un exécutable que l'on peut utiliser. Le code source correspond en quelque sorte aux ingrédients d'une recette (les œufs, la farine…) et l'exécutable au gâteau final
+
+
+3/ Compilation d'un programme pas à pas: https://openclassrooms.com/fr/courses/43538-reprenez-le-controle-a-laide-de-linux/42370-compiler-un-programme-depuis-les-sources
+
+- installer l outil de la compilation: sudo apt-get install build-essential
+
+- tar zxvf htop-0.8.3.tar.gz
+
+- On peut maintenant se rendre dans le dossier où les fichiers sources ont été décompressés :
+
+cd htop-0.8.3
+
+- Pour le moment, un seul programme nous intéresse :configure. Exécutez-le comme suit :
+
+./configure
+
+
+- L'erreur (sur la dernière ligne) indique en anglais « missing headers:  curses.h »: 
+sudo apt-get install libncurses5-dev
+
+- Cela n'a pas été scientifiquement prouvé, mais croiser les doigts peut augmenter vos chances de réussite. La magie vaudou est aussi un bon moyen de se sortir des situations compliquées, mais elle est à réserver aux utilisateurs expérimentés. ;)
+
+- ./configure
+
+soit vous avez une nouvelle erreur et vous devrez la résoudre de la même manière : en effectuant une recherche sur l’internet pour comprendre ce qui ne va pas. Le plus souvent, il suffira d'installer le paquet manquant avecapt-get ;
+
+soit vous n'avez pas d'erreur etconfigureparvient jusqu'à son terme. Victoire 
+
+- Il suffit maintenant de lancer la compilation à l’aide d’une commande toute simple :
+
+make
+
+
+- sudo make install
+
+- Une fois que cela est fait, le programme est installé ! Nous pouvons à présent exécuter htop en tapant le nom de la commande :
+
+htop
+- Si vous souhaitez désinstaller le programme, il suffit d'exécuter cette commande depuis le répertoire où vous l'avez compilé :
+
+sudo make uninstall
+
+- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

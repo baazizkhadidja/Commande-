@@ -1,0 +1,991 @@
+Résumé: les fichiers les plus important: component.ts, module.ts, component.html, service.ts ---------------------------------------------------------
+
+- créer un projet: ng new projet_name
+
+-run le serveur: ng serve
+- générer component: ng g c component/videos-list ---> 1 ts + fichier
+
+- changer html de base (app.component.html): la valeur de slector (ds fichier ~.component.ts) la mettre dans la balise de app.component.html
+
+- générer le service = ng g s services/posts --> service.ts + 1 fichier test
+
+- importer +Ajouter la classe service dans le fichier module.ts
+
+- Ajouter une méthode getPost(){return } à la classe service
+
+- Importer la classe service dans le fichier ~.component.ts
+- dans la main classe du component: 
+	1- déclarer une variable vide: gateau : any[];
+	2- Injecter entre les parenthèse de la classe un objet de la classe service: class main(postService:PostsService)
+	3- Incrémenter la variable vide par la méthode du service qui retourne une liste
+
+- Ajouter les directives  au fichier html:
+
+<ul>
+<li *ngFor = "let gateau of gateaux"><{{gateau}}>
+</ul>
+
+-runserver : ng serve + sur le navigateur: 127.0.0.1:4200 --> resultat
+
+- Pour Utiliser API REST dans le service:
+
+A-Modifiet Module.ts pour ajouter un service:
+
+1 - Importer HttpClient: import {HttpClientModule} from '@angular/common/http'
+2- Ajouter HttpClientModule dans la liste imports après Browser
+
+B- Modifier .service.ts:
+1- service.ts: importer HttpClient: import {HttpClient} from '@angular/common/http'
+2- import {Observable} from 'rxjs'
+3- Crée le constructeur suivant:
+	  export class PostsService {
+	  baseurl = "http://127.0.0.1:8081/api/gateaux/"
+	  httpHeaders = new HttpHeaders ({'content-Type': 'application/json'})
+	  constructor(private http : HttpClient){}
+	  getGateau(): Observable<any>{return this.http.get(this.baseurl,{headers:this.httpHeaders})}
+
+C- Modifier component.ts:
+
+export class VideosListComponent{
+  title = 'la liste de mes gateaux';
+  gateaux : any[]
+  
+  constructor(private postService : PostsService) {
+     postService.getGateau().subscribe(
+       res => { console.log(res); this.gateaux =  res},
+       err => { console.log(err) }
+     )
+   }
+
+  }
+
+
+
+
+----------------------------------------------------------------
+01- Créer une nouvelle application:  Tout se fait avec la console
+
+- Créer un dossier vide: mkdir Pratique_Angular
+- Se déplacer dedant : ng new 
+- il me demande le nom: on ecrit GATEAU
+- il me demande si je veux travailler avec le pouding ou pas ( c'est un systeme qui me permet de se déplacer entre les dossiers): j ecrit : yes
+- il me demande le style + plusieurs propositions: je choisi :scss
+
+
+02- Ouvrir l'pplication dans le browser automatiquement: 
+- se déplacer à l'interieur du repertoir de l'application
+- ng serve --open
+- resultat: une page de google chrome s'ouvre automatiquement, surlaquelle plusieurs options: Learn Angular, CLI Documentation, Angular Blog, Next Steps, + New Component, Angular Material, Add PWA Support, Add Dependency, Run and Watch Tests, Build for Production
+
+03 - Ouvrir les fichiers de mon appplication avec visual studio code:
+
+- menu contextuel du dossier de l'appplication : ouvrir avec visual studio code / Ovrir visual studio code , open folder, choisir notre dossier
+
+04 - Description deq fichier d une application Angular:
+
+- e2e: pour mettre le systeme en communication avec le browser
+- node module: dans lequel sont installées les dependances
+- gith ignore: contient le nom des fichiers à ne p
+
+
+as versionner
+- editorconfig:  Pour la configuration de l'éditeur
+- Angular.json: La configuration de Angular qu on peut la modifier 
+- package.json: contient les denpendances, la version de l applicaton, le nom ...
+- read me: documentation sur le projet si on veut le mettre sur github
+- le dossier src: c est la source qui contient notre application:
+	* asset: on peut mettre ici les atouts 
+	* environement: on met ici les urls des APIs,  product: si l api n est pa local, environement: si l api est local
+
+- karma.conf.js:  pour les tests unitaires
+- main.ts: le fichier principal de l'application
+- styles.scss: il est vide, c est à nous de mettre notre style ici
+- le dossier app:
+	* app-routing.module: c est à nous de générer lorseque nous avons répondu par 'yes' le moment ou le système nous a demandé si on utilise routing
+	* app.modules.ts: on doit importer ici tout les fichiers que nous allons utiliser plus tard
+	* app.component.html : c 'est un fichier html qui contient les styles et les classes prédéfinits (ce qu on appèle Bootstrap)
+
+	* la template html  qui affiche notre application sur le navigateur
+	
+ 
+Ps: le repertoire qui nous interesse c est src/ app:
+
+- le port de navigation par defaut est : 4200
+(lorsequ'on veut run le server par la commande : ng serve --open)
+une fois le navigateur s'ouvre, sur la barre c est écrit: 127.0.0.1:4200 OR localhost:4200
+
+05- Le tipescript: est un super set de javascript: avec	une syntaxe différente et de nouvels attributs, modules, le typing ...
+
+Ps: Il y a une compilation (transcription du langage typescript vers javascript cer le navigateur ne comprend que le javascript)
+
+
+
+06- Running le server: 
+
+- Ouvrir le terminale (barre d'outil: terminal, new terminal)
+
+- ng serve
+
+07- Le Component: une fois on crée une application, on trouve un component intégré dedant: App Component 
+
+
+- un component se compose par trois partie s différentes: data + template+logic
+
+- un component pourrait etre composé par plusieurs component
+----------------------------------------------------------------------
+21/08/2020
+
+08 - Créer notre component:
+- Cliquer sur la ligne app
+- cliquer sur l'icone d'ajout de dossier qui se trouve au dessus
+- un nouveau champ s'apparait on doit mettre un nom dedant + cliquer entrer
+- un nouveau dossier s'apparaiterait dite 'components', un sous dossier videos-list
+- créer un fichier ts dans le dossier app/components/videos-list, dite video-list.component.ts
+
+09- Créer notre première classe dans le fichier ts: il faut tout d'habord
+- Importer le module component from 'angular/core'
+- donner des valeur aux attributs selector et template du décorateur @Component :
+
+- selector: 'videos'
+- template: on peut mettre ici une simple balise pour tester ce que nous voudrions afficher, ou bien le nom d un fichier html
+
+- définir notre classe en la précédé par le mot clé export:
+
+Donc le fichier ts soit:
+
+import { Component } from '@angular/core';
+
+@Component({
+    selector: 'Videos',
+    template: '<h2>Videos list is working</h2>'
+})
+export class VideosListComponent{
+    
+}
+
+
+
+10- Déclarer notre classe dans le fichier app.module.ts:
+
+- Ajouter la ligne suivante au debut: 
+import {VideosListComponent} from './components/videos-list/videos-list.component'
+
+Ps: on doit pas mettre l'extention ts à la fin du fichier, si non ça marche pas
+
+- Ajouter le nom de la classe dans la liste declarations de @NgModule
+(juste apprès AppComponent)
+
+
+11- Modifier le fichier html: app.component.html:
+
+- supprimer le script html déjà existant, et écrir une simple balise:
+
+12- Faciliter la création du contenent avec Angular CLI:
+
+- Ouvrir le terminal, se positionner dans le repertoire, ecrir la commande suivante: 
+ng g c components/videos-List
+
+- Le système va créer automatiquement un dossier dite: component, contient un sous dossier videos-list,  danslequel se trouve quatre fichiers: 2 ts (classe dont le nom = nom du fichier), 1 html(simple balise) et 1 scss (vide)
+
+videos-list.component.scss (0 bytes)
+videos-list.component.html (26 bytes)
+videos-list.component.spec.ts (657 bytes)
+videos-list.component.ts (295 bytes)
+
+- Le système a mis à jour le fichier de configuration du projet app.module.ts: il a importer la classe, et l'a ajouté dans la liste 'declarations'
+
+- Donc: on commence directement par créer notre script dans le fichier html
+
+- Il faut ajouter à html de base app.component.html la balise: <app-videos-list></app-videos-list> 
+
+
+PS1:
+l'element de la balise principale a le meme nom que le fichier(précédé par app-), et il est déclaré dans le fichier ts comme valeur de l'attribut selector du décorateur @component, donc dans le fichier html de base  on écrit le script entre les balises: 
+
+<app-videos-list></app-videos-list>
+
+Ps: le préfix 'app' ajouté à la nommination du selector est déclaré automatiquement dans le fichier angular.json: 
+
+13- Ajouter le logic(data) dans le fichier ts:
+
+- supprimer le module OnInit, et tout ce qui l'acompagne à l'interieur de la classe 
+
+- ajouter à la classe un attribut title = "this is video list"; 
+
+- Afficher l'attribut title dans le html à l'aide du "string interpelation " (syntaxe particulière de Angular) et notre classe sera comme suit:
+
+export class VideosListComponent  {
+title = 'this is a title';
+  constructor() { }
+
+14- Les manipulations possibles sur la string interpelation:
+
+* Ajouter une string: {{"Le titre de ce projet est: "+ title}} 
+* Condition if discraite qui teste si la variable a une valeur ou pas:
+au lieu d'ecrire: if(title.length){return title}else{return 'no title'} on écrit:
+
+{{title.length? title : 'no title'}}
+
+* Appeler une méthode déclarée dans la classe: 
+getTitle(){
+	return this.title;
+}
+
+--> sur l'html on écrit: {{getTitle()}}
+
+15- Appliquer la DIRECTIVE ngFor: une boucle FOR dans la template pour itérer une liste déclarée dans une classe:
+
+- dans le ts:
+
+export class videoListComponent {
+title = this is video list 
+students = ['s1', 's2', 's3']
+}
+
+
+- dans l'html:
+<ul>
+<li *ngFor="let student of students">{{student}}</li>
+</ul>
+
+
+
+15- Afficher un data depuis le serveur à l'aide d'un service:
+
+- Créer sous le dossier component, un dossier dite services + un fichier à l'intérieur dite: students.service.ts
+
+- Créer à l'interieur du fichier service une classe:
+
+export class studentsService {
+	getStudents(){
+	return ['student1', 'student2', 'student3'];
+}
+}
+
+
+- Dans le fichier ts: Importer la nouvelle classe studentsService + l'utiliser à l'intérieur de l'anciennce classe (sous le constructeur)
+sous le constructeur pour reproduire un nouvel objet dite: studentService
+
+* import { studentsService } from './../services/students.service';
+
+* export class VideoListComponent {
+title = "this is video list";
+students: any[];
+}
+
+constructor(){
+	let studentService = new studentsService();
+	this.students = studentService.getStudents();
+}
+
+
+- Dans le fichier html:
+<ul>
+    <li *ngFor = 'let student of students '>{{student}}</li>
+</ul>
+
+- resultat sur le web: actualiser le navigateur: 
+	.student1
+	.student2
+	.student3
+
+
+16- Injection des dépendances: 
+
+- dans le fichier ts:
+
+import {StudentsService} from './services/students.service'
+
+export class VideosListComponent  {
+title = 'this is a title';
+students: any[];
+
+  constructor(studentsService:StudentsService) { 
+
+    this.students = studentsService.getStudents();
+  }
+
+- dans le fichier service.ts:
+
+ export class StudentsService{
+     getStudents(){
+         return ["student1", "student2", "student3"]       
+     }
+ }
+
+
+- dans l html:
+
+<ul>
+    <li *ngFor = 'let student of students '>{{student}}</li>
+</ul>
+
+- Ajouter le service dans le app.module.ts:
+1* Importer la classe
+import { StudentsService } from './component/videos-list/services/students.service'
+
+2* Ajouter le nom de la classe dans la liste providers: [StudentsService]
+----------------------------------------------------------------------
+25/08/2020
+
+
+17- L'utilisation de la requette http dans le service pour avoir le data d'un site d'API:
+
+NECESSSSIIIIIIIIIIIIIIIITE une connextion pour accéder aux APIs, c'est pour ça on essaie de créer une API REST Django puis l'importer sur Angular
+
+Ps: Si on veut intégrer une API REST Django : il faut bien installer 02 librairies: django-cors-headers, djangorestframework + configurer le fichier settings.py du projet Django pour que le CORS_ORIGIN permettera à une autre application comme Angular d'utiliser l'API résultante (voir le manuel commande_Django_REST)
+
+1- Générer le service automatiquement: 
+
+* écrire la commande suivante : ng g s services/posts  
+* le nouveau dossier services/posts serait créé automatiquement à l'intérieur du repertoire app, meme si on applique la commande dans la racine
+* à l'intérieur du dossier posts serait crée deux fichiers: 
+- posts.service.ts: pour le service
+- posts.service.spec.ts: pour le test unitaire
+
+2-le module.ts:  Ajouter la classe PostsService(créée automatiquement dans le fichier ts) dans le module.ts, dans la liste providers[] + l'importer
+
+3-  post.service.ts: 
+* import {HttpClient} from '@angular/common/http'
+* instancier la classe HttpClient entre les parenthèses du constructeur:
+
+constructor(http : HttpClient){}
+
+4- le module.ts: 
+
+* import {HttpClientModule} from '@angular/common/http'
+* Ajouter à la liste imports: [BrowserModule, HttpClientModule]
+
+5- Le posts.service.ts: Ajouter la méthode au constructeur:
+
+	constructor(private http: HttpClient){}
+	getPosts(){
+		return this.http.get('http://127.0.0.1:8080/api/list')
+} 
+
+6- le ts principale: videos-list.components.ts:
+
+	constructor(postsService: PostsService){
+		postsService.getPosts().subscribe()
+}
+
+
+
+
+7- ng serve: 
+8- Ecrire sur le navigateur: 127.0.0:4200 
+9- Résultat: un fichier JSON
+
+NNNNNNNNNNNNNNNNNOOOOOOOOOOTTTTAAAAAAAAA  BBBBBBBBEEEEEENNNNNNNNEE:
+
+Pour intégrer une API Externe: depuis le site: jsonplaceholder , dans le lien posts: 
+
+1-on copie l'url: https://jsonplaceholder.typicode.com/posts
+
+2- On met l'url dans la classe service, dans le fichier service.ts:
+
+import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http'
+import { Observable } from 'rxjs';
+@Injectable({
+  providedIn: 'root'
+})
+export class PostsService {
+
+  constructor(private http: HttpClient) { }
+  getPosts(): Observable<any>{
+    return this.http.get('https://jsonplaceholder.typicode.com/posts')
+  }
+}
+
+
+3- Afficher le resulta sur la console: ng serve + 127.0.0.1:4200 sur le navigateur ----> des données affichées sous format JSON (100 objets):
+
+{
+  "userId": 1,
+  "id": 1,
+  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+  "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+}
+.
+.
+.
+{
+  "userId": 10,
+  "id": 100,
+  "title": "at nam consequatur ea labore ea harum",
+  "body": "cupiditate quo est a modi nesciunt soluta\nipsa voluptas error itaque dicta in\nautem qui minus magnam et distinctio eum\naccusamus ratione error aut"
+}
+
+18/ Afficher le resultat d'une API externe dans une template html Angular:
+
+1- Créer une directive dans le fichier html:
+
+<div *ngFor = "let post of posts">
+<h1>{{ post.title }}</h1>
+<p>
+    {{ post.body }}
+</p>
+</div>
+
+2- Résultat sur la page: données sous format string:
+
+nesciunt iure omnis dolorem tempora et accusantium
+
+consectetur animi nesciunt iure dolore enim quia ad veniam autem ut quam aut nobis et est aut quod aut provident voluptas autem voluptas 
+....
+
+Ps: pour afficher les résultat sous format JSON et pas sous format string: il faut faire des configuration (voir videos full stack Part1)
+
+
+19/ Configuration du nombre limit des wachers: ng serve --> Suite à l'ERREUR: 
+(Error from chokidar: Error: ENOSPC: System limit for number of file watchers reached, watch) on doit modifier un nombre qui se trouve dans le fichier max_user_wachers
+
+- Pour ouvrir le fichier max_user_watches:  
+cat /proc/sys/fs/inotify/max_user_watches
+
+- Pour modifier ce fichier: Le chemin que nous avons écrit est affiché souligné comme un lien: on clique dessous --> affichage du fichier max_user_waches, 
+
+- Supprimer l'ancien nombre + créer: 524288
+- ctrl + s --> une notification nous propose de: try to save as sudo --> cliquer dessus
+
+- ng save -- > marche très bien
+
+
+20/ Les Property binding: la relation entre les variable du ts et les variables de la template
+
+exemple01: avec attr=val
+---------------------------
+
+Nous avons la variable image dans le fichier ~.component.ts:
+
+classe videolist{
+image = "../../image.jpg"
+constructor(){}
+}
+
+Au lieu d'écrire dans le fichier html:
+
+<img src = {{image}}>
+
+On écrit
+
+<img [src]= "image">
+
+
+
+exemple02: avec val toute seule: Au lieur d'écrire:
+
+<h1>{{title}}</h1>
+
+<h1 [textContent] = "title" ></h1>
+
+
+21/ Data binding: nous avons deux types:
+
+	*.1 One way data Binding: On déclare la valeur d'une variable dans le ts et on l'affiche dans la template (et pas l'inverse)
+
+	2* Two ways data binding : n déclare la valeur d'une variable dans le ts et on l'affiche dans la template et la meme chose dans le sens inverse
+
+22/ je l'ai Supprimer !!!
+23/ Utilisation du binding + classe bootstrap:
+
+dans le html on écrit:
+
+<ul class = "list-group">
+    <li *ngFor = 'let gateau of gateaux' class = 'list-group-item'>
+        {{gateau}}
+    </li>
+</ul>
+
+----> resultat: chaque élément est affiché dans un rang 
+
+24/ Le class binding: Pour changer la classe avec la syntaxue: 
+[] =""
+
+exemple: la classe active = la classe actuelle
+[class.active] = "currentId === post.id"
+
+25/ Le style binding + Instruction conditionnelles: Pour changer le style avec la syntaxe: 
+
+exemple: si l'objet actuel est active donne le la couleur red si non (pour les autres) donne la couleur grise
+
+[style.backgroundColor] = "currentId === post.id? 'red': 'gray'"
+
+PSSSSSS: Plus de détail dans le cours de l'évènement
+
+26/ Bootstrap: 
+
+-Mettre dans le dossier node_modules/bootstrap
+- Modifier le fichier Angular.json:
+
+"styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "src/styles.scss"
+            ],
+
+- Modifier le fichier src/style.css:
+
+@import "~bootstrap/dist/css/bootstrap.min.css"; 
+
+27/ Les event binding :
+
+* Nous avons vu que dans le cas d'une propriété: Au lieu d'écrire ds la template:
+
+attrubut = {{val}}---on écrit-> le data bainding : [attribut]: "val"
+
+* PS: val est une propriété  déclarée dans le fichier ts dans la classe main: class main { attribut = "this is an attribut" }
+
+ 
+* exempl:
+
+<img src = {{image}}></img>  -----> <img [src] = "image" ></img>
+
+* Dans le cas d'un évènement : Au lieu d'écrire dans la template:
+
+<button clic = {{handleClick}} class="btn btn-primar">submit</button>
+
+---> On écrit : 
+
+<button (click) = "handleClick()" class="btn btn-primar">submit</button>
+
+Ps: (handleClick est une méthode déclarée dans le fichier ts dans la classe main: class main {handleClick(){console.log( "This is a Click")}}
+)
+ 
+
+	*Résultat: a chaque fois on clique sur le boutton: il s'affiche sur la console la phrase: this is a Clique 1, (2)
+
+
+28/ Accès à un évènement: Ajouter une description totale à notre évènement:
+
+	1- Dans la template: 
+<button (click) = "handleClick($event)" class="btn btn-primar">submit</button>
+	2- Dans le ts:
+main{ handleClick(event){console.log( "This is a Click", event)}}
+
+	*Résultat: Affichage de centaine de couples clé:valeur et des sous couples, exemple:
+	isTrusted: True
+	.
+	.
+	toElement: button.btn.btn-primar
+	layerX: 13
+	layerY: 311
+	
+
+
+29/ Propagation d'un évènement(event bubling) à travers des éléments encapsulés:
+
+* dans la template nous avons les 2 éléments encapsulés: div(button):
+
+<div (click) = "divClick()">
+    <button (click) = "handleClick($event)" class="btn btn-primar">submit</button>
+</div>
+
+* dans la classe main du ts: 2 méthode de chaque éléments:
+
+Exemple:
+
+export class AppComponent {
+
+  handleClick(event){
+    console.log("This is a click", event)
+  }
+
+  divClick(){
+    console.log("This is a click")
+  }
+}
+
+* Résultat: Affichage sur la console:
+This is a click
+>MouseEvent {....}
+This is a div
+
+
+Donc: le fonctionnement des évènements se fait à partir du centre vers l'exterieur: de l'élément button puis div .. et non plus l'inverse
+
+et meme si l'élément éxtérieur n'a pas un évènement de clique il en aura suite à cette propagation. 
+
+30/ Stopper la propagation d'un évènement:
+
+Pour stopper cette propagation et laisser l'effet du click positionner seulement au niveau de l'élément concerné: Au niveau de la méthode responsable de l'évenement responsable de la propagation on ajoute une sous méthode pédéfinie:
+
+ handleClick(event){
+    event.stopPropagation();
+    console.log("This is a click", event)
+  }
+
+
+OOOOOOOOOOORRRRRRRRRRRRRRRRR
+
+On écrit stopPropagation dans la balise de l'élément responsable:
+
+<button (click) = "$event.stopPropagation();handleClick($event)"class = "btn btn-primar">submit</button>
+
+
+31/ Les évènement Enlevé le tape(key up): Cette évènement se déclenche juste après l'écriture d'un caractère(tapé sur clavier) sur le champs  
+
+* dans la template:
+<input type='text' (keyup) = "handleInput()">
+
+* dans la classe du ts:
+
+handleInput(){
+console.log("Key up was fired")
+}
+
+* Résultat: Achaque fois on tappe sur un boutton du clavié puis on enlève la main : l'évènement se déclanche
+
+Ps: les autres évènement de la meme famille: 
+
+-keydown
+-keypress
+- change: lorsequ'on clique dehors le champs
+
+
+32/Les évènement Enlevé le tape(key up) Enter:
+
+* dans la template: 
+
+<imput type = "text" (keyup.enter) = "handleInput($event)">
+
+* dans le ts:
+
+handleInput(event){
+	console.log("the key enter was pressed")
+}
+
+* Résultat: lorsequ 'on écrit dans le champ + on clique sur enter --> déclanchement de l'évènement
+
+Ps: si on veut afficher les détails de l'évènement sur la console: on ajoute le mot clé event comme deuxième paramètre de la méthode dans le ts
+
+33/ bainding des classe à travers les évènements:
+
+
+34/ La fonction setTimeout():
+
+c'est une fonction qui prend 02 paramètres: une fonction, et une duré de temps: elle retarde le fonctionnement de la fonction en paramètre selon la duré mise en deuxième paramète, exemple:
+
+la fonction suivante affiche immédiatement une fenetre sur laquelle s'est écrit: hello 
+
+function(){alert("Hello")}
+
+---> pour retarder l'affichage en 4 seconde, on écrit:
+setTimeout(function(){alert("Hello")}, 4000)
+--------------------------------------------------------------------
+09/09/2020
+
+35/ Two-way binding:
+
+1-app.module.ts:
+
+
+ds le app.module.ts: 
+import {FormsModule} from '@angular/forms';
+imports: [BrowserModule, FormsModule]
+ 
+
+2- html: on déclare la valeur et la variable à l interieur de la balise ouvrante input:
+<input ....
+[(ngModel)] = "firstName"
+(keyup.enter) = "handleInput()   ..>
+
+{{firstName}}
+
+3- ts: on déclare notre variable dans la classe + on crée une méthode qui l'affiche
+
+firstName = "my name is doody"
+handleInput(){
+    console.log(this.firstName)
+
+
+
+
+36/ L'utilisation des Pipes pour changer le type de l'information:
+
+
+1- ts:
+A/ Sans utiliser le pipe: 
+- html
+
+<div>{{ item.title }}</div>
+<div>{{ item.price }}</div>
+<div>{{ item.sold }}</div>
+<div>{{ item.rating }}</div>
+<div>{{ item.date }}</div>
+
+- resultat:
+
+New TV
+2199.99
+4531
+4.7655
+Wed Sep 09 2020 13:35:47 GMT+0200 (heure d’été d’Europe centrale)
+
+B/ Après l utilisation du pipes:
+
+- html
+
+<div>{{ item.title | lowercase }}</div>
+<div>{{ item.price | currency: USA}}</div>
+<div>{{ item.sold | number: '7.3-2' }}</div>PS: 7 chiffres avant le virgule, 3 chiffres max et 2 min après le virgule
+<div>{{ item.rating }}</div>
+<div>{{ item.date|async| date : 'dd/mm/yy' }}</div>
+
+- Resultat:
+
+new tv
+USA2,199.99
+4.7655
+09/09/20
+PSSSSSSSSSSSSSSSSSS: on ajoute 'async' en cas des données asynchronisées pour dire au serveur: attend !! n'exécute pas le code avant l'arrivé des données.
+
+37/Créer mon propre Pipe: Custom Pipe: qui sert à afficher que le debut d'un texte
+
+
+1-summary.pipes.ts: créer un dossier app/pipes  + fichier pipes.ts
+import {Pipe, PipeTransform} from '@angular/core';
+
+@Pipe(
+    {name:'summary'}
+)
+export class SummaryPipe implements PipeTransform{
+    transform(value: any, limit: any){
+    if(!value) return null;
+    return value.substr(0, limit|| 50) + '...'
+    }
+}
+
+2- app.Module.js: importer notre  classe + l ajouter dans la liste declarations:
+
+import {SummaryPipe} from './pipes/summary.pipes';
+
+
+@ngModule({
+declarations: [...,SummaryPipe ,...]
+}
+)
+
+
+3-ts: dans la classe:
+
+des = 'aaaaaaaaaabbbbbbbbbbbbbbbbbccccccccccccccccdddddddd'
+ 
+3-html
+
+<div>
+{{des | summary: 5}}
+</div>
+
+Ps: si on écrit pas :5 après le pipe summary, il va afficher par defaut 50 caractère, car nous avons déclaré dans la fontion la syntaxe suivante:  return value.substr(0, limit|| 50), donc le ||50 voulais dire 50 par defaut
+
+4- resultat: 
+
+aaaaa
+
+
+38/ Gérer la navigation avec le Routing: 
+
+1*créer 2 autres components auth, appareilView
+
+dans app.module.ts: 
+
+- import { Routes } from '@angular/router';
+- const appRoutes: Routes = [
+  { path: 'appareils', component: AppareilViewComponent },
+  { path: 'auth', component: AuthComponent },
+  { path: '', component: AppareilViewComponent }
+];
+
+- imports: [...,RouterModule.forRoot(appRoutes)]
+
+Donc : sur le navigateur: si on écrit 127.0.0.1:4200/appareils --> il affiche le contenue du component 'AppareilViewComponent'
+-----------------------------------------------------------------------
+15/09/2020
+
+39/ Observez des données dans un component avec les observables de  RxJS:
+
+	*ts:
+- script:
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/interval';
+import 'rxjs/Subscription/subscribe'
+import { Component, OnInit,OnDestroy } from '@angular/core';
+
+export class AppComponent implements OnInit, OnDestroy{
+secondes: number
+counterSubscription: Subscription;
+
+ngOnInit() {
+    const counter = Observable.interval(1000);
+    this.counterSubscription = counter.subscribe(
+      (value) => {
+        this.secondes = value;
+      },
+      (error) => {
+        console.log('Uh-oh, an error occurred! : ' + error);
+      },
+      () => {
+        console.log('Observable complete!');
+      }
+    );
+}
+
+ngOnDestroy() {
+    this.counterSubscription.unsubscribe();
+  }
+}
+
+- Explication du script:
+
+- on importe le module 'observable' 
+- on importe la méthode 'interval' : 
+- à l'interieur de la méthode ngOnInit(){} on crée l observable counter
+
+- créer une variable secondes (sous la meme classe que ngOnInit()): (secondes: number);
+
+- Crée un observer avec l objet counter(l observable) la méthode subscribe qui prend en paramètre: 3fonctions anonymes= gestion des 3 informations emises par l observable(données, erreur, message 'complete')
+-détruit la souscription: 
+
+Ps: 
+- Si on associe directement à notre observable la fonction subscribe() : counter.subscribe(): on aura des bugs car il y a des observables qui reçoit et emmet des données infinis
+donc de préférence on garde notre observable à part et on crée une instance subscription
+
+40/ Observez des données d'une API mises dans un service avec les observables de  RxJS:
+
+* app.modules.ts:---------------------------------------------
+
+import {Postservice} from './services/posts.service'
+providers: [Postservice]
+
+import {HttpClientModule} from '@angular/common/http'
+imports: [BroserModule, HttpClientModule..]
+
+
+
+* service.ts:-------------------------------------------------
+import {HttpClient} from '@angular/common/http'
+import {Observable} from 'rxjs'
+
+export class Postservice{
+constructor(private http: HttpClient){}
+
+getPosts(): Observable<any>{
+return this.http.get('lien de l'API')
+}
+
+}
+
+* component.ts: ----------------------------------------------
+Import {Postservice} from '.service/postservice'
+
+
+
+posts: any[]
+constructor(postservice:Postservice){
+	postservice.getPosts().subscribe(res=> {console.log(res);this.posts = res;}, err=>{console.log(err)})
+
+}
+
+}
+
+*sur le navigateur: ------------------------------------------
+le resultat se trouve dans la console
+----------------------------------------------------------------------------
+18/09/2020
+
+41/ Ecouter l'utilisateur avec les forms - méthode template:?????????????????????????
+
+- Bootstrap:
+* node_modules: Ajouter le dossier bootstrap/dist/css/bootstrap.min.css 
+*  Angular.json: styles: ["node_mo.../bootstrap.min.css",]
+* styles.css: @import '~bootstrap/dist/css/bootstrap.min.css'
+
+- app.module.ts:
+import {FormsModule} from '@Angular/form'
+
+imports: [FormsModule]
+
+- html: on ajoute des mots clés dans <input> et <form>
+
+<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+      
+        <label for="name">
+          Nom de l'appareil
+        </label>
+
+<input type="text" id="name" class="form-control">
+        
+<button class="btn btn-primary" type="submit">Enregistrer</button>
+</form>
+
+
+
+  <label for="name">
+    Nom de l'appareil
+  </label>
+  <input type="text" id="name" class="form-control" name="name" ngModel>
+
+
+
+- ts: 
+* import {NgForm} from '@angular/forms'
+*Créer la méthode suivante dans la classe main:
+
+onSubmit(form: NgForm) {
+    console.log(form.value);
+}
+
+
+42/ Ecouter l'utilisateur avec les forms - méthode intéractive:????????????????????????
+
+43/ Interagissez avec un serveur avec HttpClient:
+----------------------------------------------------------------------
+Le 26/09/2020:
+
+44/ ng-content:
+
+
+
+
+
+
+45/ Les Routing: Pour passer à une autre page suite à un click sur un link, il faut:
+
+1- app.html:
+
+
+<a routerLink="/">home</a><br>
+<a href="/profile">profile</a>
+
+<router-outlet></router-outlet>
+
+
+2- Créer 2 components différents: home, profile
+
+3- app-routing.module.ts:
+
+
+Importer les component + Ajouter les shémas:
+
+
+import { ProfileComponent } from './components/profile/profile.component';
+import { HomeComponent } from './components/home/home.component';
+
+
+const routes: Routes = [
+  {path: '/', component:HomeComponent },
+  {path: '/profile', component: ProfileComponent},];
+
+46/ Erreur d'un port utilisé:
+
+An unhandled exception occurred: Port 4200 is already in use. Use '--port' to specify a different port.
+See "/tmp/ng-L4pNzD/angular-errors.log" for further details.
+
+soluuuuuuuution: sudo kill $(sudo lsof -t -i:4200) 
+
+47/ Les paramètres des routing:
+
+
+
+

@@ -1,0 +1,26 @@
+
+
+-Installer l'outil deployd(sert à simuler une API REST): http://deployd.com/
+
+-sur le terminal tapper: dpd -d
+
+-une interface s'apparettera sur le serveur local: localhost:2403/dashboard/
+
+-cliquer sur le symbole + /create new collection/ nommé/ cliquer sur create
+
+- une fenetre s'apparetera: on écrit les noms des attributs(id déjà présent)/ cliquer sur add
+
+- la collection crée contient des dossier: data, dpd, public/create.html
+
+- ajouter dans le create.html les balises form 
+- sur le navigateur: localhost: 2403/create.html
+
+- un formulaire s'apparetterait
+
+- pour voir le contenu ajouté: ecrire sur le navigateur: localhost:2403/dashboard/customers/data
+
+- Pour Créer une table qui affiche (read):
+
+- modifier le html pour q u il affiche
+
+

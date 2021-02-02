@@ -1,0 +1,115 @@
+1- Integrer JQuery dans un html: à la fin :
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+2- La fonction de base Jquery: le code jquery doit etre écrit entre la fonction suivante:
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> <!-- jQuery est inclus ! -->
+   <script>
+       jQuery(function(){
+           // Du code en jQuery va pouvoir être tapé ici !
+
+	 console.log("jQuery est prêt !");
+       });
+   </script>
+
+
+ooooorrrrrrrrrrrrr:
+
+$(function(){})
+
+orrrrr:
+jQuery(function($){})
+
+PS: l'alias du mot clé jQuery: $()
+
+3- Cibler un élément de html par jquery: appliquer une méthode sur cet élément:
+
+$('monElement').maMethode();
+
+4- appliquer deux méthode sur un élément html:
+
+$('monElement').premièreMethode().deuxièmeMethode();
+
+
+5- Les sélecteurs css: pour cibler un élément précis:
+$('p'); // je sélectionne tous les paragraphes
+
+$('.maClasse'); // je sélectionne les éléments ayant .maClasse pour classe
+
+$('#monId'); // je sélectionne l'élément qui possède l'identifiant #monId
+
+$('p .lien');
+/* ici, nous sélectionnons tous les éléments ayant la classe .lien, 
+et contenus dans un paragraphe qui joue le rôle de parent */
+
+
+$('p > .lien');
+/* ici, nous sélectionnons seulement les éléments ayant la classe .lien,
+et descendants directement du paragraphe ! */
+
+
+$('.lien + .visite');
+/* la sélection s'effectue sur les éléments ayant pour classe .visite,
+et qui sont immédiatement précédés d'un élément ayant pour classe .lien */
+
+$('.lien ~ .visite');
+/* dans ce cas-là, ce sont tous les éléments .visite,
+précédés immédiatement ou non par un élément .lien */
+
+
+$('p:first'); // sélection du premier paragraphe trouvé
+
+$('a:last'); // ici, on sélectionne le dernier lien de la page
+
+
+$('p:eq(2)'); // c'était 2 !
+
+$('p:not(.rouge)'); // sélection de tous les paragraphes, sauf ceux ayant .rouge comme classe
+
+$('input[name=pseudo]'); // cible seulement l'élément de formulaire ayant « pseudo » pour nom
+
+
+$('input[name!=pseudo]'); // retourne les éléments n'ayant pas « pseudo » pour nom
+
+
+$('input:not(.bleu, .vert)'); // on sélectionne tous les éléments de formulaire sauf ceux ayant .bleu et/ou .vert comme classe
+
+
+6- saver un élément sélectionné:
+
+var $element = $('monElement');
+
+7- le cas des formulaire:
+
+$('input:button'); // on sélectionne un input de type button
+
+8- le selecteur $(this):
+
+$('p').each(function(){
+    
+    $(this).html('Hello World !'); // $(this) représente le paragraphe courant
+
+});
+
+
+9- les selecteurs les plus rapides:
+
+$('#menu .sections');
+// sélection plus rapide que :
+
+$('.sections');
+
+
+10- jQuery et les évènements:
+
+
+
+
+
+
+
+
+
+
+

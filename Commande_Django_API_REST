@@ -1,0 +1,334 @@
+Le 24/08/2020
+
+					UN: Créer une API avec Django:
+
+I/ Créer une simple API:
+1- Installer:
+
+pip install django-cors-headers
+
+pip install djangorestframework 
+	    
+
+pip install markdown
+
+pip install django filter
+
+
+2- settings.py:
+
+
+* INSTALLED_APPS:
+Ajouter 'rest_framework', 'corsheaders' dans la liste INSTALLED_APPS des applications
+
+* Ajouter un élément à la liste: MIDDLEWARE = [...
+'corsheaders.middleware.CorsMiddleware',
+'django.middleware.common.CommonMiddleware',
+...]
+
+* Ajouter une nouvelle variable:
+
+CORS_ORIGIN_WHITELIST = (
+        'http://127.0.0.1:4200',
+)
+
+
+
+
+3- Ajouter 02 shemas urls de l'API dans le fichier urls.py du projet:
+
+path('api-auth/', include('rest_framework.urls')),
+
+4- Créer 02 fichiers py dans le dossier de l'application: 
+	* serializers.py: il transforme le format du data(du model) en JSON
+        * api.py: elle remplace la view
+
+5- Ecrire le script du fichier serilizer.py:
+
+
+from rest_framework import serializers
+from .models import Gateau
+
+class JobSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Job
+        fields = '__all__'
+
+
+6- Ecrire le script du fichier api.py:
+
+
+from .models import Gateau
+from .serializers import GatSerializer
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+@api_view(['GET'])
+def gatAPI(request):
+    all_gat = Gateau.objects.all()
+    data = GatSerializer(all_gat, many=True).data
+    return Response({'data': data})
+
+7- Ajouter la route de la vue API dans le fichier urls.py du systeme:
+
+from gateau.api import gateau_API
+
+urlpatterns = [
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/list', gateau_API, name = 'gatAPI')
+]
+
+
+8-Créer un compte administratif d'un super utilisateur:
+
+- application/admin.py: configurer le fichier :
+	
+from django.contrib import admin
+from .models import Gateau
+
+admin.site.register(Gache)
+
+- se placer au niveau du repertoire racine du projet django:
+- ./manage.py createsuperuser
+- Entrer pseudo + mail+mot de passe
+
+2/ Se connecter sur le compte:
+
+
+
+- 
+9- tapper sur le navigateur:
+
+-127.0.0.1:8080/api-authlog/ --> Faire entrer les identifiants l'url serais: http://127.0.0.1:8080/accounts/profile/ + ERREUR  Page not found
+- retapper sur le navigateur: 127.0.0.1:8080/api/list ---> resultat d'une API
+10- resultat: une API:
+
+Gat Api
+
+Gat Api
+GET /api/list
+HTTP 200 OK
+Allow: GET, OPTIONS
+Content-Type: application/json
+Vary: Accept    
+
+{
+    "data": [
+        {
+            "id": 2,
+            "name": "Cake",
+            "photo": "/media/photos/Copy_cake.jpg"
+        },
+        {
+            "id": 3,
+            "name": "Clown",
+            "photo": "/media/photos/cloune1.jpg"
+        },
+	.
+	.
+	,
+	{
+            "id": 39,
+            "name": "Red fruit pie",
+            "photo": "/media/photos/tarte3.jpg"
+        }
+    ]
+}
+
+
+II/ API REST Django GET avec la fonction classique(Exemple 01: le projet GATEAU):
+
+1- Créer un fichier api.py:
+
+
+from .models import Gateau
+from .serializers import GatSerializer
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+@api_view(['GET'])
+def gateau_API(request):
+    all_gat = Gateau.objects.all()
+    data = GatSerializer(all_gat, many=True).data
+    return Response({'data': data})
+
+@api_view(['GET'])
+def gateau_detail_api(request, id):
+    gateau_detail = Gateau.objects.get(id = id)
+    data = GatSerializer(gateau_detail).data
+    return Response({'data': data})
+
+
+2- Ajouter le shéma dans urls.py:
+
+path('api/gateaux', gateau_API, name = 'gatAPI'),
+path('api/gateaux/<int:id>', gateau_detail_api, name = 'gateau_detail_api'),
+]
+
+3- runserver 127.0.0.1:8080
+4- Le navigateur:
+
+- 127.0.0.1:8080/api/gateaux  --> afficher json de tous les objets
+- 127.0.0.1:8080/api/gateaux/2  --> afiiche que l'objet dont l'identifiant = 2
+
+III/ API REST Django GET avec la classe générique ListAPIView(Exemple 01: le projet GATEAU):
+
+une seule classe génériques: crée + liste les objets au meme temps à l'instart des fonctions classiques 02 fonctions classiques pour créer + lister les objets
+
+
+1- Créer un fichier api.py:
+
+from rest_framework import generics
+from .models import Gateau
+from .serializers import GatSerializer
+
+class GateauListApi(generics.ListAPIView):
+    queryset = Gateau.objects.all()
+    serializer_class = GatSerializer
+
+2- Ajouter les shémas dans le fichier urls.py:
+
+path('api/v2/gateaux', GateauListApi.as_view(), name = 'gatAPI'),
+
+3- sur le navigateur:
+
+http://127.0.0.1:8081/api/v2/gateaux --> Seullement afficher (pas d'autre méthodes)tous les objets de la classe Gateau sous format JSON
+
+
+
+IV/ API REST Django RUD avec la classe générique RetrieveUpdateDestroyAPIView(Exemple 01: le projet GATEAU): Une classe qui list+ update + destroy l'objet:
+
+1- api.py:
+
+
+from rest_framework import generics
+from .models import Gateau
+from .serializers import GatSerializer
+
+class GateauDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Gateau.objects.all()
+    serializer_class = GatSerializer
+    lookup_field = 'id'
+
+
+2- urls.py:
+
+path('api/v2/gateaux/<int:id>', GateauDetail.as_view(), name = 'gateau_detail_api'),
+
+
+
+3- sur le navigateur:
+
+http://127.0.0.1:8081/api/v2/gateaux/5 --> affiche l'objet dont l'id = 5 de la classe Gateau sous format JSON + bouton delete + bouton PUT
+
+Ps: pour ajouter un objet on a deux méthodes:
+
+Méthode 01:
+
+accéder au compte de l'administration (il faut que le fichier admin.py contient le model à ajouter dans le compte pour qu il soit bien affiché)  
+
+Méthode 02: Créer une fonction CréatelistAPI:
+
+V/ API REST Django read + create avec la classe générique ListCreateAPIView (Exemple 01: le projet GATEAU):
+
+
+1- api.py:
+
+class GateauAdd(generics.ListCreateAPIView):
+    queryset = Gateau.objects.all()
+    serializer_class = GatSerializer
+
+2- urls.py:
+path('api/v2/gateaux/add', GateauAdd.as_view(), name = 'gatAPI'),
+
+3- Navigateur: http://127.0.0.1:8081/api/v2/gateaux/add --> Affichage de tout les objets + un formulaire à la fin pour ajouter des objets
+
+- une fois on ajoute un objet: il serait affiché 
+
+
+
+VI/ La viewsets (utilsée dans le projet full-stack): GET + POST
+
+1- api.py:
+
+from .models import Gateau
+from .serializers import GatSerialize
+from rest_framework import viewsets
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = Gateau.objects.all()
+    serializer_class = GatSerializer
+
+2- urls.py:
+
+from rest_framework import routers
+from gateau import api
+
+router = routers.DefaultRouter()
+router.register('gateau', api.UserViewSet)
+
+urlpatterns = [
+    path('', include(router.urls)),
+    path('admin/', admin.site.urls)]
+
+3- Le navigateur: 127.0.0.1:8081/gateau  --> afficher une API + formulaire POST (sans delete ni put)
+
+Ps: c'est le meme url qu'on doit mettre à Angular
+---------DEUX:  Utiliser l'outil Postman:-------------------------------------------------------------------
+
+A/ Pour Les API REST GET
+
+1- Cliquer sur New /collection/Ecrire le nom TACHES + la description 
+2- Nouvel élément apparrue dans la liste des collections menu d'une option ...
+3- Cliquer sur les .../add folder TACHE/ --> apparaition d'un sous dossier TACHE
+
+4- Dans le champs ou s'est écrit add request URL : coller le lien de l'API REST Django: http://127.0.0.1:8080/api/list
+
+5- Choisir la méthode : GET
+
+6- Cliquer sur Send --> Affichage du JSON (sans haed)
+
+7- Enregistrer le fichier: Cliquer sur save as
+8- une fenetre 'save request' qui s'apparait 
+9- Choisir le folder dans lequel on veut enregistrer notre fichier (Tache) + cliquer sur save 
+
+10-Pour renommer le fichier: cliquer sur le symbole stylo à droite du nom /renommer
+
+11- Le fichier apparait sous le folder qui est sous la collection 
+
+
+
+
+B/ Pour Les API REST POST: Pour Ajouter une ligne avec plusieurs colonnes dans notre table
+
+
+1- Cliquer sur New /collection/Ecrire le nom TACHES + la description 
+2- Nouvel élément apparrue dans la liste des collections menu d'une option ...
+3- Cliquer sur les .../add folder TACHE/ --> apparaition d'un sous dossier TACHE
+
+4- Dans le champs ou s'est écrit add request URL : coller le lien de l'API REST Django: http://127.0.0.1:8080/api/list
+
+5- Choisir la méthode : POST
+
+6- choisir la rubrique Body (avec la méthode GET on peut pas accéder à la rubrique body)
+
+7- cocher le créneau form-data
+8-Ajouter une ligne Ecrire le nom du premier attribut dans la colonne Key + sa valeur 
+9- Cliquer sur send pour voir la ligne ajoutée sous format de JSON
+10-Ajouter d'autre lignes par la meme façon 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

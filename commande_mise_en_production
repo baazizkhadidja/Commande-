@@ -1,0 +1,243 @@
+Le 24/11/2020
+
+Django: le déployement de mon projet disquaire sur Huroko:
+
+
+
+I/ settings.py : changer la configuration du projet:
+
+1/ DEBUG = False en production et true en local
+
+le mode Debug
+if os.environ.get('ENV') == 'PRODUCTION':
+    DEBUG = False
+else:
+    DEBUG = True
+
+2/ la clé secrete lié au csrf: elle se trouve par défaut mais on doit regénérer une autre clé d'une manière aléatoire Python serais serviable:
+
+>>> import random, string
+>>> "".join([random.choice(string.printable) for _ in range(24)])
+'V;nqa=((BP9y^E*P\x0jhgfdsqci{;N#V('
+
+PSSSSSSSSSSSSSSSSS: on retournerai plus tard
+
+3/ Le nom ddu DOMAINE: on le met dans :
+
+ALLOWED_HOSTS = ['disquaire.herokuapp.com']
+
+
+
+
+II/ Les fichiers statiques:
+
+
+1/ la collecte des fichiers:
+
+créer un dossier statique qui sera dans le projet et pas dans l'application:
+
+
+* dans settings.py: à la fin crée: 
+
+if os.environ.get('ENV') == 'PRODUCTION':
+
+    # Static files settings
+    PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+
+    # Extra places for collectstatic to find static files.
+    STATICFILES_DIRS = (
+        os.path.join(PROJECT_ROOT, 'static'),
+    )
+
+
+2/ Installer le service whitenoise:
+
+pip install whitenoise
+
+Collecting whitenoise
+  Downloading whitenoise-5.2.0-py2.py3-none-any.whl (19 kB)
+Installing collected packages: whitenoise
+Successfully installed whitenoise-5.2.0
+
+
+
+
+3/ ajouter whitenoise dans les middleware + la variable STAT.. à la production:
+
+* 'whitenoise.middleware.WhiteNoiseMiddleware',
+
+
+
+* ajouter la variable : 
+if os.environ.get('ENV') == 'PRODUCTION':
+
+.
+.
+.
+  os.path.join(PROJECT_ROOT, 'static'),
+    )
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+III/ Export de la base de données:
+
+- créer un dossier dumps dans le dossier de l'application
+-  ./manage.py dumpdata store > store/dumps/store.json
+- résultat: un fichier json qui contient une liste des: artists, des albums, des contacts, des réservations.
+
+IV/ Configurer le chemin vers la base de données:
+
+1/ Instaler la librairie databaseurl: pip install dj-database-url
+
+2/ modifier le settings.py:
+
+import dj_database_url
+
+# ...
+if os.environ.get('ENV') == 'PRODUCTION':
+    # ...
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
+
+V/ Ajouter des fichiers pour Heroku pour configurer l'environement de production:
+
+1/ création d 'un fichier procfile: pacha/Disc$ gedit Procfile
+
+2/ Ajouter la ligne suivante dans le procfile:
+web: gunicorn disquaire.wsgi
+
+3/ Installer Gunicorn, un serveur web plus efficace en production :
+pip install gunicorn
+
+4/regénérer un fichier requirement.txt:  pip freeze > requirements.txt
+
+VI/ Création d'un nouveau projet sur Heroku:
+
+1/ Créer un compte sur Heroku: https://www.heroku.com/
+
+2/ Installer Heroku CLI : un logiciel pour intéragir avec Heroku depuis la ligne de commande de notre machine: sudo snap install --classic heroku
+
+3/ mettre le fichier sur git puis créer .gitignore dans le dossier disquaire/static et écrire dedant: !. gitignore
+
+4/ Créer une nouvelle applicationsur Heroku:
+
+- sur ma ligne de commande: heroku create heroku create disquedoody 
+
+5/ Enregistrer les variable d'environnement sur Heroku: la clé secrète+ENV:
+
+- heroku config:set SECRET_KEY= 'V;nqa=((BP9y#V(' -a disquaire
+
+- heroku config:set ENV=PRODUCTION -a disquaire
+
+
+- Résultat: EEERREUR: 
+
+(node:27922) SyntaxError Plugin: heroku: /home/zake/.local/share/heroku/config.json: Unexpected end of JSON input
+module: @oclif/config@1.17.0
+task: runHook prerun
+plugin: heroku
+root: /snap/heroku/4007
+See more details with DEBUG=*
+ ›   Error: Missing required flag:
+ ›    -a, --app APP  app to run command against
+ ›   See more help with --help
+
+
+- l'origine de l'erreur: ouvrir le fichier: ~/.local/share/heroku$ gedit config.json 
+
+- ajouter ce contenu dedant: 
+
+{
+  "schema": 1,
+  "install": "a91a785d-46db-466f-b0a3-93c3e2ea3e9d",
+  "skipAnalytics": false
+}
+
+- l'erreur est devenue: You do not have access to the app disquaire
+- l'origine de cette erreur est: je n'ai meme pas créer l'application , il m'a affiché: this app is already created, et moi je comprend pas qu il faut changer le nom car celui là est déjà existant, du coup: une fois j'ai fais: heroku create disquedoody, il a créer l application, et je l ai trouvé sur l interface de heroku, et finalement la configuration de la secrete_key et de l'environnement marche bien!!
+
+
+6/ vérification:
+
+- pour les applications existante: heroku apps, et il me donne:
+=== baazize-khadija@hotmail.com Apps
+disquedoody
+
+
+- pour voir la configuration: heroku config, et il me donne:
+=== disquedoody Config Vars
+ENV:        PRODUCTION
+SECRET_KEY: V;nqa=((BP9y^E*P\x0ci{;N#V(
+
+
+VII/ Envoyer mon projet sur Heroku:
+
+- git push heroku master
+- résultat: 
+
+EEREUUUUUUUUUUUUUUUUR!! 
+
+remote:  To https://git.heroku.com/disquedoody.git  ! [remote rejected] master -> master (pre-receive hook declined) error: impossible de pousser des références vers
+
+- lorseque j ai consulté mon compte Heroku j'ai trouvé un historique dite: Build Log , le dernier Build :mentionné: failed, une fois je l'ai ouvert j'ai trouvé queques détails, à la fin s'est écrit:que j ai un problème et il faut appliquer la commande suivante:
+
+ heroku config:set DISABLE_COLLECTSTATIC=1
+
+je l'ai appliqué, puis: j'ai fait le git add, commit, push origin master, puis j ai refait git push heroku master
+
+- résultat: remote: Verifying deploy... done.
+
+
+
+VIII/ lancer la migration: 1:00
+
+- lancer la commande:
+heroku run python manage.py migrate
+
+- resultat:
+raise ImproperlyConfigured("Error loading psycopg2 module: %s" % e)
+django.core.exceptions.ImproperlyConfigured: Error loading psycopg2 module: No module named 'psycopg2'
+???????????????????????????????????????????????????
+
+- Peut etre qu il faut travailler avec Postgre !!!! comme GBDR
+
+
+
+IX/ Ajouter un administrateur:
+
+- heroku run python manage.py createsuperuser
+
+- résultat: la meme erreur précédante: Error loading psycopg2 module: No module named 'psycopg2'
+
+X/ Importer la base de données:
+
+- heroku run python manage.py loaddata store/dumps/store.json
+- résultat: la mere erreur précédante: Error loading psycopg2 module: No module named 'psycopg2'
+
+- L'origine des erreurs: J'ai utiliser Mysql alors que Heroku travail avec Postgre!!! du coup je dois refaire mon projet avec le gestionnaire Postgre
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

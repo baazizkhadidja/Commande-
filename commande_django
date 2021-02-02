@@ -1,0 +1,205 @@
+Résumé pour Django :
+
+Astuce ligne de commande
+
+
+- ouvrir un fichier python : cat nom_fichier.py
+- couper un fichier d’un repertoire parent puis le coller dans le repertoire actuel :
+  mv ../fichier_name  .
+- Afficher le contenue détailler d’un repertoire : ls
+
+
+1/ Instalation 
+
+2/ Manipulation 
+
+1- créer un projet POETE + tester le serveur interne:
+
+- Connecter au virtuel environnement :
+
+. . pachaenv/bin/activate
+
+- Créer le dossier racine qui contient le projet 
+ mkdir project_name (créer le dossier)
+
+- Créer le projet
+
+django-admin startproject project_name .
+
+Ps : tester le serveur :
+
+./manage.py runserver 127.0.0.1:8080
+
+2- Parametrer le fichier setting en changeant comme moteur de gestion de bd par defaut: Mysql, et le nom de la base de données :
+
+- accèder au repertoir du projet :
+
+nano setting.py
+
+- changer sqllite par mysql, ajouter user et password:
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'paper',
+        'USER': 'doody',
+        'PASSWORD': 'Khadija1?',
+    }
+}
+
+
+Ps: la base de donnée doit etre déjà créer sur mysql
+
+3- Créeation d’un modèle de db à partir d'une db existante :
+
+- au niveau du dossier racine :
+
+./manage.py inspectdb  > models,py     ----------------  > création d’un nouveau fichier qui dite models dans le repertoire racine
+
+4- Créer une application et mettre le fichier model dedant :
+
+- accèder  au repertoire générale
+- créer la’application :
+
+./manage.py startapp app_name    --------------------------------   > création de l’app dans la racine
+
+
+
+5- mettre le fichier models dedan :
+
+mv ../models,py  .
+
+
+6- Faire la migration :
+
+./manage.py migrate
+
+7 – créer la première vue : (voir fichier views,py)
+
+importer la librairie HttpResponse et définir une fonction home :
+
+from django.http import HttpResponse
+
+def home(request):
+        return HttpResponse("Bonjour") 
+
+
+8- Changer la route dans le fichier urls dans le repertoire du projet :
+
+urlpatterns = [
+    re_path('hello/', views.home, name = "hello"),
+#    re_path('', views.home, name = "home"),
+]
+
+9- Tester le serveur :
+
+./manage runserver 127.0.0.1:8080/home/
+
+10-  Déclaré l’application dans le fichier settings : 
+ Ajouter le nom de l’application dans la tuple installed_APPs dans le fichiers settings 
+
+11- Réctifier les erreurs aparrues dans les modèles après la déclaration de l’application 
+
+12- Faire check pour l’application :
+
+./manage.py check app_name 
+
+
+13-  Création du Gabarit : (fichier template)
+
+- création d’un repertoire : templates/fr/public dans le dossier de l’application :
+mkdir templates/mkdir fr/mkdir public
+
+- création d’un fichier index.html dans le répertoire précédent
+
+- ecrire le script suivant dans le fichier index
+
+<html>
+<head><title>gestion des papier</title></head>
+<body > salut c est moi</body>
+</html> 
+
+
+
+
+- Modifier la vue :
+
+from django.shortcuts import render
+
+def hello(request):
+    return render(request, 'fr/public/index.html')
+
+- tester le serveur :
+./manage runserver 127.0.0.1:8080
+ 
+chercher sur le browser avec l’adresse suivante ip:
+
+http://127.0.0.1:8080/home/hello/
+
+- Ajouter un contexte à un gabarit : une variable et un dico comme 3 eme parametre de la fonction render
+
+def hello(request):
+    coucou = ‘coucou’
+    return render(request, 'fr/public/index.html', {‘salutation’ : coucou})
+
+- modifier le fichier index.html : intégrer des tags : dans le body on déclare une variable entre
+
+{{salutation }} !
+
+<html>
+<head><title>gestion des papier</title></head>
+<body > {{salutation }} !</body>
+</html>
+
+
+- Ajouter des filtres pour la mise en forme exp mettre en miniscule  :
+dans le meme fichier html précédenton ajoute dans les memes {{salutation| lower}} :
+-----------------------------------------------------------------
+Le 21/09/2020
+
+3/la vue générique detail :
+
+def detail(request, gateau_id):
+	gateau = Gateaux.objects.get(pk = gateau_id)
+	gateau.name.all()
+	message = 'le nom de ce gateau est {}'.format(gateau.name)
+	return HttpResponse(message)
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

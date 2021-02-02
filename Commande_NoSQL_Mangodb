@@ -1,0 +1,247 @@
+1- créer le repertoire de stockage de la bdd sur mongo:
+
+- si on tape la commande  mongod sur la console elle affiche: NONExistingPath, donc il faut créer un répertoire: 
+
+-  on se place sur le repertoire bin
+- sudo mkdir /data
+- sudo chown zake /data
+- mkdir /data/db
+- resultat: lorseque je tape mongod: le serveur tourne intégralement
+
+2- ouvrir mongodb:
+- mongod
+- resultat: affichage de qlqs lignes control ...
+- mongo
+- resultat: >
+
+3- Connecter ma base de données qui se trouve dans le serveur dont le port est: 
+
+
+4- afficher les bases de données :
+- show dbs
+- resultat: 
+
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+
+
+
+5- créer une collection dite users
+- db.createCollection('users');
+- resultat: { "ok" : 1 }
+
+Ps: unenouvelle bdd apparue
+
+- show dbs
+- resultat: 
+admin   0.000GB
+blog    0.000GB
+config  0.000GB
+local   0.000GB
+
+6- afficher les collections:
+
+- show collections;
+-resultat: 
+users
+
+7- supprimer la collection users:
+
+db.users.drop();
+
+8- insertion des données dans une collection:
+
+- db.users.insertOne ({name:'doody', age:14, city:'Algeria'})
+- resultat:
+
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("5fe1c498d25a7af526c68421")
+}
+
+9- afficher les documents d une collection:
+
+- db.users.find().pretty()
+
+10- compter le nombre des documents qui se trouve dans la collection users:
+
+- db.users.find().count()
+
+11- ordonner les documents selon un field:
+
+db.users.find().sort(age:-1)
+db.users.find().sort(age: 1)
+
+Ps: 1-: + grand au plus petit, 1: + ptt au + grand 
+
+12- supprimer un document(une ligne):
+db.users.deleteMany({city: 'Tunis'})
+
+
+13- supprimer une collection:
+
+db.users.dop();
+
+
+14- importer un fichier:
+- mongoimport --db new_york --collection restaurants restaurants.json
+
+Ps: il faut se déplacer dans le meme repertoire ou se trouve le fichier json, si non ça marche plus
+
+- resultat:
+
+2020-12-22T11:55:57.448+0100	connected to: localhost
+2020-12-22T11:56:00.377+0100	[###################.....] new_york.restaurants	9.85MB/12.1MB (81.2%)
+2020-12-22T11:56:01.016+0100	[########################] new_york.restaurants	12.1MB/12.1MB (100.0%)
+2020-12-22T11:56:01.016+0100	imported 25357 documents
+
+15- Intéroger la base : use base_name pour choisir une base de données
+
+* filtrer
+
+db.restaurants.find(
+    { "borough" : "Brooklyn",
+      "cuisine" : "Italian" }
+)
+
+
+* la projection:
+
+db.getCollection('restaurants').find(
+    {"borough":"Brooklyn",
+     "cuisine":"Italian",
+     "name":/pizza/i,
+     "address.street" : "5 Avenue"},
+    {"name":1}
+)
+
+{"_id" : ObjectId("594b9173c96c61e672dd074b"), "name" : "Joe'S Pizza"}
+{"_id" : ObjectId("594b9173c96c61e672dd1c16"), "name" : "Gina'S Pizzaeria/ Deli"}
+
+
+
+16- utiliser des opérateurs arithmétiques :
+
+db.getCollection('restaurants').find(
+    {"borough":"Manhattan",
+     "grades.score":{$lt : 10}
+    },
+
+Ps: < = $lt, $gt, $gte, $ne, $in, $nin, $or, $and, $not, $exists, $size
+
+PPPPPPPSSSSSS: le resultat est un document
+
+17- les agregation:
+
+A/ les opérateurs de l agrégation:
+
+{$match : {} } : filtrer le contenu d’une collection.
+
+{$project : {} } : changer le format d’origine.
+
+{$sort : {} }: Trier le résultat final sur les valeurs d’une clé choisi.
+
+{$group : {} } :grouper les documents par valeur
+
+{$unwind : {} } : prend une liste de valeur et produit pour chaque élément de la liste un nouveau document en sortie avec cet élément
+
+EXEMPLE:
+
+varMatch = { $match : { "grades.0.grade":"C"} };
+varProject = { $project : {"name":1, "borough":1, "_id":0}};
+db.restaurants.aggregate( [ varMatch, varProject ] );
+
+
+18- Le Tri:
+
+varSort = { $sort : {"name":1} };
+db.restaurants.aggregate( [ varMatch, varProject, varSort ] );
+
+19- groupement par valeur:
+
+varGroup3 = { $group : {"_id" : "$borough", "total" : {$sum : 1} } };
+db.restaurants.aggregate( [ varMatch, varGroup3 ] );
+
+- resultat:
+
+{"_id" : "Bronx",        "total" : 27.0}
+{"_id" : "Staten Island",    "total" : 7.0}
+{"_id" : "Manhattan",        "total" : 83.0}
+{"_id" : "Brooklyn",        "total" : 56.0}
+{"_id" : "Queens",        "total" : 47.0}
+
+20- Unwind: si le field se trouve dans une liste, on doit le retirer avec la fonction $unwind, puis on l utilise pour l agregation :
+
+varUnwind = {$unwind : "$grades"}
+varGroup4 = { $group : {"_id" : "$borough", "moyenne" : {$avg : "$grades.score"} } };
+varSort2 = { $sort : { "moyenne" : -1 } }
+db.restaurants.aggregate( [ varUnwind, varGroup4, varSort2 ] );
+
+- resultat:
+
+{ "_id" : "Queens", "moyenne" : 11.634865110930088 }
+{ "_id" : "Brooklyn", "moyenne" : 11.447723132969035 }
+{ "_id" : "Manhattan", "moyenne" : 11.41823125728344 }
+{ "_id" : "Staten Island", "moyenne" : 11.370957711442786 }
+{ "_id" : "Bronx", "moyenne" : 11.036186099942562 }
+{ "_id" : "Missing", "moyenne" : 9.632911392405063 }
+
+
+21- mettre à jour les données:
+
+------ update:--------------------------------
+
+db.restaurants.update (
+   {"_id" : ObjectId("594b9172c96c61e672dcd689")},
+   {$set : {"comment" : "My new comment"}}
+);
+
+
+- update et javascript: utilisation des conditions pour mettre à jour quelques informations:
+
+
+db.restaurants.find( {"grades.grade" : {$not : {$eq : "C"}}} ).forEach( 
+    function(restaurant){
+        total = 0;
+        for(i=0 ; i<restaurant.grades.length ; i++){
+            if(restaurant.grades[i].grade == "A")         total += 3;
+            else if(restaurant.grades[i].grade == "B")    total += 1;
+            else                                          total -= 1;
+        }
+        restaurant.note = total;
+        db.restaurants.save(restaurant);
+    }
+);
+
+-----remove: --------------------------------------
+supprimer tous les restaurants qui ont une note de 0:
+
+
+db.restaurants.remove(
+
+   {"note":0},
+
+   {"multi" : true}
+
+);
+
+ -----------------------------------------
+save: une insertion (en dehors des possibilités d’importation avec mongoimport) s’effectue avec la fonction “save” :
+
+db.restaurants.save({"_id" : 1, "test" : 1});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

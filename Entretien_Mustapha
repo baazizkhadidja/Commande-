@@ -1,0 +1,73 @@
+Je suis developpeur Python-C++, 
+
+- j étais un membre dans une équipe de developpement de 4 personnes, mon équipe était l une parmi 4 équipes: les autres : MOA, production , système réseau
+- j'ai crée une plateforme de vente pour le materiel électromagnétique en basant sur l architecture MVT
+ 
+- Tout d abord: j'ai participer à la configuration de la base de données avec le GBDR Mysql: j'ai créer les modèles principaux: 
+	* Produit: avec les différents attributs: prix, mark, description, puissance ..
+	
+
+	* Commande: la date du commande, la mise en situation, 
+	* Client: nom, prenom, mail, tele ...
+
+Ensuite j'ai ajouté les relations entre mes modèles et j ai impoter la base de données déjà admise par l équipe de production
+
+- Ainsi l'interface administrative Django
+(fichier admin.py+ création de username)
+
+Après j'ai commencer à developper les différentes fonctions de chaque vue correspondante à chaque modèle
+ Au meme temps: j 'ai Utilisé l'ORM de Django pour interagir avec la base de données(grace à l interface interactive shell)
+
+Après je suis passé à la création des gabarits bien sur avec les langages de balises html, css, et les librairie Bootstrap et JQuery, notamment en ce qui concerne: les fichiers statiques: les fonts, les couleurs, les effets spéciaux des images..
+
+Et pour mettre ces gabarits en relations j'ai bien configuré les schémas(les urls de chaque gabarits) et je les intégrer dans les vus
+
+Et finalement j'ai fais plusieurs tests unitaire sur chaque modèle avec la librairie TestCase, notamment avec la fonction assertEqual principalement pour comparer les coddes http des réponses des pages avec les codes des erreurs 
+Et aussi j ai comparé le nombre des commande après l'achat avec le nombre des commande avant l achat (pour savoir s il y a un ajout ou pas)
+
+et j'ai livré mon application à l équipe production pour la mettre sur l'hébergeur Heroku
+---------------------------------------------------------------------------------------------------------------------------------------
+Détail pour les vues:
+
+- la fonction: index : pour afficher la page d accueil
+- la fonction list: la liste de tous les produits
+- la fonction detail: afficher les detail d un produit dans une page à part
+
+Autres fonctions développé par les autres collègues
+- la fonction payement: 
+- les APIs du site: ça necessite l iport d une librairie Django Rest, et de créer un fichier dite serilizer, et pour les fonctions des APis: on utilise les classes génériques
+Ps: le test des APIs avec un outil dite Postman
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Nous avons géré notre projet selon l agilité: 
+- un scrum chaque 3 semaine
+- un melé quotidien de 15 mn
+- une révue pré sprint: l après midi avant le debut de chaque sprint
+
+avec l outil Jira: pendant la révue pré sprint le scrum master ajoute les taches à faire de chaque membre
+---------------------------------------------------------------------------------------------------------------------------------------
+Les problèmes pendant le projet:
+
+- Problème de syntaxes: soit au niveau des vues ou bien au niveau des templates surtt pour le langage gabarit: exp un simple espace ...
+- Problème de chemin: expl pour accéder au fichiers statiques on doit mettre le chemin précis 
+- Problème d affichage des images: images brokene: 
+- Problèmes d intégration des urls
+-----------------------------------------------------------------------------------------------------------------------------------
+Pourquoi penses tu que tu seras la personne adéquate?
+
+
+Sur le plan opérationnelles:
+Je connais plusieurs langages de programmations entre le bas et le haut niveau , comme je pourrais passer entre l un à l autre facilement , en les membres de mon équipe on remarqué que j'ai un pouvoir de détecter l'origine de l'erreur 
+
+Sur le plan comportemental:
+
+J ai un bon esprit d 'adaptation d analyse( pendant les périodes qui précèdent les examens ou je peux gérer mon stress je m adapte facilement ), ainsi que j'ai une curiosité qui me pousse à poser toujours des questions pour trouver des explications des phénomènes, du coup ce qui m'aide à analyser et synthétiser les hypothèses
+Sans oublier le sens de l'écout qui fait preuve de  mes capacités relationnelles et de communication
+
+
+
+
+
+
+

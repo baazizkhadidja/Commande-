@@ -1,0 +1,22 @@
+1- Type script : langage supérieur de javascript, plus concis, plus facile, sert à securisé le code des bueugs
+	*il doit etre transcompilé en javascript car le navigateur ne peut comprendre que le javascript
+	* c est un langage typé + orienté objet (ressemble trop à c++)
+
+2- Installation deu type script:
+
+- sudo npm install -g typescript
+- tsc --v 
+
+3- modifier le fichier de configuration du compilateur:
+
+{
+"complilaterOptions":{
+"target": "esnext",
+"watch": true
+ }
+}
+
+PS: esnext = dernière version
+true: recompiler si le code est changé
+
+

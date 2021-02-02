@@ -1,0 +1,571 @@
+Le 14/01/2021
+
+I/ tirer partie de ce cours:
+
+Senario: créer une application qui donne la personnalité , liée avec facebook:
+
+1/ télécharger le dossier zip du projet: index.html + resultat.html + static
+
+2/ connecter sur ce lien: https://developers.facebook.com/
+
+3/ démarer> s identifier(nm téléphone, code ..)> créer une application > garder le nom de l application + l adresse mail + le code ID:
+
+- doody_app
+- baazize-khadija@hotmail.com
+- 405030733919306
+
+4/ Ouvrez le fichier index.html + result.html et remplacez les chiffres dans les emplacements suivants 
+
+...
+window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '{{ your_app_id }}' // collez l'id ici.
+    ...
+  });
+};
+
+(function(d, s, id) {
+  ...
+  js.src = "https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&amp;version=v2.9&amp;appId={{ your_app_id }}"; // collez l'id ici
+}(document, 'script', 'facebook-jssdk'));
+
+
+5/ Revenez dans l'interface de Facebook for Developers. Cliquez sur Ajouter un produit> Facebook Login > Web 
+
+6/ sur le champs URL du site: écrire: localhost + save
+
+7/ cliquer sur continuer > on trouve un code> copier > coller dans le fichier ??????? après la balise <body:>
+
+II/ Installer FLASK
+
+1/ Installation:
+
+- installer l environnement virtuel:  virtualenv env -p python3
+- cd pacha, . ./pachaenv/bin/activate
+- installer flask dans env: (env) $ pip install flask
+
+2/ création de la vue + tester flask s il fonctionne ou pas :
+
+- créer un fichier view.py + coller le code suivant:
+
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return "Hello world !"
+
+if __name__ == "__main__":
+    app.run()
+
+- tester si le flask fonctionne: python view.py
+
+- résultat:
+
+ Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+
+- naviguer: sur un navigateur on écrit: 127.0.0.1:5000
+- resultat: affichage sur la page: hello world
+
+
+3/ Organisation du projet:
+
+* Ps: 
+Il faut respecter les conventions suivantes:
+
+- les feuilles de style, scripts, images et autres éléments qui ne seront jamais générés dynamiquement doivent être dans le dossier static,
+
+- les fichiers HTML doivent être dans le dossier templates,
+
+- les tests doivent être dans le dossier tests,
+
+- le fichier views.py contient les différentes routes de l'application (nous y reviendrons)
+
+
+* créer un dossier principal fbapp: on met dedant: result.html , index.html , static, views.py + créer 2 nouveaux dossiers: templates + tests:
+
+* placer resut.html + index.html dans le dossier templates
+
+*créer dans fbapp les fichiers: __init__.py   
+* créer le run.py à l exterieur du module fbapp
+
+* run.py: ajouter le code suivant:
+
+#! /usr/bin/env python
+
+from fbapp import app
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+* __init__.py: ajouter le code suivant:
+
+from flask import Flask
+from .views import app
+
+* lancer le run: python run.py
+- resultat
+ * Serving Flask app "fbapp.views" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 282-508-170
+
+
+4/ Le fichier de configuration: config.py  // dehor fbapp
+
+FB_APP_ID = 405030733919306
+SECRET_KEY = "#d#JCqTTW\nilK\\7m\x0bp#\tj~#H"
+
+
+
+5/ ajouter la configuration dans le fichier views.py :
+
+III/ Ajoutez une nouvelle table dans la base de données:
+
+1/ créer dans la racine un dossier: app.db 
+
+2/ Utiliser un ORM:
+
+- $ pip install flask_sqlalchemy     // un traducteur
+
+3/ modifier le fichier de configuration:
+
+import os
+
+...
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
+
+4/ créer un fichier models.py  dans le repertoire fbapp:
+
+from flask_sqlalchemy import SQLAlchemy
+
+from .views import app
+
+# Create database connection object
+db = SQLAlchemy(app)
+
+class Content(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.String(200), nullable=False)
+    gender = db.Column(db.Integer(), nullable=False)
+
+    def __init__(self, description, gender):
+        self.description = description
+        self.gender = gender
+
+db.create_all()
+
+5/ Connecter la base: modifier le __init__.py :
+
+from flask import Flask
+from .views import app
+from . import models
+
+# Connect sqlalchemy to app
+
+models.db.init_app(app)
+
+6/ la console intéractive de Flask:
+- se placer dans la racine et écrire: FLASK_APP=run.py flask shell
+- resultat: >>> 
+
+7/ les commandes utilisées dans la console intéractive:
+- ps: pour voir la configuration:
+ app
+ app.config
+
+- pour entrer les donner dans la base de données:
+
+ from fbapp.models import db, Content
+ Content("Tu es magnifique",'female')  instancier un objet
+ db.session.add(Content("Tu es magnifique",'female'))       // ajouter un nouveau item dans la base données              
+                   
+  db.session.commit()   //pour finaliser l ajout des données 
+  Content.query.all()  //afficher les objets ajouté dans la bd
+  Content.query.all()[0] // il va afficher le premier élément
+  Content.query.all()[0].id  //Méthode1: afficher l identifiant du première élément
+  Content.query.get(1)   //Méthode2:  afficher le première élément 
+
+8/ Supprimer un élément:
+
+ content = Content.query.get(1)
+ db.session.delete(content)
+ db.session.commit()
+
+9/ afficher si l element est supprimer ou pas:
+
+ Content.query.all()
+- resultat: []   // db vide
+
+10/ sortir de la console intéractive de flask
+
+>>> exit()
+
+8/ Interagir avec la base via SQLAlchemy:
+
+- ajouter un décorateur dans le fichier __init__:
+@app.cli.command()
+def init_db():
+        models.init_db()
+
+- modifier le fichier models.py: ajouter le script suivant:
+
+import logging as lg
+
+def init_db():
+        db.drop_all()
+        db.create_all()
+        db.session.add(Content("THIS iS SPARTAAAAA!!!", 1))
+        db.session.add(Content("What's your favorite scary movie?",0))
+        db.session.commit()
+        lg.warning('Database initialized')
+
+
+- executer la commande: FLASK_APP=run.py flask init_db
+
+- resultat: 
+
+WARNING:root:Database initialized!
+
+
+IV/ Afficher le contenu d un template:
+
+ l architecture d un projet fait par flask: MVT: modèle/vue/
+
+1/ modifier le fichier models.py: créer une classe Gender + modifier la classe Content:
+
+
+import enum
+
+class Gender(enum.Enum):
+	female = 0
+	male = 1
+	other = 2
+
+2/ la vue: views.py:
+
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+app.config.from_object('config')
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+3/ lancer le serveur: pyton run.py 
+- naviguer sur le lien 127.0.0.1:5000
+
+V/ Découper votre projet en templates:
+
+Ps: le moteur des templates par defaut: Jinja
+
+1/ la commande url_for
+
+- index.html : après la balise commentée: <!--Custom CSS -->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css')}}">
+
+PPPPPPPPPPPSSSSSSSSSS: replacer tout ce qui est chemin vers le repertoire static par l instruction {{ url_for('static', filename 'le chemin vers le fichier')}}
+
+
+- index.html : remplacer la variable de toute les valeurs appId, par l instruction suivante:    {{config['FB_APP_ID']}}
+
+2/ Ajouter une nouvelle vue:
+
+@app.route('/result/')
+def result():
+    return render_template('result.html')
+
+
+3/ enlever la la partie qui se répète dans les 2 fichiers result.html + index.html , et la mettre dans le fichier base.html
+
+
+-créer un nouveau html: base.html: dans le repertoire templates:
+
+en prend les balises suivantes de index.html, result.html  et les mettre dans le base.html:  (ce qui se répète dans les toutes les templates = patie commune)
+
+<html>
+<head></head>
+<body><nav></nav></body>
+<footer></footer>
+</html>
+
+- mettre à jour notre fichier index.html + result.html : on met que ce qui ne repète pas
+
+(voir le code sur le lien: https://github.com/oc-courses/concevez_un_site_avec_flask/blob/P2C1/fbapp/templates/base.html )
+
+
+
+4/ changer la photo + la description avec la méthode: render_template  
+10:06
+
+A/ mettre à jour juste le nom
+
+- modifier le fichier view.py:
+* passer coome 2 ème paramètre le user_name:
+
+def index():
+	return render_template('index.html', user_name='Doody')
+
+
+- modifier l index.html: remplacer Tom dans la balise suivante:
+<h2 id="user_name">Tom</h2>  -->
+<h2 id="user_name">{{ user_name }}</h2>
+
+- tester sur la page d 'accueuil: 127.0.0.1:5000
+- resultat: 
+Ps: EEEEEEREUUR:  OSError: [Errno 98] Address already in use
+- solution: sudo lsof -t -i tcp:5000 | xargs kill -9 
+
+
+- resultat: Afficher Doody au lieu de Tom
+
+B/ mettre à jour: le nom + l image + la description:
+
+- modifier  views.py: from Flask import url_for
+
+@app.route('/')
+def index():
+	description = """
+Toi, tu sais ... d'autorité? ;-  
+"""
+	
+	return render_template('index.html',
+			    user_name='Doody',
+			    user_image=url_for('static',
+			    filename='img/profile.png'),
+			    description=description)
+
+
+@app.route('/result/')
+def result():
+    description = """
+Toi, tu sais ...e d'autorité? ;-  
+"""
+	
+	return render_template('result.html',
+			    user_name='Doody',
+			    user_image=url_for('static',
+			    filename='img/profile.png'),
+			    description=description)
+
+
+- modifier index.html + result.html: {{user_image}} /  {{user_name}}/ {{description}}
+
+<img class="img-responsive img-circle user_profile" src="{{user_image }}" id="user_image">
+
+                  </div>
+                  <div class="col-sm-3">
+                    <h2 id="user_name">{{user_name}}</h2>
+                  </div>
+                  <div class="col-sm-12">
+                    <p id="description" class="blur">{{ description }}</p>
+
+
+
+- resultat:  Goooood
+
+
+5/ ajouter le template card.html + structure conditionnelle si on va utiliser la classe 'bleur' ou pas :
+
+* créer le template card.html: et couper cette partie de index.html + result.html  et la coller dans card.html:  +++ ajouter l instruction if blur: on aplique la classe blur
+
+              <div class="card">
+                <div class="row">
+                  <div class="col-sm-3 col-sm-offset-3">
+                      <img class="img-responsive img-circle user_profile" src="{{user_image }}" id="user_image">
+
+                  </div>
+                  <div class="col-sm-3">
+                    <h2 id="user_name">{{user_name}}</h2>
+                  </div>
+                  <div class="col-sm-12">
+                    <p id="description"     {% if blur:  %}class="blur"{% endif %}>{{ description }}</p>
+                  </div>
+                </div>
+              </div>
+
+ 
+
+* modifier  views.py:
+def index():
+description=n ...
+return render_template(...=description, blur=True)
+
+
+
+def result():
+description=n ...
+return render_template(...=description, blur=True)
+
+
+* inclure card : on remplace les balises coupées par la directive suivante:
+{% include 'card.html' %}
+
+
+V/ Créez une page de résultat grâce aux URL dynamiques: 
+
+1/ Récupérer les paramètres d'une URL dynamique:
+
+- modifier views.py:
+
+from flask import request
+
+@app.route('/result/')
+def result():
+    description = """
+        Toi, tu n'as...Quelle chance !
+    """
+    gender = request.args.get('gender')
+    user_name = request.args.get('first_name')
+    uid = request.args.get('id')
+    profile_pic = 'http://graph.facebook.com/' + uid + '/picture?type=large'
+    return render_template('result.html',
+                            user_name=user_name,
+                            user_image=profile_pic,
+                            description=description)
+
+
+- passer les variable dans l url de navigation: 
+
+http://localhost:5000/result/?first_name=khadidja&id=405030733919306&gender=female
+
+- resultat: khadidja + photo de profile de mon facebook + ma description
+
+2/ Chercher dans la base de données les informations adéquates:
+
+
+- créer un fichier: fbapp/utils.py : contient tous les objets qui ne sont pas liés à Flask: 
+
+import random
+
+from fbapp.models import Content, Gender
+
+def find_content(gender):
+    contents = Content.query.filter(Content.gender == Gender[gender]).all()
+    return random.choice(contents)
+
+- mettre à jour views.py:
+...
+def result():
+    gender = request.args.get('gender')
+    description = find_content(gender).description
+...
+
+
+- ajouter une description dans la base de données:
+
+ from fbapp.models import db, Content
+ Content("Tu es magnifique",'female')  instancier un objet
+ db.session.add(Content("Tu es magnifique",'female')) 
+ db.session.commit()
+
+- executer le serveur sur l'adresse:
+http://localhost:5000/result/?first_name=khadidja&id=405030733919306&gender=female
+
+- resultat: bien affiché sauf l'image
+
+VI/ partager sur facebook:
+
+1/ Configurer une app Facebook:
+
+- views.py: modifier la vue index + result:
+
+@app.route('/')
+@app.route('/index/')
+def index():
+	description = """
+	Toi, tu sais comm..."""
+
+og_url = url_for('index', _external=True)
+	return render_template('index.html'...blur=True,
+                            og_url=og_url)
+
+- base.html: modifier les balises meta dont la propriété og: (déchiffrer par la graph du facebook):
+
+    <meta property="og:url" content="http://le-test-ultime.hello-birds.com" />
+
+PPPPPPPPPPAAAAAAAAAR:
+
+	<meta property="og:url" content="{{og_url}}" />
+	<meta property="og:image" content="tmp/sample.jpg" />
+
+    <meta property="og:image" content="{{ url_for('static', filename='tmp/sample.jpg') }}" />
+
+Ps: pour la vue result on ajoute:
+
+img='tmp/sample.jpg' 
+    og_url = url_for('index', _external=True, img=img)
+
+
+- pour voir l index: relancer le serveur
+
+f12 : on remarque dans la balise <meta pro: og: .. url = 'localhost../index/' ...>
+ 
+
+- pour voir le resultat: relancer le serveur
+
+http://localhost:5000/result/?first_name=khadidja&id=405030733919306&gender=female
+
+
+VII/ Ajouter de l inteligence:
+
+1/Générer une image dynamiquement avec la librairie Pillow:
+
+- installer Pillow: pip install Pillow
+- utils.py: créer une nouvelle classe:
+
+import random
+from PIL import Image 
+
+#from fbapp.models import Content, Gender
+
+#def find_content(gender):
+ #   contents = Content.query.filter(Content.gender == Gender[gender]).all()
+  #  return random.choice(contents)
+
+class OpenGraphImage:
+
+	def __init__(self, first_name, description):
+		background = self.base()
+		background.show()
+
+	def base(self):
+		#create a basic image
+		img = Image.new('RGB',(1200, 630), '#18BC9C')
+		return img
+
+description = """ You are perfect doody """
+OpenGraphImage('Douja', description)
+
+- afficher l image : python utils.py
+- resultat: afficher une image bleu turquois
+
+2/ Ecrire sur une image
+
+- utils.py: ajouter une fonction à ma classe:
+
+
+import os
+from PIL import Image, ImageDraw, ImageFont
+def print_on_img(self, img, text, size, height):
+		#changer la police
+		font = ImageFont.truetype(os.path.join('fbapp', 'static', 'fonts', 'Arcon-Regular.otf'), size)
+		draw = ImageDraw(img)
+		w, h = draw.textsize(text, font)
+		position = ((img.width - w)/2, height)
+		draw.text(position, text, (255, 255, 255), font=font)
+
+
+

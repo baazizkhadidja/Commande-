@@ -1,0 +1,9 @@
+Le 10/09/2020
+
+
+I/ Utilisation avancée des fonctions:
+
+1/ rappel sur les fonctions:
+
+function sum(a,b){return a+b;}
+console.log(sum(1,2))

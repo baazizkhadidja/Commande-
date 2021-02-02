@@ -1,0 +1,562 @@
+Le 23/12/2020
+
+I/ introduction:
+
+1/ Définir les termes suivants:
+
+   * compiler : tous les fichiers source de votre projet sont envoyés au compilateur qui va se charger de créer un exécutable. S'il y a des erreurs - ce qui a de fortes chances d'arriver tôt ou tard ! -, l'exécutable ne sera pas créé et on vous indiquera les erreurs en bas de Code::Blocks ;
+
+   * exécuter : cette icône lance juste le dernier exécutable que vous avez compilé. Cela vous permettra donc de tester votre programme et de voir ainsi ce qu'il donne. Dans l'ordre, si vous avez bien suivi, on doit d'abord compiler, puis exécuter pour tester ce que ça donne. On peut aussi utiliser le troisième bouton…
+
+   * compiler & exécuter : pas besoin d'être un génie pour comprendre que c'est la combinaison des deux boutons précédents. C'est d'ailleurs ce bouton que vous utiliserez le plus souvent. Notez que s'il y a des erreurs pendant la compilation (pendant la génération de l'exécutable), le programme ne sera pas exécuté. À la place, vous aurez droit à une beeelle liste d'erreurs à corriger !
+
+   * tout reconstruire : quand vous faitescompiler, Code::Blocks ne recompile en fait que les fichiers que vous avez modifiés et non les autres. Parfois - je dis bien parfois - vous aurez besoin de demander à Code::Blocks de vous recompiler tous les fichiers. On verra plus tard quand on a besoin de ce bouton, et vous verrez plus en détails le fonctionnement de la compilation dans un chapitre futur. Pour l'instant, on se contente de savoir le minimum nécessaire pour ne pas tout mélanger. Ce bouton ne nous sera donc pas utile de suite
+
+2/ Créer un nouveau projet: le meme que c++
+
+3/ c est quoi directives de préprocesseur?
+
+- ce sont les 2 librairies qu on importe au debut du fichier main:
+#include <stdio.h>
+#include <stdlib.h>
+
+
+4/  instructions: les lignes qu se trouvent à l interieur d une fonction
+
+5/ les commentaire : // ou bien /*   */
+
+
+
+II/ les bases:
+
+1/ les mémoires qui se trouve dans un ordinateur: 4 mémoires: 
+
+- les registres + petit + rapide: ds le processeur, stock les petit variables
+- la mémoire cache
+- la mémoire vive: sur laquelle on travaille=RAM
+- disque dur: + grand + lend, il stock les fichiers
+
+2/ les variables:
+
+Nom du type: Minimum - Maximum
+
+signed char : -127 - 127
+
+int : -32 767 - 32 767
+
+long : -2 147 483 647 - 2 147 483 647
+
+float: -1 x1037 - 1 x1037
+
+double: -1 x1037 - 1 x1037
+
+Exemple de déclaration des variables:
+
+int noteDeMaths;
+double sommeArgentRecue; 
+unsigned int nombreDeLecteursEnTrainDeLireUnNomDeVariableUnPeuLong;
+
+3/ afficher la valeur d une variable: printf()
+
+int a=5;
+printf("%d",a);
+
+Ps1:
+"%d" : int
+"%ld" : long 
+"%f" :float 
+"%f" : double
+
+4/ Récupérer une saisie (cin en c++): scanf()
+
+double poids = 0;
+scanf("%lf", &poids);
+
+expl2:
+
+int age = 0;
+scanf("%d", &age);
+
+5/ les opérateurs arithmétiques:
+
+Addition : +
+Soustraction : -
+Multiplication: *
+Division: /
+Modulo: %
+
+6/ les racourcies:
+l incrémentation :
+
+a = a+1 <===> a++ <==> a+=a
+a = a-1  <====> a-- <==> a-=a
+a = a*5 <==> a*=5
+
+7/ La biblioteque mathématique: math.h
+#include <math.h>
+
+- fabs: Cette fonction retourne la valeur absolue d'un nombre, c'est-à-dire |x| (c'est la notation mathématique).
+
+- ceil : Cette fonction renvoie le premier nombre entier après le nombre décimal qu'on lui donne. C'est une sorte d'arrondi: 26.512, la fonction renvoie 27.
+
+- floor : C'est l'inverse de la fonction précédente : cette fois, elle renvoie le nombre directement en dessous: 37.91 :  37
+
+- pow : Cette fonction permet de calculer la puissance d'un nombre: pow(nombre, puissance);
+
+
+- sqrt : Cette fonction calcule la racine carrée d'un nombre. Elle renvoie undouble : resultat = sqrt(nombre);
+
+- sin, cos, tan:
+
+Ce sont les trois fameuses fonctions utilisées en trigonométrie.
+Le fonctionnement est le même, ces fonctions renvoient undouble.
+
+Ces fonctions attendent une valeur en radians.
+asin, acos, atan
+
+Ce sont les fonctions arc sinus, arc cosinus et arc tangente, d'autres fonctions de trigonométrie.
+Elles s'utilisent de la même manière et renvoient undouble.
+exp
+
+Cette fonction calcule l'exponentielle d'un nombre. Elle renvoie undouble(oui, oui, elle aussi).
+log
+
+Cette fonction calcule le logarithme népérien d'un nombre (que l'on note aussi « ln »).
+log10
+
+Cette fonction calcule le logarithme base 10 d'un nombre.
+
+
+III/ Les conditions:
+
+1/ les opérateurs de comparaison:
+
+== est égal à
+> est supérieur à
+< est inférieur à
+>= est supérieur ou égal à
+<= est inférieur ou égal à
+!= est différent de
+
+Ps: pour associer plusieurs conditions:
+
+&& ET
+|| OU
+! NON    expl: if (!(age < 18))
+
+Ps: if (age > 18 && age < 25)  !!! on ne peut pas ecrire: 18<age<25
+Ps2: les booléans:
+
+if (0)
+{
+    printf("C'est vrai");
+}
+else
+{
+    printf("C'est faux");
+}
+
+
+2/ la condition if/ else if/ else
+
+
+Ps: si on ecrit 2 if succéssif: 2 em if est imbriquée dans la première 
+
+if (age == 2)
+{
+    printf("Salut bebe !");
+}
+else if (age == 6)
+{
+    printf("Salut gamin !");
+}
+else if (age == 12)
+{
+    printf("Salut jeune !");
+}
+else if (age == 16)
+{
+    printf("Salut ado !");
+}
+else if (age == 18)
+{
+    printf("Salut adulte !");
+}
+else if (age == 68)
+{
+    printf("Salut papy !");
+}
+else
+{
+    printf("Je n'ai aucune phrase de prete pour ton age");
+}
+
+
+3/ la condition switch:
+
+switch (age)
+{
+case 2:
+  printf("Salut bebe !");
+  break;
+case 6:
+  printf("Salut gamin !");
+  break;
+case 12:
+  printf("Salut jeune !");
+  break;
+case 16:
+  printf("Salut ado !");
+  break;
+case 18:
+  printf("Salut adulte !");
+  break;
+case 68:
+  printf("Salut papy !");
+  break;
+default:
+  printf("Je n'ai aucune phrase de prete pour ton age  ");
+  break;
+}
+
+
+
+4/ Les ternaires : des conditions condensées:
+
+Au lieu d ecrire:
+
+if (majeur)
+  age = 18;
+else
+  age = 17;
+
+on écrit:
+
+age = (majeur) ? 18 : 17;
+
+
+
+IV/ Les boucles:
+
+3 types de boucles:
+
+*while:
+
+int compteur = 0;
+
+while (compteur < 10)
+{
+    printf("Salut les Zeros !\n");
+    compteur++;
+}
+
+
+*do… while: c est presque la meme que la précédante:
+
+int compteur = 0;
+
+do
+{
+    printf("Salut les Zeros !\n");
+    compteur++;
+} while (compteur < 10);
+
+
+* for: la différence avec les boucles précédantes: incrémentation + int +dec du compteur entre parenthèse
+
+for (compteur = 0 ; compteur < 10 ; compteur++)
+{
+    printf("Salut les Zeros !\n");
+}
+
+V/ les fonctions:
+
+PSSSSS: pour afficher une fonction en C dands le printf, il faut mettre en paramètre aussi le "%d"
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int mult(int a){
+
+    int res = a *3;
+
+    return res;
+    }
+
+int main()
+{
+int b = 0;
+scanf("%d", &b);
+printf("%d",mult(b));
+
+}
+
+V/ la programmation modulaire: c est la séparation d un code dans plusieurs petits fichiers
+
+1/ les prototypes: pour annoncer une fonction: on le place dans le header
+type fonction_name(par1, par2);
+
+
+2/ l iplémentation: dans la source
+
+type fonction_name(par1, par2){instructions}
+Ps: on include le h dans la source
+
+3/ le main: on appèle les fonctions
+
+4/ la compilation d un programme:
+
+* le préprocesseur include le h dans le c
+* le compilateur transforme chaque c en binaire (.o)
+* le linker(éditeur des liens) rassemble les .o et les .lib (les bibiothèque importés) en un seule .exe
+
+5/ la porté des fonctions et des variables: 
+* variables propres aux fonctions:  
+ 
+ une variable déclarée dans une fonction n'est accessible qu'à l'intérieur de cette fonction. On dit que c'est une variable locale.
+
+* Les variables globales : à éviter: 
+---> Variable globale accessible dans tous les fichiers: déclaré just après la ligne #include(dehors ls fonctions) + créer une fonction void qui sert juste à modifier la valeur de la variable globale
+--> Variable globale accessible uniquement dans un fichier: rajoutez simplement le mot-clé static devant la variable qui se trouve à l interieur de la fonction:
+
+Ps: si on met static devant une fonction ça veut dire que la porté de cette fonction est limité dans son fichier
+
+VI/ les pointeurs: ce sont des variables dont la valeurs est l adresse d une autre variable, on les utilise pour économiser l espace de stockage de notre mémoire
+on le cré comme suit : int * pointeur = &a   // a est la variable pointé, &a est son adresse
+
+VII/ Les tableaux: un ensemble des cases contigus
+
+1/ les types:
+
+* tableau à taille statique(fixe):
+int tableau_name[taille]
+
+Ps: si on veut afficher un tableau  on aura son adresse c est pour ça on itère ses valeur par boucle
+
+* tableau à taille dynamique: 
+
+Le langage C existe en plusieurs versions.
+Une version récente, appelée le C99, autorise la création de tableaux à taille dynamique, c'est-à-dire de tableaux dont la taille est définie par une variable
+
+2/ parcourir un tableau: 
+
+int main(int argc, char *argv[])
+{
+    int tableau[4], i = 0;
+
+    tableau[0] = 10;
+    tableau[1] = 23;
+    tableau[2] = 505;
+    tableau[3] = 8;
+
+    for (i = 0 ; i < 4 ; i++)
+    {
+        printf("%d\n", tableau[i]);
+    }
+
+    return 0;
+}
+
+3/ initialiser un tableau:
+
+int main(int argc, char *argv[])
+{
+    int tableau[4] = {0, 0, 0, 0}, i = 0;
+
+    for (i = 0 ; i < 4 ; i++)
+    {
+        printf("%d\n", tableau[i]);
+    }
+
+    return 0;
+}
+
+OOOORRRRR
+
+int main(int argc, char *argv[])
+{
+    int tableau[4], i = 0;
+
+    // Initialisation du tableau
+    for (i = 0 ; i < 4 ; i++)
+    {
+        tableau[i] = 0;
+    }
+
+    // Affichage de ses valeurs pour vérifier
+    for (i = 0 ; i < 4 ; i++)
+    {
+        printf("%d\n", tableau[i]);
+    }
+
+    return 0;
+}
+
+
+OOOORRRRRRRRRR: passage de tableaux à une fonction:
+
+// Prototype de la fonction d'affichage
+void affiche(int *tableau, int tailleTableau);
+ 
+int main(int argc, char *argv[])
+{
+    int tableau[4] = {10, 15, 3};
+ 
+    // On affiche le contenu du tableau
+    affiche(tableau, 4);
+ 
+    return 0;
+}
+ 
+void affiche(int *tableau, int tailleTableau)
+{
+    int i;
+ 
+    for (i = 0 ; i < tailleTableau ; i++)
+    {
+        printf("%d\n", tableau[i]);
+    }
+}
+
+
+VII/ les chaines de caractères: 
+- Le typecharest en fait prévu pour stocker… une lettre ! Attention, j'ai bien dit : UNE lettre.
+- : Afficher un caractère
+int main(int argc, char *argv[])
+{
+    char lettre = 'A';
+
+    printf("%c\n", lettre);
+
+    return 0;
+}
+
+- Les chaînes sont des tableaux de char: 
+
+char chaine[5];
+
+- Création et initialisation de la chaîne: 
+char chaine[6]; // Tableau de 6 char pour stocker S-a-l-u-t + le \0
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char *argv[])
+{
+    char chaine[6]; // Tableau de 6 char pour stocker S-a-l-u-t + le \0
+
+    // Initialisation de la chaîne (on écrit les caractères un à un en mémoire)
+    chaine[0] = 'S';
+    chaine[1] = 'a';
+    chaine[2] = 'l';
+    chaine[3] = 'u';
+    chaine[4] = 't';
+    chaine[5] = '\0';
+
+    // Affichage de la chaîne grâce au %s du printf
+    printf("%s", chaine);
+
+    return 0;
+}
+
+Ps: le caractère\0comme un avantage. Grâce à lui, vous n'aurez pas à retenir la taille de votre tableau car il indique que le tableau s'arrête à cet endroit
+
+- Récupération d'une chaîne via unscanf:
+
+int main(int argc, char *argv[])
+{
+    char prenom[100];
+
+    printf("Comment t'appelles-tu petit Zero ? ");
+    scanf("%s", prenom);
+    printf("Salut %s, je suis heureux de te rencontrer !", prenom);
+
+    return 0;
+}
+
+- Fonctions de manipulation des chaînes:
+
+* #include <string.h>
+
+* strlen: calculer la longueur d'une chaîne: size_t strlen(const char* chaine);
+PS: size_test un type spécial qui signifie que la fonction renvoie un nombre correspondant à une taille.
+
+* strcpy: copier une chaîne dans une autre:
+char* strcpy(char* copieDeLaChaine, const char* chaineACopier);
+* strcat: concaténer 2 chaînes: char* strcat(char* chaine1, const char* chaine2);
+* strcmp: comparer 2 chaînes: 
+int strcmp(const char* chaine1, const char* chaine2);
+* strchr: rechercher un caractère
+char* strchr(const char* chaine, int caractereARechercher);
+* strpbrk: premier caractère de la liste: 
+char* strpbrk(const char* chaine, const char* lettresARechercher);
+* strstr: rechercher une chaîne dans une autre:
+char* strstr(const char* chaine, const char* chaineARechercher);
+* sprintf: écrire dans une chaîne:
+
+
+VIII/ Le préprocesseur: ce programme qui s'exécute juste avant la compilation.
+
+
+1/ Les include: directives de préprocesseur, <pour les lib, "" pour les fichiers>
+
+
+2/ Les define: #define NOMBRE_VIES_INITIALES 3: constante de préprocesseur:  le#defineremplace dans votre code source tous les mots par leur valeur correspondante, ou bien: Undefinepour la taille des tableaux: #define TAILLE_MAX      1000
+* Les constantes prédéfinies: 
+
+    __LINE__: donne le numéro de la ligne actuelle.
+
+    __FILE__: donne le nom du fichier actuel.
+
+    __DATE__: donne la date de la compilation.
+
+    __TIME__: donne l'heure de la compilation.
+
+expl: 
+printf("Erreur a la ligne %d du fichier %s\n", __LINE__, __FILE__);
+printf("Ce fichier a ete compile le %s a %s\n", __DATE__, __TIME__);
+
+- Les définitions simples: #define CONSTANTE
+
+3/ Les macros: 
+
+avec le#defineon pouvait demander au préprocesseur de remplacer un mot par une valeur. Par exemple : #define NOMBRE 9, par contre un macros: c est l utilisation d un # define pour remplacer une valeur par un code source
+Exemple: 
+
+#define MAJEUR(age) if (age >= 18) \
+                    printf("Vous etes majeur\n");
+
+-resultat: 
+
+int main(int argc, char *argv[])
+{
+    if (22 >= 18)
+    printf("Vous etes majeur\n");
+
+    return 0;
+}
+
+4/ Les conditions: il est possible de réaliser des conditions en langage préprocesseur: 
+
+exemple: #ifndef DEF_NOMDUFICHIER // Si la constante n'a pas été définie le fichier n'a jamais été inclus
+#define DEF_NOMDUFICHIER // On définit la constante pour que la prochaine fois le fichier ne soit plus inclus
+
+/* Contenu de votre fichier .h (autres include, prototypes, define...) */
+
+#endif
+
+
+IX/ Créez vos propres types de variables:
+
+
+françois lombard directeur d'intelligence Airbus Geo SA
+philippe Pham : directeur observation de la terre navigation et science Airbus Space Systems
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,64 @@
+APPlication pour scraping tweets from tweetter
+
+1- créer un compte sur tweeter
+2- se connecter sur developper.tweetter.com
+3- créer une application
+4- get the key:
+API key:
+
+PUguMvi95VvyRFQo36hxOC7go
+
+5-get the API key secret:
+
+wvkYQkS1be0pEGAwZa8OG63WSAblBVL82LYq6zMunfvXnvAo9I
+
+6- Bearer token:
+
+AAAAAAAAAAAAAAAAAAAAAGzyMAEAAAAAXV17ZgWCLs%2B4uTsIUBlMdfq5YeA%3DDCntQaFqUPBCZ3hzh0KT8u7ZQlsyww2urEYQxNk8TUhdIIKBo6
+
+8- Access token:
+
+1355101267908038656-x9Mofj6nYYpQKT62Gnq3gNFibby0FP
+
+9- Access token secret:
+
+9GOFcNJ2sOFhT3MMLRkijfRdDFdTAyDiQnWMPK9xndz5M 
+
+10- se connecter sur le lien:  https://developer.twitter.com/en/portal/projects/1355149068830449666/apps
+
+II/ sur python:
+1/ pip install tweepy
+
+2/ appliquer le code suivant sur spyder:
+
+import tweepy
+import sys
+
+class MystreamListener(tweepy.StreamListener):
+    def on_status(self, status):
+        print(status.text)
+        
+    def on_error(self, status_code):
+        print(status_code)
+        
+consumer_key = "PUguMvi95VvyRFQo36hxOC7go"
+consumer_secret = "wvkYQkS1be0pEGAwZa8OG63WSAblBVL82LYq6zMunfvXnvAo9I"
+acces_token = "1355101267908038656-x9Mofj6nYYpQKT62Gnq3gNFibby0FP"
+access_token_secret = "9GOFcNJ2sOFhT3MMLRkijfRdDFdTAyDiQnWMPK9xndz5M"
+
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(acces_token, access_token_secret)
+api = tweepy.API(auth)
+
+if (not api):
+    print("Authentication failed")
+    sys.exit(-1)
+    
+MyStreamListener = MystreamListener()
+myStream = tweepy.Stream(auth = api.auth, listener = MyStreamListener)
+myStream.filter(track=['covid'])
+    
+
+3/ Enregistrer le data:
+
+ 

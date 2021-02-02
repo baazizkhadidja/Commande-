@@ -1,0 +1,185 @@
+Le 28/10/2020
+
+I/ Les tests des méthodes, fonctions précises:
+
+1/ c est quoi un test python:
+
+Un test unitaire est une opération qui vérifie une certaine partie de votre code. Cela vous permet de vérifier certains comportements de fonctions (est-ce que si nous appelons cette fonction avec ces arguments, nous obtenons bien ce résultat précis ?)
+
+
+2/ Pourquoi fait on des tests unitaires?
+
+On peut tester notre code manuellement mais une fois on a des disaines de fonctions on perd du temps lorsequ on les teste manuellement.
+
+3/ le fichier test:
+
+- Chaque application django contient un fichiet tests.py par defaut.
+- si votre application possède de nombreux tests, vous pouvez créer un répertoire tests/ (avec un __init__.py) et créer plusieurs fichiers dedans, commençant tous par test_
+
+4/ Le code du test dans le fichier test.py:
+on doit créer une classe qui hérite de la classe TestCase, puis qui contient une méthode qui commance par test_ ..(self) en appelant la fonction assertEqual(my_object.my_methode) qui prend comme paramètre un objet et la méthode a tester
+
+expl:
+
+from django.test import TestCase
+from datetime import datetime, timedelta
+from models import Article
+
+
+class ArticleTests(TestCase):
+    def test_est_recent_avec_futur_article(self):
+        """
+        Vérifie si la méthode est_recent d'un Article ne
+        renvoie pas True si l'Article a sa date de publication
+        dans le futur.
+        """
+
+        futur_article = Article(date=datetime.now() + timedelta(days=20))
+        # Il n'y a pas besoin de remplir tous les champs, ni de sauvegarder
+        self.assertEqual(futur_article.est_recent(), False)
+
+
+5/ Les méthodes de test (de la classe TestCase) :
+
+Méthode			Test Python équivalent
+
+assertEqual(a, b)	a == b
+
+assertTrue(x)		bool(x) is True
+
+assertFalse(x)		bool(x) is False
+
+assertIs(a, b)		a is b
+
+assertIsNone(x)		x is None
+
+assertIn(a, b)		a in b
+
+assertIsInstance(a, b)	isinstance(a, b)
+
+
+
+5/ Execusion du test avec la console:
+
+* si nous avon un seule fichier test.py:
+- python manage test
+
+* si on veut préciser le test: 
+- python manage.py test blog   
+- python manage.py test blog.tests     # blog : le nom de l application
+- python manage.py test blog.tests.ArticleTests  # tester une classe précise   
+- python manage.py test blog.tests.ArticleTests  # tester que: une méthode d une classe précise
+
+6/ Initialisation de données pour nos tests:
+
+django n'utilise pas notre base de données pour lancer les tests, 
+il crée une nouvelles bases dd puis la detruit après chaque test.
+
+Donc pour garder des variables que nous aurons besoin par la suite, on utilise 02 fonctions: setUpTestData et setUp:
+expl:
+
+class UnTest(TestCase):
+    
+    @classmethod  # <- setUpClass doit être une méthode de classe, attention !
+    def setUpTestData(cls):
+        Categorie.objects.create(titre="Par défaut")
+    
+    def setUp(self):
+        self.une_variable = "Salut !"
+
+    def test_verification(self):
+        self.assertEqual(self.une_variable, "Salut !")
+        self.assertTrue(
+            Categorie.objects.filter(titre="Par défaut").exists()
+        )
+
+
+
+II/ Les tests des vues:
+
+Cela se fait grâce à un serveur web intégré au système de test qui sera lancé tout seul lors de la vérification des tests.
+
+Exemple01:
+
+from django.test import TestCase
+from django.core.urlresolvers import reverse
+from models import MiniURL
+from views import generer
+
+def creer_url():
+    mini = MiniURL(url="http://foo.bar",code=generer(6), pseudo="Maxime")
+    mini.save()
+    return mini
+
+class MiniURLTests(TestCase):
+    def test_liste(self):
+        """ Vérifie si une URL sauvegardée est bien affichée """
+
+        mini = creer_url()
+        reponse = self.client.get(reverse('mini_url.views.liste'))
+
+        self.assertEqual(reponse.status_code, 200)
+        self.assertContains(reponse, mini.url)
+        self.assertQuerysetEqual(reponse.context['minis'], [repr(mini)])
+
+
+
+Exemple 02:
+
+def test_nouveau_redirection(self):
+    """ Vérifie la redirection d'un ajout d'URL """
+    data = {
+        'url': 'http://www.djangoproject.com',
+        'pseudo': 'Jean Dupont',
+    }
+
+    reponse = self.client.post(reverse('mini_url.views.nouveau'), data)
+    self.assertEqual(reponse.status_code, 302)
+    self.assertRedirects(reponse, reverse('mini_url.views.liste'))
+
+
+Exemple 03:
+
+def test_nouveau_ajout(self):
+    """
+    Vérifie si après la redirection l'URL ajoutée est bien dans la liste
+    """
+    data = {
+        'url': 'http://www.crepes-bretonnes.com',
+        'pseudo': 'Amateur de crêpes',
+    }
+
+    reponse = self.client.post(reverse('mini_url.views.nouveau'), data, follow=True)
+    self.assertEqual(reponse.status_code, 200)
+    self.assertContains(reponse, data['url'])
+
+
+Exemple 04: 
+
+c = Client()
+c.login(username='utilisateur', password='mot_de_passe')
+reponse = c.get('/une/url/')
+c.logout()  # La déconnexion n'est pas obligatoire
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

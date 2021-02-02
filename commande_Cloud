@@ -1,0 +1,144 @@
+Le 19/01/2021
+
+Q1: c est quoi un cloud?
+- c est un serveur(unité centrale) à distance qu'on le loue pour mettre nos données qui seront déplacées d une place à l autre sans qu on sache meme pas pas ou sont elles, d ou vient la symbolisation par un nuage
+
+Q2: la différence entre un hébergeur et un cloud: on loue le serveur de l hébergeur alors que pour le cloud on loue la capacité de calcul(un bou du serveur)
+
+Q3: les types du cloud?
+* IaaS (Infrastructure as a Service) : on loue que :Serveurs, si ce serveurs tombe en panne, ou on veut ajouter: il faut le demander
+
+* PaaS (Platform as a Service) : on loue  :serveurs + services (APIs ..): si le serveur tombe en panne ou on veut louer un autre: ça serait automatiquement
+
+* SaaS (Software as a Service):on loue: logiciel + services + serveurs: serveurs avec d autre logiciel comme microsoft office
+
+Q4: les principaux fournisseurs de cloud:AWS/Microsoft/Google/IBM
+
+Q5: la page d accueuil AWS: https://aws.amazon.com/fr/
+
+Q6: Les services proposés par AWS: 
+
+plusieurs catégories: Calcul, Conteneurs, Game, Machine learning ....
+Caque catégorie regroupe des services: expl: 
+Machine learning: TensorFlow sur AWS, Pytorch sur AWS ....
+
+Q7: les services les plus important sur AWS:
+
+* EC2 : Elastic Compute Cloud: machines virtuelles Linux dans le cloud: 
+
+* RDS : Relational Database Service: gestion de base de données
+* S3 : Simple Storage Service: 
+
+* service de stockage et de distribution de fichiers
+
+
+Q8: Créer un compte AWS:
+
+- Connecter sur: https://aws.amazon.com
+- cliquer sur s inscrire/créer un compte
+- suivre les étapes: formulaire/coordonés bancaire
+- téléphone/captcha/recevoir un mail + connexion
+
+Q9: Première pas dans la console AWS:
+
+- déconnecter de notre compte
+- mon compte --> AWS management console --> utilisateur racine > entrer l email + password
+- cliquer sur Services AWS : afficher une liste de tous les services
+- choisir la région Paris
+- cliquer sur EC2:
+
+
+
+Q10: comment définir un budget pour AWS:(pour qu on l utilise gratuitement)
+
+A/ méthode 01:
+
+- Aller sur: tableau de bord de ma facturation:
+- A gauche: choisir: Préférences: cocher la case:
+Recevoir les alertes d'utilisation d'offre gratuite
+
+B/ méthode 02: création d'un budget:
+
+- Aller sur: tableau de bord de ma facturation:
+- A gauche: Budgets
+- cliquer sur: créer un budget
+- Selectionner le type de budget
+- remplir le formulaire: 
+* nom: dépacement usage gratuit
+* ... mensuell
+* Montant prévu: 1
+
+* Seuil d alerte: 100%
+* contact email: baazize.khadidja@gmail.com
+
+*cliquer sur : confirmer budget
+* cliquer sur : Créer
+
+Q11: Créer un serveur avec Elastic Beanstalk:
+
+- Calcul / Elastic Beanstalk
+- Créer une application: le nom , plateform: python, php ..
+- code : choisir l exemple
+- cliquer sur: créer une application
+- affichage d une console noire== attendre la création de l application 
+
+- sur la liste option: clonner, 
+- sur l adresse du srveur : Test-env.eba-khwpfmys.eu-west-3.elasticbeanstalk.com 
+- sur surveillance: savoir la courbe du processeur
+
+Q11: sur EC2/ Instance / on trouve les applications
+
+Q12: relancer à la main le serveur Ec2:
+
+- EC2/ Instance/ nouvelle instance/ AMI : on choisi Ubuntu 20/ vérifier et lancer
+- créer une nouvelle paire de clé/valeur: 
+* donner un nom: aws
+* cliquer sur 'télécharger une paire de clé': on garde le fichier aws.pem à part
+* cliquer sur: lancer/afficher les instances
+* on coche la case d une instance: en bas les information IP
+Q13: Connect to your Linux instance:
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstances.html?icmpid=docs_ec2_console
+
+Q14: Se connecter à l'instance pour la première fois:
+* Configuration sur le local:
+- mettre le fichier aws.pem qui contient la clé privée dans le dosiier .ssh qui se trouve dans la racine ~
+
+- donner des droits en lecture uniquement à notre utilisateur:
+chmod 400 aws.pem
+
+- récupérer l'IP ou le DNS public de notre serveur(not privée):
+* Adresses IPv4 privées= 52.47.158.113
+* DNS IPv4 privé = ec2-52-47-158-113.eu-west-3.compute.amazonaws.com
+
+- se connecter en SSH à notre serveur: 
+ssh -i "fichier clé" + ubuntu@DNS public
+
+ssh -i "aws.pem" ubuntu@ec2-52-47-158-113.eu-west-3.compute.amazonaws.com
+                        
+
+- ecrire: yes
+
+- resultat: on est sur le serveur: ubuntu@ip-172-31-39-78:~$ 
+
+Q15:Comment envoyer nos fichiers du local vers le serveur?
+on  utilise le logiciel: Filezilla pour se connecter au serveur en SFTP afin d'y envoyer des fichiers depuis le local:
+
+Q16: Comment utiliser Filezilla pour transférer les fichiers??
+- installer filezilla dans le local: sudo install fileezilla
+- ouvrir l application filezilla: on trouve 2 fenetre: à gauche le locale , à droite: le serveur
+
+Q17: lacer jupyter sur notre instance :
+
+(https://openclassrooms.com/fr/courses/4452741-decouvrez-les-librairies-python-pour-la-data-science/5559821-lancez-une-session-de-notebook-jupyter-sur-aws)
+
+
+- se connecter sur le server à distance via ssh
+- installer jupyter/anaconda
+- configurer jupyter 
+- Executer la commande: jupyter notebook --generate-config
+- ecrire sur le navigateur l adresse suivante:
+https://ec2-52-47-158-113.eu-west-3.compute.amazonaws.com
+
+
+

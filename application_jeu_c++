@@ -1,0 +1,277 @@
+Le 06/10/2010
+
+--------------------Classe1: Personnage---------------------------
+
+
+1/Les attributs
+
+C'est ce qui va caractériser votre classe, ici le personnage. Ce sont des variables, elles peuvent donc évoluer au fil du temps. Mais qu'est-ce qui caractérise un personnage de jeu de rôle ? Allons, un petit effort.
+
+    Par exemple, tout personnage a un niveau de vie. Hop, cela fait un premier attribut : vie ! On dira que ce sera unintet qu'il sera compris entre 0 et 100 (0 = mort, 100 = toute la vie).
+
+    Dans un jeu de rôle, il y a le niveau de magie, aussi appelé mana. Là encore, on va dire que c'est unintcompris entre 0 et 100. Si le personnage a 0 de mana, il ne peut plus lancer de sort magique et doit attendre que son mana se recharge tout seul au fil du temps (ou boire une potion de mana !).
+
+    On pourrait rajouter aussi le nom de l'arme que porte le joueur : nomArme. On va utiliser pour cela unstring.
+
+    Enfin, il me semble indispensable d'ajouter un attribut degatsArme, unintqui indiquerait cette fois le degré de dégâts que porte notre arme à chaque coup.
+
+2/ Les méthodes:   
+
+recevoirDegats: le personnage prend un certain nombre de dégâts et donc perd de la vie.
+
+    attaquer: le personnage attaque un autre personnage avec son arme. Il inflige autant de dégâts que son arme le lui permet (c'est-à-diredegatsArme).
+
+    boirePotionDeVie: le personnage boit une potion de vie et regagne un certain nombre de points de vie.
+
+    changerArme: le personnage récupère une nouvelle arme plus puissante. On change le nom de l'arme et les dégâts qui vont avec.
+
+    estVivant: renvoietruesi le personnage est toujours vivant (il possède plus que 0 point de vie), sinon renvoiefalse.
+
+4/ Script basique class + méthodes non implémentées + attributs non initialisées:
+
+class Personnage
+{
+    // Méthodes
+    void recevoirDegats(int nbDegats)
+    {}
+    void attaquer(Personnage &cible)
+    {}
+    void boirePotionDeVie(int quantitePotion)
+    {}
+    void changerArme(string nomNouvelleArme, int degatsNouvelleArme)
+    {}
+    bool estVivant()
+    {}
+
+    // Attributs
+    int m_vie;
+    int m_mana;
+    string m_nomArme;
+    int m_degatsArme;    
+};
+
+
+5/ Script immature (méthodes: implémentée, attributs déclarées + non initialisées, instanciation des objets ds le main):
+
+A/ le fichier header: Personnage.h: 
+
+#ifndef PERSONNAGE_H_INCLUDED
+#define PERSONNAGE_H_INCLUDED
+#include<string>
+
+class Personnage
+{public:
+void recevoirDegats(int nbDegats);
+void attaquer(Personnage &cible);
+void boirePotionDeVie(int quantitePotion);
+void changerArme(string nomNouvelleArme, int degatsNouvelleArme);
+bool estVivant();
+
+private:
+int m_vie;
+int m_mana;
+string m_nomArme;
+int m_degatsArme;
+
+};
+
+#endif // PERSONNAGE_H_INCLUDED
+
+
+B/ le fichier Personnage.cpp:
+
+
+#include<Personnage.h>
+using namespace std;
+
+void Personnage::recevoirDegats(int nbDegats)
+{
+m_vie -= nbDegats;
+if(m_vie<0)
+{
+    m_vie =0;
+}
+}
+
+void Personnage::attaquer(Personnage &cible)
+{
+cible.recevoirDegats(m_degatsArme)
+}
+
+void boirePotionDeVie(int quantitePotion)
+{
+    m_vie += quantitePotion;
+    if(m_vie > 100)
+    {
+        m_vie = 100;
+    }
+}
+
+void changerArme(string nomNouvelleArme, int degatsNouvelleArme)
+{
+    m_nomArme = nomNouvelleArme;
+    m_degatsArme = degatsNouvelleArme;
+}
+
+bool Personnage::estVivant()
+{
+if(m_vie > 0){return true;}
+else{return false;}
+}
+
+
+C/Main main.cpp:
+
+#include <iostream>
+#include "Personnage.h"
+using namespace std;
+
+using namespace std;
+
+int main()
+{
+    Personnage david, goliath;
+
+    goliath.attaquer(david);
+    david.boirePotionDeVie(20);
+    goliath.attaquer(david);
+    david.attaquer(goliath);
+    goliath.changerArme("Double hache tranchante vénéneuse de la mort", 40);
+    goliath.attaquer(david);
+    
+    return 0;
+}
+
+6/ script mature: les attributs sont initialisés par défaut(dans le head) + avec un constructeur(dans la source):
+
+A/ Header: Initialisation des attributs par defaut + définition du constructeur:
+
+#ifndef PERSONNAGE_H_INCLUDED
+#define PERSONNAGE_H_INCLUDED
+#include<string>
+
+class Personnage
+{
+Personnage(std::string nomArme, int degatsArme): m_vie(100), m_mana(100), m_nomArme(nomArme), m_degatsArme(degatsArme)
+public:
+void recevoirDegats(int nbDegats);
+void attaquer(Personnage &cible);
+void boirePotionDeVie(int quantitePotion);
+void changerArme(std::string nomNouvelleArme, int degatsNouvelleArme);
+bool estVivant();
+
+private:
+int m_vie = 100;
+int m_mana = 100;
+std::string m_nomArme = "Epée rouillée";
+int m_degatsArme = 10;
+
+};
+
+#endif // PERSONNAGE_H_INCLUDED
+
+B/ source: Implémentation de la méthode constructeur + surcharge avec des paramètres:
+
+
+
+#include<Personnage.h>
+using namespace std;
+
+Personnage::Personnage(string nomArme, int degatsArme ): m_vie(100), m_mana(100), m_nomArme(nomArme), m_degatsArme(degatsArme){}
+
+void Personnage::recevoirDegats(int nbDegats)
+{
+m_vie -= nbDegats;
+if(m_vie<0)
+{
+    m_vie =0;
+}
+}
+
+void Personnage::attaquer(Personnage &cible)
+{
+cible.recevoirDegats(m_degatsArme)
+}
+
+void boirePotionDeVie(int quantitePotion)
+{
+    m_vie += quantitePotion;
+    if(m_vie > 100)
+    {
+        m_vie = 100;
+    }
+}
+
+void changerArme(string nomNouvelleArme, int degatsNouvelleArme)
+{
+    m_nomArme = nomNouvelleArme;
+    m_degatsArme = degatsNouvelleArme;
+}
+
+bool Personnage::estVivant()const
+{
+if(m_vie > 0){return true;}
+else{return false;}
+}
+
+
+C/ main: instancier l'objet david avec ses arguments, copier david
+
+#ifndef PERSONNAGE_H_INCLUDED
+#define PERSONNAGE_H_INCLUDED
+#include<string>
+
+class Personnage
+{Personnage();
+Personnage::Personnage(string nomArme, int degatsArme ): m_vie(100), m_mana(100), m_nomArme(nomArme), m_degatsArme(degatsArme)
+public:
+void recevoirDegats(int nbDegats);
+void attaquer(Personnage &cible);
+void boirePotionDeVie(int quantitePotion);
+void changerArme(std::string nomNouvelleArme, int degatsNouvelleArme);
+bool estVivant();
+
+private:
+int m_vie = 100;
+int m_mana = 100;
+std::string m_nomArme = "Epée rouillée";
+int m_degatsArme = 10;
+
+};
+
+#endif // PERSONNAGE_H_INCLUDED
+
+---------------------------------Classe02: Arme---------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

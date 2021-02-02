@@ -1,0 +1,58 @@
+Le 22/01/2021
+
+Senario: créer une application dashboard avec FLASK qui nous permet de visualiser : un graphe de météo + un nuage de mot 
+
+1/ app.py:
+
+
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+	return "Hello world"
+
+@app.route('/dashboard/')
+def dashboard():
+	return render_template('dashboard.html')
+
+if __name__=="__main__":
+	app.run(debug=True)
+
+2/ dashboard.html
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF_8" />
+		<title> Mon premier dashboard </title>
+	</head>
+
+	<body>
+
+		<div class ="content">
+			<header>
+				<div class="header-background"></div>
+				<div class ="title">
+					<h1>
+						Mon dashboard
+					</h1>
+				</div>
+			</header>
+
+
+			<main>
+				<div class="chartContainer">
+				</div>
+			</main>
+
+		</div>
+
+
+	</body>
+
+</html>
+
+
+3/ 

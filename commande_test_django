@@ -1,0 +1,271 @@
+Le 22/11/2020
+
+I/Django disquaire:  les testsunitaires:
+
+A- configuration du fichier setting.py pour ajouter la nouvelle base de données pour le test:
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Disc',
+        'NAME': 'test_Disc',
+        'USER': 'doody',
+        'PASSWORD': '*****',
+]
+
+- connecter sur mysql (la route) et donner le droit au user doody pour gérer la base de données test_Disc:
+
+mysql> grant all privileges on test_test_Disc.* to 'doody'@'localhost';
+Query OK, 0 rows affected (0.00 sec)
+
+
+
+- fichier tests.py : qui se trouve dans le dossier de l'application store:
+
+
+B/- faire un test de 'a' == 'a':
+
+from django.test import TestCase
+
+#Index page
+class IndexPageTestCase(TestCase):
+    def test_indexpage(self):
+        self.assertEqual('a', 'a')
+
+- lancer le test: sur la racine: ./manage.py test
+
+- resultat:
+
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.015s
+
+OK
+Destroying test database for alias 'default'...
+
+
+C/ tester une vue: pour vérifier si la réponse de la page dont l'adresse est 127.0.0.1:8080/index/  est égale à 200, on écrit la classe suivante:
+
+from django.test import TestCase
+from django.urls import reverse
+
+
+class IndexPageTestCase(TestCase):
+    def test_indexpage(self):
+        response = self.client.get(reverse('index'))
+        self.assertEqual(response.status_code, 200)
+
+
+Ps: on ne peut pas mettre directement l url de notre page comme paramètre de la méthode get, du coup on utilise la fonction reverse qui présente 127.0.0.1:8080... avec l'argument index
+
+
+- execution et résultat:
+
+Erreur: line 677, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'index' not found. 'index' is not a valid view function or pattern name.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.027s
+
+FAILED (errors=1)
+Destroying test database for alias 'default'...
+
+
+- l'origine de l'erreur: mettre le shéma de l index dans l url du projet avec le nom de la vue:
+
+from store.views import index
+
+
+urlpatterns = [
+    path('index/', index, name = "index"),
+
+
+- résultat:
+./manage.py test
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.246s
+
+OK
+Destroying test database for alias 'default'...
+ 
+D- tester si la vue detail renvoie le statut 200 si l'élément choisi existe, et si il n existe pas elle renvoie un statut 404:
+
+celà consiste deux choses: Importer les modèles + créer la classe test:
+
+from .models import Album
+
+#detail test
+class DetailPageTestCase(TestCase):
+    def test_detail_page_returns_200(self):
+        impossible = Album.objects.create(title="Transmission impossible")
+        album_id = Album.objects.get(title = "Transmission impossible").id
+        reponse = self.client.get(reverse('store:detail', args=(album_id,)))
+        self.assertEqual(reponse.status_code, 200)
+
+
+- résultat:
+ERREUR: 
+
+ raise ValueError("The '%s' attribute has no file associated with it." % self.field.name)
+ValueError: The 'photo' attribute has no file associated with it.
+
+
+- origine de l'erreur: modifier la structure dans la vue et dans le template:
+
+* dans la vue detail: au lieu d'écrire: 
+
+ context = {
+        'thumbnail': album.photo.url,
+    }
+
+--> j'écris:
+
+ context = {
+        'thumbnail': album.photo,
+    }
+ 
+dans ce cas il n y a plus d'affichage de photo c'est pour ça on ajoute l'url dans la template + la structure conditionnelle pour que ça marche bien:
+
+* detail.html:
+
+ {% if thumbnail  %}
+   <img src="{{ thumbnail.url }}" 
+    {% endif %}
+
+- résultat: sur le siteles l image du détail est bien affichée, et pour le test pas d'erreur :
+
+./manage.py test
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.317s
+
+OK
+Destroying test database for alias 'default'...
+
+
+
+
+
+
+E/ tester une vue: pour vérifier si la réponse de la page dont l'adresse est 127.0.0.1:8080/id/  est égale à 404, on écrit une deuxième méthode dans la classe précédante: pour confirmer que l'item n existe pas:
+
+#detail test item don't exists
+    def test_detail_page_returns_404(self):
+        impossible = Album.objects.create(title="Transmission impossible")
+        album_id = Album.objects.get(title = "Transmission impossible").id + 1
+        reponse = self.client.get(reverse('store:detail', args=(album_id,)))
+        self.assertEqual(reponse.status_code, 404)
+
+
+- résultat:
+
+./manage.py test
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.582s
+
+OK
+Destroying test database for alias 'default'...
+
+
+Ps: on peut aller plus loin et utiliser la méthode setup:
+
+class DetailPageTestCase(TestCase):
+
+    def setUp(self):
+        impossible = Album.objects.create(title="Transmission impossible")
+        self.album = Album.objects.get(title='Transmission Impossible')
+
+    def test_detail_page_returns_200(self):
+        album_id = self.album.id
+        reponse = self.client.get(reverse('store:detail', args=(album_id,)))
+        self.assertEqual(reponse.status_code, 200)
+
+#detail test item don't exists
+    def test_detail_page_returns_404(self):
+        album_id = self.album.id + 1
+        reponse = self.client.get(reverse('store:detail', args=(album_id,)))
+        self.assertEqual(reponse.status_code, 404)
+
+
+
+- résultat:
+
+./manage.py test
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+...
+----------------------------------------------------------------------
+Ran 3 tests in 1.009s
+
+OK
+Destroying test database for alias 'default'...
+
+
+
+F- tester la page de réservation: 
+
+
+1/ vérifier si la réservation est bien ajouté dans la base de données si le formulaire envoyé est valide:
+
+
+- si une requete est faite --> une nouvelle réservation est rajoutée à la base de données:
+
+- si la réservation est bien relié à un contact
+
+- si une réservation est bien relié à un album
+
+- si l'album est disponible ou pas après la réservation :
+
+
+
+donc: dans le fichier tests.py on ajoute la classe suivante avec les deux méthodes:
+
+
+class BookingPageTestCase(TestCase):
+
+    def setUp(self):
+        Contact.objects.create(name="Freddie", email="fred@queen.forever")
+        impossible = Album.objects.create(title="Transmission Impossible")
+        journey = Artist.objects.create(name="Journey")
+        impossible.artists.add(journey)
+        self.album = Album.objects.get(title='Transmission Impossible')
+        self.contact = Contact.objects.get(name='Freddie')
+
+
+
+    def test_new_booking_is_registred(self):
+        old_bookings = Booking.objects.count()
+        album_id = self.album.id
+        name = self.contact.name
+        email = self.contact.email
+        response = self.client.post(reverse('store:detail',
+        args=[album_id]),{'name': name,'email': email})
+        new_bookings = Booking.objects.count()
+        self.assertEqual(new_bookings, old_bookings + 1 )
+
+- résultat:
+
+./manage.py test
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.769s
+
+OK
+Destroying test database for alias 'default'...
+
+
+
+

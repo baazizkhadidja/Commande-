@@ -1,0 +1,77 @@
+Le 27/11/2020
+
+
+I/ Postgresql:
+
+1/ se connecter à la root Postgres:  
+- tapper: sudo -u postgres psql
+- resultat: postgres=#
+
+
+2/ Créer un utilisateur:
+
+A/ se connecter à la root postgre: sudo -u postgres psql
+- create user doody with password '****';
+- resultat: create ROLE
+
+B/ sans connecter via la root: 
+
+createdb bd -O doody ?????????????
+
+3/ création de base de données dans la root pour un user précis:
+- create database mydb with owner doody encoding='UTF8' LC_COLLATE='fr_FR.UTF-8' LC_CTYPE='fr_FR.UTF-8';
+- resultat: create database
+
+
+4/ Afficher les bases de données:
+
+- \l+
+- pour quitter l'affichage: cliquer q
+
+5/ Connecter à la base de données via le localhost:
+-zake@zake-HP-Notebook:~$  psql -h 127.0.0.1 -U doody disq
+- resultat: mydb=> 
+- pour quitter: \q
+
+6/quitter postgres: \q
+
+7/ use une base de données: \c mydb3
+
+8/ créer un shéma???? dans la base de données: create schema mydbschema
+
+9/ créer une table: create table  mydbschema.table1 (id integer, password CHAR(10)); 
+
+10/ selectionner une colonne: select * from pg_catalog.pg_tables; 
+
+11/ afficher les tables d une db: \d
+
+PPPPPSSSSSSSSSSSS: la différence entre mysql et psql: 
+
+mysql: 1/ on crée un user depuis la root 'root' + luis donner les privileges pour une db 2/on sort de la root + on se connecte sur le user + on crée notre base de données
+
+
+psql: 1/ on crée un user depuis la root 'postgres' + on crée sa base donnée 2/on se connecte directement sur la base de données 
+
+
+12/remplir la table : insert into table1 values(2, 'A');
+
+13/ supprimer les données d une tables et laisser les attributs:
+truncate table;
+
+OR
+
+delete table1;
+
+14/ supprimer toute une table entière:
+drop table table1
+
+15/ 
+
+
+
+
+
+
+
+
+

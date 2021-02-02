@@ -1,0 +1,44 @@
+Le 01/12/2020
+
+I/ Démarrez facilement avec Create-React-App:
+
+1/ Instalation des outils obligatoires:
+
+node --version
+npm install --global npm
+
+2/ création de l'application react:
+
+create-react-app memory
+
+- resultat: création d un dossier, dans lequel se trouve les fichiers suivants:
+
+
+├── README.md
+├── package.json
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   └── manifest.json
+├── src
+│   ├── App.css
+│   ├── App.js
+│   ├── App.test.js
+│   ├── index.css
+│   ├── index.js
+│   ├── logo.svg
+│   └── registerServiceWorker.js
+└── yarn.lock
+
+
+Ps: src/index.js  et  public/index.html ce sont les fichiers principaux
+
+3/ lancer le server: npm start
+
+
+
+
+
+
+
+

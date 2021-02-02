@@ -1,0 +1,263 @@
+Le 20/11/2020
+
+
+I/ django disquaire: l'erreur technique de l'absense des disques sur le site est résolue : en fait j'ai rajouté les albums via l'interface administrative
+
+
+
+II/ Erreur: si je reserve 2 fois l'album: IntegrityError at /33
+
+(1062, "Duplicate entry '33' for key 'album_id'")
+
+- l'origine de l'erreur: car la table reservation contient l attribut album de type one to one, c'est à dire un album ne pourrait etre reservé qu'une seule fois, lorseque je l'ai changé vers foreignkey, je pourrais donc reservé l album plusieur fois, la solution je l'ai trouvé dans cd site:
+
+https://stackoverflow.com/questions/38015891/django-db-utils-integrityerror-1062-duplicate-entry-for-user-id
+
+
+III/ Modifier le booking:
+
+dans le admin.py: 
+
+supprimer:  admin.site.register(Booking)
+
+et la remplacer par:
+
+@admin.register(Booking)
+class BookingAdmin(admin.ModelAdmin):
+    list_filter = ['created_at', 'contacted'] 
+
+IV/ l’interface administrative : changer la confidentialité des champs : on peut modifier des données et non plus pour d’autre données (read only) :
+
+
+
+Pour restreindre les options de l'ajout des réservations:
+
+ Les champs en lecture seule:
+
+@admin.register(Booking)
+class BookingAdmin(admin.ModelAdmin):
+    readonly_fields = ["created_at"]
+    list_filter = ['created_at', 'contacted']
+
+
+
+class BookingInline(admin.TabularInline):
+    readonly_fields = ["created_at", "contacted", "album"]
+
+@admin.register(Booking)
+class BookingAdmin(admin.ModelAdmin):
+    readonly_fields = ["created_at"]
+    list_filter = ['created_at', 'contacted']
+
+    def has_add_permission(self, request):
+        return False
+
+
+- resultat: 
+
+Erreur1: erreur technique: la restreinction ne fonctionne pas!!!
+
+on pourrait toujours modifier les champs de la réservation
+
+
+- l'origine de l'erreur: j'ai oublié de préciser tout les champs:
+
+@admin.register(Booking)
+class BookingAdmin(admin.ModelAdmin):
+    readonly_fields = ["created_at", "contact", "album", "contacted"]
+    list_filter = ['created_at', 'contacted']
+
+    def has_add_permission(self, request):
+        return False
+
+
+
+EREUR2: le contacte ajouté lors de la réservation prend toujours le noms du premier contacte ajouté et c'est à l'origine de la structure suivante:
+
+else:
+contact = contact.first()
+
+
+et si on enlève cette structure on aura un problème de queryset
+
+
+V/ 4:21  Ajouter le mexin pour l interface administrative: pour ajouter des fonctionnalité qui sont pas active par défaut: dans le but de créer un lien vers les contacts dans les réservations:
+
+from django.utils.safestring import mark_safe
+from django.urls import reverse
+from django.contrib.contenttypes.models import ContentType
+
+class AdminURLMixin(object):
+
+    def get_admin_url(self, obj):
+        content_type = ContentType.objects.get_for_model(obj.__class__)
+        return reverse("admin:store_%s_change" % (
+            content_type.model),
+            args=(obj.id,))
+
+
+
+@admin.register(Booking)
+class BookingAdmin(admin.ModelAdmin, AdminURLMixin):
+    readonly_fields = ["created_at", "contact", "album_link", "contacted"]
+    list_filter = ['created_at', 'contacted']
+
+    def has_add_permission(self, request):
+        return False
+
+    def album_link(self, booking):
+        path = "admin:store_booking_change"
+        url = self.get_admin_url(booking.album)
+        return mark_safe("<a href='{}'>{}</a>".format(url, booking.album.title))
+
+
+
+- resultat: TypeError at /content/store/contact/2/change/
+
+has_add_permission() takes 2 positional arguments but 3 were given
+
+- l origine de l'erreur :    
+def has_add_permission(self, request, object=None):
+        return False
+
+au lieu de:
+def has_add_permission(self, request):
+        return False
+
+
+VI/ version finale du fichier admin.py:
+
+from django.contrib import admin
+from django.utils.safestring import mark_safe
+from django.urls import reverse
+from django.contrib.contenttypes.models import ContentType
+
+from .models import Booking, Album, Artist, Contact
+# Register your models here.
+
+
+
+class AdminURLMixin(object):
+
+    def get_admin_url(self, obj):
+        content_type = ContentType.objects.get_for_model(obj.__class__)
+        return reverse("admin:store_%s_change" % (
+            content_type.model),
+            args=(obj.id,))
+
+class BookingInline(admin.TabularInline, AdminURLMixin):
+    readonly_fields = ["created_at", "contacted", "album_link"]
+    model = Booking
+    fieldsets = [
+        (None, {'fields': ['album_link', 'contacted']})
+    ]
+    extra = 0
+    verbose_name = "Réservations"
+    verbose_name_plural = "Réservations"
+
+    def has_add_permission(self, request, object=None):
+        return False
+
+    def album_link(self, booking):
+        url = self.get_admin_url(booking.album)
+        return mark_safe("<a href='{}'>{}</a>".format(url, booking.album.title))
+
+
+
+class AlbumArtistInline(admin.TabularInline):
+    model = Album.artists.through
+    extra = 1
+    verbose_name = "Disque"
+    verbose_name_plural = "Disques"
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    inlines = [BookingInline]
+
+@admin.register(Artist)
+class ArtistAdmin(admin.ModelAdmin):
+    inlines = [AlbumArtistInline]
+
+@admin.register(Album)
+class AlbumAdmin(admin.ModelAdmin):
+    search_fields = ['reference', 'title']
+
+
+@admin.register(Booking)
+class BookingAdmin(admin.ModelAdmin, AdminURLMixin):
+    readonly_fields = ["created_at", "contact","contact_link" , "album_link", "contacted"]
+    list_filter = ['created_at', 'contacted']
+
+    def has_add_permission(self, request, object=None):
+        return False
+
+    def contact_link(self, booking):
+        url = self.get_admin_url(booking.contact)
+        return mark_safe("<a href='{}'>{}</a>".format(url, booking.contact.name))
+
+
+    def album_link(self, booking):
+        url = self.get_admin_url(booking.album)
+        return mark_safe("<a href='{}'>{}</a>".format(url, booking.album.title))
+
+
+VI/ test d interface openclassroom:
+
+    Adapter l'interface d'administration de Django
+
+    Question 1
+
+    Pourquoi faut-il modifier l’URL de l’interface d’administration ?
+
+        Cela écarte une faille de sécurité, car les pirates connaissent l'URL par défaut
+
+    Question 2
+
+    Comment créer un premier administrateur de l'interface d'administration ?
+
+        En tapant la commande  manage.py createsuperuser 
+
+
+Question 3
+
+    Comment modifier le nom par défaut du modèle Gig dans l’interface d’administration de Django, pour qu’il s’affiche en tant que thé dansant au singulier et thés dansants au pluriel ?
+
+class GigInline(admin.TabularInline):
+
+    verbose_name = 'Thé dansant'
+
+    verbose_name_plural = 'Thés dansants'
+
+
+Question 4
+
+Comment activer la recherche par auteur et par éditeur ?
+
+# admin.py
+
+
+@admin.register(Book)
+
+class BookAdmin(admin.ModelAdmin):
+
+    search_fields = ['author', 'publisher']
+
+ 
+
+Question 5
+
+Qu’est-ce qu’un Mixin ?
+
+    Une classe qui travaille de concert avec une autre classe, lui permettant d'ajouter des fonctionnalités à cette dernière
+
+
+
+
+
+
+
+
+
+
+
+
