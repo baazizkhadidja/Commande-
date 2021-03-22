@@ -1,0 +1,294 @@
+Le 03/02/2021
+
+
+I/ Installation + base de données
+
+- Elasticserch: est une base de données non relationnelle sert à indexer des document fortement orientés text,
+
+- lorsequ on fait une requete pour trouver un document précis parmis plusieurs documents ça pourrais nous donner plusieurs résultats contiennent les meme terms trouvant dans notre requete , mais avec des différentes degrés de pertinances, 
+
+Donc pour filtrer notre recherche afin d obtenir le resultat le plus pertinant ElastiqueSearch utilise des techniques mathématique en présantant chaque document sous forme d un espèce vectoriel ainsi notre requet, (ce qui corespond exactement au  poid des mots recherchés)e, et du coup le document le pertinant c est celui dont l ongle avec le vecteur de la requete est le plus petit
+
+
+
+1/ changer l acces du trafic vers le local host: modifier le fichier:
+
+/etc/elasticsearch/elasticsearch.yml
+
+- décommenter la ligne: network.host: localhost
+
+2/ démarer Elastic search avec le server: 
+sudo systemctl start elasticsearch
+
+
+3/ Démarer le service ElasticSearch: 
+sudo systemctl start elasticsearch
+
+4/ tapper sur le navigateur: 127.0.0.1:9300
+
+5/ importer le fichier json: l’envoyer sur l’API REST d’Elasticsearch avec curl: 
+
+curl -XPUT localhost:9200/_bulk -H"Content-Type: application/json" --data-binary @/home/zake/Téléchargements/movies_elastic.json
+
+Ps: on doit mettre le path complet du fichier json
+
+
+6/ Afficher la base de données importée , sur le navigateur:
+
+http://localhost:9200/movies/movie/_search
+
+7/  il n’est pas possible de modifier le mapping d’un index une fois qu’il a été instancié (après la première importation). Il faut soit le supprimer, soit en créer un nouveau:
+
+
+1 - Charger le mapping pour le nouvel index "movies2" :
+
+curl -XPUT -H "Content-Type: application/json" localhost:9200/movies2 -d @/home/zake/Téléchargements/mapping_movies/mapping.json
+
+2 - Importer les données :
+
+curl -XPUT -H "Content-Type: application/json" localhost:9200/_bulk --data-binary @/home/zake/Téléchargements/mapping_movies/movies_elastic2.json
+
+
+- ouvrir le navigateur: http://localhost:9200/movies2/?pretty
+
+
+
+II/ requete sur Une URL simplifiée:
+
+1/ faire des requete sur la barre de navigation:
+expl:
+
+-filtrer en générale:
+ http://localhost:9200/movies2/_search?q=Star+Wars
+-filtrer sur le titre des films:
+ http://localhost:9200/movies2/_search?q=fields.title:Star Wars
+- filtrer sur les acteurs:
+http://localhost:9200/movies2/_search?q=fields.actors:Harrison Ford
+- filtrer les résultats + le nombre:
+http://localhost:9200/movies2/_search?q=fields.actors:Harrison Ford&size=20
+
+- filtrage sur 2 champs: titre + acteur
+http://localhost:9200/movies2/_search?q=fields.title:Star Wars AND fields.directors:George Lucas
+
+III/ requete Des requêtes subtiles:
+
+1/ technique:
+ écrire chaque requête JSON dans un fichier + le passer en paramètre à l’API REST grâce à l’utilitaire curl:
+
+- requete 01:
+
+{
+    "query":{
+        "match":{
+            "fields.title":"Star Wars"
+        }
+    }
+}
+
+
+-tapper la commande:
+curl -XGET -H "Content-Type: application/json" 'localhost:9200/movies2/movie/_search?pretty' -d @query1 >  resultat
+
+2/ should: c est pas obligé qu il exite
+
+{"query":{
+    "bool": {
+        "should": [
+            { "match": { "fields.title": "Star Wars" }},
+            { "match": { "fields.directors": "George Lucas" }}
+        ]
+}}}
+
+3/ must: doit exister
+
+{"query":{
+    "bool": {
+        "should": { "match": { "fields.title": "Star Wars" }},
+        "must" :  { "match": { "fields.directors": "George Lucas" }}
+}}}
+
+
+4/ should not:
+
+{"query":{
+    "bool": {
+        "should": [
+            { "match": { "fields.actors": "Harrison Ford" }},
+            { "match": { "fields.plot": "Jones" }}
+        ],
+        "must_not" : { "match" : {"fields.plot":"Nazis"}}
+}}}
+
+
+5/ range/plus petit que: ("lt", less than) :
+
+{"query":{
+
+    "bool": {
+
+            "should": [
+
+                { "match": { "fields.directors": "James Cameron" }},
+
+                { "range": { "fields.rank": {"lt":1000 }}}
+
+           ]
+
+}}}
+
+
+6/match_phrase : pour plus de précision
+
+{"query":{
+
+    "bool": {
+
+        "must": [
+
+            { "match_phrase": { "fields.directors": "James Cameron" }},
+
+            { "range": { "fields.rank": {"lt":1000 }}}
+
+        ]
+
+}}}
+
+
+7/ filter, range: filtrer selon une date:
+
+{
+    "query": {
+        "bool":{
+            "must": {"match": {"fields.directors": "J.J. Abrams"}},
+            "filter": {"range": {"fields.release_date":
+                { "from": "2010-01-01", "to": "2015-12-31"}}}
+}}}
+
+
+
+IV/ Comment agréger du texte:
+
+1/Agrégats simples: 
+
+- count 
+
+{"aggs" : {
+    "nb_par_annee" : {
+        "terms" : {"field" : "fields.year"}
+}}}
+
+- moyenne:
+
+{"aggs" : {
+    "note_moyenne" : {
+        "avg" : {"field" : "fields.rating"}
+}}}
+
+- combinaison entre aggs et query:
+
+{
+    "query" :{
+        "match" : {"fields.directors" : "George Lucas"}
+    },
+    "aggs" : {
+            "note_moyenne" : {
+                        "avg" : {"field" : "fields.rating"}
+            },
+            "rang_moyen" : {
+                        "avg" : {"field" : "fields.rank"}
+            }
+}}
+
+- 2 agregats imbriquées:
+
+calculant par année, la note moyenne des films. Il faut pour cela agréger par date, puis dans ce sous-groupe, agréger (2ème "aggs") avec la clé "avg" :
+
+{"aggs" : {
+
+    "group_year" : {
+
+        "terms" : {"field" : "fields.year"},
+
+        "aggs" : {
+
+            "note_moyenne" : {"avg" : {"field" : "fields.rating"}}
+
+        }
+
+}}}
+
+- min, max:
+
+{"aggs" : {
+    "group_year" : {
+        "terms" : { "field" : "fields.year" },
+        "aggs" : {
+            "note_moyenne" : {"avg" : {"field" : "fields.rating"}},
+            "note_min" : {"min" : {"field" : "fields.rating"}},
+            "note_max" : {"max" : {"field" : "fields.rating"}}
+        }
+}}}
+
+- Tri de résultats: order
+
+{"aggs" : {
+    "group_year" : {
+        "terms" : {
+            "field" : "fields.year",
+            "order" : { "note_moyenne" : "desc" }
+        },
+        "aggs" : {
+            "note_moyenne" : {"avg" : {"field" : "fields.rating"}}
+        }
+}}}
+
+- Agrégats par plages de valeurs:
+
+{"aggs" : {
+    "group_range" : {
+        "range" : {
+            "field" : "fields.rating",
+            "ranges" : [
+                {"to" : 1.9},
+                {"from" : 2, "to" : 3.9},
+                {"from" : 4, "to" : 5.9},
+                {"from" : 6, "to" : 7.9},
+                {"from" : 8}
+            ]
+}}}}
+
+- Agrégats de type raw:
+
+{"aggs" : {
+    "nb_per_genres" : {
+        "terms" : {"field" : "fields.genres.raw"}
+}}}
+
+
+
+IV/ Faire grandir la base de donnée:
+
+dans l objectif de :  indexer des quantités de documents arbitrairement grandes +  répliquer les données pour assurer la résistance aux pannes --> on fait le passage à l'échelle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

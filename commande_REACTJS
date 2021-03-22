@@ -34,6 +34,12 @@ create-react-app memory
 Ps: src/index.js  et  public/index.html ce sont les fichiers principaux
 
 3/ lancer le server: npm start
+- resultat: le navigateur s'ouvre automatiquement sur l adresse: http://localhost:3000/
+
+4/JavaScript avec ES2015:
+
+A/ les classes:
+
 
 
 

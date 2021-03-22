@@ -198,7 +198,7 @@ PS: echo = print en python, elle sert à afficher ctt
 
 - afficher une valeur d'une variable suite à l execution du script:
 il faut ecrire dans le script: echo $message
-Ps: si on veut mettre notre une valeur dans une chaine de caractère: on utilise les "":
+Ps: si on veut mettre notre une valeur dans une cihaine de caractère: on utilise les "":
 echo "Le message est : $message"
 - resultat: 
 Le message est : Bonjour tout le monde

@@ -1,0 +1,123 @@
+Le 05/02/2021
+
+
+1- c est quoi Docker?
+
+le logiciel docker est un ensemble de machines virtuels Linux dites: des conteneurs, dans lesquels on sépare les processus de notre application pour qu il y aura une souplesse de traitement, et cette technologie nous permet aussi de partager tout l environnement avec d autres personnes(quoi que ce soit leurs os), et aussi de tester et deployer notre application 
+
+
+2- c est quoi l objectif d utiliser Docker?
+- si les membres de l équipe travaillent sur des os différents, Docker unifie leurs travaux, sans avoir des problèmes de compatibilités
+
+- la CI (Continous Integration, ou Intégration Continue) et de la CD (Continous Delivery, ou Livraison Continue).
+
+PS1: Docker ne persiste pas aux grandes quantités de mémoire disque
+PS2: un conteneur docker = système d exploitation resultant de l execution d une image docker 
+PS3: une image docker = un système de fichier sans processus(os = systeme de fichiers + processus)
+- une image: créeé à partir d un fichier de configuration dite dockerfile
+
+PS4: 
+
+3- c est quoi : stateless et stateful: deux catégories de conteneurs
+- stateful: stocke un état, expl éteignez et rallumez votre base de données, vous la retrouverez dans le même état de fonctionnement.
+
+- Stateless: l'application ne stocke pas d'état, expl: protocole HTTP: À chaque nouvelle requête HTTP, les mêmes séries d'actions seront réalisées
+
+4- c est quoi un conteneur immuable?
+- Un conteneur ne doit pas stocker de données qui doivent être pérennes, car il les perdra
+
+5- c est quoi un Docker Hub?
+
+- Le Docker Hub est un service fourni par Docker Inc ; vous pouvez le comparer à GitHub, mais spécialisé dans le stockage d'image pour Docker
+
+- est un registry (logiciel qui permet de partager des images à d'autres personnes) :
+
+- à des développeurs de distribuer des images prêtes à l’emploi et de les versionner avec un système de tags ;
+
+- à des outils d’intégration en continu de jouer une suite de tests, sans avoir besoin d’autre chose que de Docker ;
+
+- à des systèmes automatisés de déployer ces applications  
+- créer un compte sur Docker Hub: https://hub.docker.com/:
+
+6- Comment lancer mon premier conteneur Docker (déjà existant) en local?
+- sudo docker run hello-world
+
+7- Démarrez un serveur Nginx avec un conteneur Docker:
+- sudo docker run -d -p 8080:80 nginx
+
+8- Arrêtez votre conteneur Docker:
+
+- sudo docker stop ID_RETOURNÉ_LORS_DU_DOCKER_RUN
+
+9- supprimer un conteneur docker: avec la commande 
+docker rm ID_RETOURNÉ_LORS_DU_DOCKER_RUN
+
+10- Récupérez une image du Docker Hub:
+
+docker pull hello-world
+
+11- Affichez l'ensemble des conteneurs existants:
+
+docker ps
+
+12- voir l'ensemble des images présentes en local sur votre ordinateur:
+
+docker images -a
+
+13- Comment nettoyer mon système:
+
+- docker system prune
+
+14- Comment créer une image Docker à l aide de dockerfile 
+
+A/ créer un dockerfile:
+
+?c est quoi un  dockerfile: c est le fichier de configuration pour executer le shéma, qui doit etre présent dans la racine du projet, il a la forme suivante:(https://github.com/OpenClassrooms-Student-Center/ghost-cms/blob/master/Dockerfile)
+
+FROM debian:9
+
+RUN apt-get update -yq \
+   && apt-get install curl gnupg -yq \
+   && curl -sL https://deb.nodesource.com/setup_10.x | bash \
+   && apt-get install nodejs -yq \
+   && apt-get clean -y
+
+ADD . /app/
+WORKDIR /app
+RUN npm install
+
+EXPOSE 2368
+VOLUME /app/logs
+
+CMD npm run start
+
+
+
+
+
+B/ lancer la commande:  docker build -t ocr-dockers-build .
+
+C/ Lancer l image Docker qui resulte de dockerfile: 
+
+docker run -d -p 2368:2368 ocr-docker-build
+
+D/ Ecrire sur le navigateur:  localhost:2368
+
+15- Créez votre fichier .dockerignore
+16- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
