@@ -1,0 +1,138 @@
+le 16/04/2021
+
+RESUME:
+
+- vue create project1
+- npm run serve
+
+
+
+
+
+I/ Généralité:
+
+PS: on peut créer des application vue juste avec un fichier html en lui intégrant un fichier javascript <script> mais avec vue/cli, on pourrait créer les composants par des commandes
+
+1- installer: 
+npm install -g @vue/cli
+yarn global add@vue/cli
+
+2- créer un projet: 
+vue create Proj1
+- choisir: Manually select feautures
+- cocher Babel + Unit Testing
+Ps:  taper à chaque fois sur enter
+- choisir Sass/SCSS, ESLint with error prevention only, Lint on save, In dedicated config files
+- choisir no
+- resultat: le projet est créer
+
+3- lancer l'application sur le navigateur:
+- entrer dans le projet
+- npm run serve
+
+4- afficher l'application sur le navigateur:
+taper: localhost:8081/
+
+4- la composition d 'un projet vue.js: 
+*les dossiers, fichiers dans la racine :
+- node_modules: 
+- public : favicon.ico + index.html
+- le dossier le plus important: src: asset (on met les images ici) + component (ds  lequel on met les vue) 
+- App.vue: vue principale
+- main.js: fichier de configuration des vues
+- package.json : fichier de configuration, 
+
+5- lancer l'pplication en local: dans la ligne de commande tapper: vue ui
+
+6- Le fichier app.vue = le template html + css + le script javascript
+
+7- Gérer la communication entre les composants: les props
+
+II/ vue dans HTML:
+
+1) structure d intégration de script dans html:
+html:
+
+	<div id='app'>
+		on écrit ici tous ce qui est html
+		
+	</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+	<script>
+		const app = new Vue({
+			el: '#app', 
+			data: {
+			liste:[
+			liste des objets
+      			},
+      		computed: {
+        	totalAmount() {
+         	return total
+        }
+    })	
+	</script>
+
+
+PS1: el : c est propriété de configuration du datastore
+PS2: data: c est le data store
+
+2) la data bainding {{}} : pour relier entre html et js
+
+html: <h1>{{message}}</h1>
+script: new Vue({el: '#app', data: {message}})
+
+3) directive v-if: pour mettre l'affichage sous conditions:
+
+html: 
+<section v-if='message'==='hello'>{{mesage}}</section>
+PS: v-show == v-if
+<section v-else-if='message'==='hi'>{{mesage1}}</section>
+<section else='message'==='hiii'>{{mesage3}}</section>
+
+4)v-for: pour itérer les éléments d'une liste:
+
+html:
+<li v-for="item in mylist">
+            {{ item.label }} : {{ item.cost }}€
+</li>
+
+JS:
+
+data:{mylist:[{label:'A', cost:1},{label:'B', cost:2},{label:'C', cost:3},]}
+
+
+5) directive dynamique pour API: v-bind
+
+html:
+
+<li v-for="item in apiResponse">
+            <a v-bind:href="item.url">{{ item.name }}</a>
+        </li>
+
+
+JS:
+
+data: {
+            apiResponse: [
+                { name: 'GitHub', url: 'https://www.github.com' },
+                { name: 'Twitter', url: 'https://www.twitter.com' },
+                { name: 'Netlify', url: 'https://www.netlify.com' }
+            ]
+        }
+
+PS:on peut la supprimer:  v-bind:href="item.url" EGAL A  :href="item.url"
+
+6) Ecouter des Evenements et répondre: v-on: EGALE A @
+
+html:
+<div id="app">
+    <button v-on:click="alert('Bonjour')">Cliquez ici !</button>
+</div>
+
+JS:
+
+7) Mettre à jour les données dans les formulaires(databinding twoways): v-model
+Nous permet de changer l'affichage depuis un formulaire
+
+ 

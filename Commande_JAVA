@@ -1,0 +1,169 @@
+Le 09/04/2021
+
+PPPPPPPPPSSSSSSSSSS: raccorci clavier execution: control + f11
+
+1/ Installer Eclipse + JDK :
+
+- télécharger un dossier du lien: https://eclipse.org/downloads/
+- décompresser le dossier --> eclipse-installer
+- entre dans le dossier 'eclipse-installer' tapper la commande: ./eclipse-inst
+- s'apparait une fenetre --> suivre les étapes
+
+2/ Ouvrir un nouveau projet sur eclipse:
+
+- file/new project/ next/next/finish
+- resultat: création d'un dossier dans lequel : une librairie JRE + src
+
+3/ création d'une classe :
+- menu contextuel sur le dossier 'src' /new / classe --> 
+- fenetre: nom de la classe + public+ cocher: public static void main(Strin) / finish
+- resultat: création d'une classe dans un package qui a le meme nom de la classe 
+
+4/ compilation et traduction d'un code java: l'eclipse qui fait ça mais on pourrait le faire manuellement sans ECLIPSE mais avec nodepad + la ligne de commande windows:
+
+- créer un dossier 'testJava' + un fichier 'myclass.java'
+- ecrir dans le fichier 'MyClass' et créer dedan la class MyClass:
+public class MyClass
+{
+	public static void main(String[] args)
+		{
+			System.out.println("bismilleh");
+		}
+
+}
+
+- javac MyClass.java : compiler le fichier(transformer le fichier java en fichier binaire)
+   
+
+- java MyClass     (sans extention) traduir le fichier binaire
+
+- resultat: affichage bismilleh
+
+
+
+5/ les variables : 
+
+a- les types:
+
+on a 2 types:
+* primitives: 
+- boolean:
+- numeric: 
+1-character :
+2-integral : Integer(byte, short, int, long) + Floating-point(float, double)
+* non primitive:string, array ..
+
+b- la déclaration des variables:
+
+- dans une classe avant la méthode main, ou à l'intérieur de la méthode
+- précédés par le type: byte, short, long, int, float, double , boolean, char, String, 
+- exemple: 
+
+package variables;
+
+public class Book {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		String name = "khadidja";
+		System.out.println("hello, " + name);
+	}
+
+} 
+
+- Men.Contx sur le projet/debug as: JAVA Application
+- resultat: afficher hello khadidja
+Ps: les commentaire //(une seule ligne) , \*  */  (plusieurs lignes)
+
+
+c- input: initialiser des variables et les déclarer dans la console:
+
+import scanner;
+Scanner reader = new Scanner(System.in);
+		
+System.out.println("Enter the first value");
+int number1 = reader.nextInt();
+
+- resultat: dans la console on peut entrer la valeur
+
+d- Les opérateurs :
+
+- les opérateurs arithmétiques: + - * %  , ++i, --i, i++, i--
+
+e- postfix prefix opérateurs: Incrément et décrément
+- Prefix incrément: ++i
+- Prefix decrement: --i
+- Postfix Increment: i++
+- Postfix Decrement: i--  
+
+Ps: l'incrémentation = ajouter 1, la decrementation= diminue 1
+* la différence entre post et pre: 
+
+int i = 10;
+
+System.out.println(i++); --> 10
+----------------------------------
+int i = 10;
+System.out.println(++i); --> 11
+
+
+6/ Les opérateurs
+a- Les opérateurs d'assignation: = , == (pour les conditions)
+
+a+=1 la meme chose que a = a+1
+
+b- les opérateurs de comparaison: <,>,=, !=, <=, >=, == 
+
+int number1 = 10;
+		int number2 = 15;
+		
+		boolean result = number1 < number2;
+		
+		System.out.print(result);
+
+- resultat: true
+
+c- les opérateurs logique: &&(AND), ||(OR):
+
+- boolean result = 4 > 2 && 3 < 7;
+ System.out.println(result);  --> true
+- boolean result = 4 > 2 && 3 > 7;
+System.out.println(result); --> false
+- boolean result = 4 > 2 || 3 < 7;
+System.out.println(result); --> true
+- boolean result = 4 > 2 && 3 < 7;
+System.out.println(result); --> true
+
+
+
+d- Bitwise operators: les opérateurs sur les bit : 
+int n = 10;  (1010 dans le system binaire)
+int n2 = 12 (1100 dans le system binaire)
+
+int res n1 & n2 ;  // 1110(8 en decimal)  (on multiplie) 
+int res n1 || n2 ;  // 1110(14 en decimal)  (on ajoute et le max est 1) 
+
+
+e- les opérateurs de  de condition
+
+int age = 100;
+String msg = age <60 ? "you'r young":"you'r old";
+System.out.println(msg);
+
+PPPPSSSSSSSSSSS: les break point: les points d'arret: pour arreter l'execution du code dans une ligne précise: menu contextuelle de la ligne + toggle point --> debug as java application
+
+
+
+7/ Les conditions :
+
+
+
+
+
+
+
+
+
+
+
+

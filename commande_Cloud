@@ -111,7 +111,7 @@ chmod 400 aws.pem
 * Adresses IPv4 privées= 52.47.158.113
 * DNS IPv4 privé = ec2-52-47-158-113.eu-west-3.compute.amazonaws.com
 
-- se connecter en SSH à notre serveur: 
+- se connecter en SSH à notre serveur depuis le repertoire .ssh: 
 ssh -i "fichier clé" + ubuntu@DNS public
 
 ssh -i "aws.pem" ubuntu@ec2-52-47-158-113.eu-west-3.compute.amazonaws.com

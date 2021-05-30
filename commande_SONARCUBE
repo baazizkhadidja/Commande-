@@ -1,0 +1,20 @@
+SONAR: c est un outil pour évaluer la qualité de code:
+
+1- run l'image du SONAR comme un conteneur  docker:
+docker run -d -p 9000:9000 -p 9092:9092 sonarqube
+
+
+2- afficher l'URL qu'on doit mettre dans le navigateur pour ouvrir SONAR: 
+- netstat -tlpn
+- resultat: 0.0.0.0:9000
+
+
+3- ouvrir sonar dans le navigateur:
+- ouvrir firefox et écrire: 0.0.0.0:9000
+- entrer : admin, admin
+- une fenetre s'affiche pour changer le mot de passe
+- créer un projet: on pourrait l'importer du git ou du gitlab
+
+4- Intégration entre SONARQUBE et GitLab:
+
+- ouvrir sonarqube/administration/marketplace/ 
