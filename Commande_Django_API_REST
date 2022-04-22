@@ -298,6 +298,47 @@ A/ Pour Les API REST GET
 
 
 
+VII/ Les APIView: import from views import APIView:
+ce sont des class dans lesquelles on définit des function:
+class GateauAPIView(APIView):
+	get_query():
+	......
+	retrieve():
+	.....
+	
+VIII/ les mixins: 
+-ils ne s'utilisent pas tous seuls, 
+- ils doivent etre utilisés soit avec les Viewsets, soit avec avec les generics
+- on peut définit functions CRUD dans les class viewset ou bien dans les generics manuellement mais si :
+on fait un héritage des mixins ça serais plus facile à définir ces functions
+- exemple de l'utilisation des mixins avec les viewsets:
+
+from rest_framework import (
+    mixins,
+    viewsets)
+
+
+class GateauViewSet(mixins.ListModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.CreateModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    viewsets.GenericViewSet):
+
+def get_queryset(self, *args, **kwargs):
+        return super(ReportViewSet, self).get_queryset(*args, **kwargs)
+
+def list(self, request, *args, **kwargs):
+return super(ReportViewSet, self).list(request, *args, **kwargs)
+
+def retrieve(self, request, *args, **kwargs):
+return super(ReportViewSet, self).retrieve(request, *args, **kwargs)
+
+      
+
+
+
+
 
 B/ Pour Les API REST POST: Pour Ajouter une ligne avec plusieurs colonnes dans notre table
 
